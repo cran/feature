@@ -1,0 +1,27 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Adler \harvardand\ Murdoch}{2006}{rgl}
+Adler, D. \harvardand\ Murdoch, D.  \harvardleft 2006\harvardright , {\em rgl:
+  3D visualization device system (OpenGL)}.
+\newblock R package version 0.67-2.
+
+\harvarditem{Chaudhuri \harvardand\ Marron}{1999}{chaudhuri99}
+Chaudhuri, P. \harvardand\ Marron, J.~S.  \harvardleft 1999\harvardright ,
+  `Si{Z}er for exploration of structures in curves', {\em Journal of the
+  American Statistical Association} {\bf 94},~807--823.
+
+\harvarditem[Duong et~al.]{Duong, Cowling, Koch \harvardand\
+  Wand}{2006}{duong06}
+Duong, T., Cowling, A., Koch, I. \harvardand\ Wand, M.~P.  \harvardleft
+  2006\harvardright , `Feature significance for multivariate kernel density
+  estimation'.
+\newblock Submitted.
+
+\harvarditem[Godtliebsen et~al.]{Godtliebsen, Marron \harvardand\
+  Chaudhuri}{2002}{godtliebsen02}
+Godtliebsen, F., Marron, J.~S. \harvardand\ Chaudhuri, P.  \harvardleft
+  2002\harvardright , `Significance in scale space for bivariate density
+  estimation', {\em Journal of Computational and Graphical Statistics} {\bf
+  11},~1--21.
+
+\end{thebibliography}
