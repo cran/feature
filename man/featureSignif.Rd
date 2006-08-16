@@ -83,10 +83,14 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   \code{bw} - vector of bandwidths \cr
   \code{fhat} - kernel density estimate on a grid (output from
   \code{\link{drvkde}}) \cr
-  \code{grad} - Boolean matrix which indicates significant gradient on
-  grid\cr
-  \code{curv} - Boolean matrix which indicates significant curvature on
-  grid
+  \code{grad} - logical matrix which indicates significant gradient on
+  grid (if \code{addSignigGradRegion=TRUE})\cr
+  \code{curv} - logical matrix which indicates significant curvature on
+  grid(if \code{addSignigCurvRegion=TRUE})\cr
+  \code{gradData} - logical vector which indicates significant gradient on
+  grid (if \code{addSignigGradData=TRUE})\cr
+  \code{curvData} - logical matrix which indicates significant curvature on
+  grid(if \code{addSignigCurvData=TRUE})
 
   In the interactive case, the return values are
   based on the last bandwidths chosen before the interactive session
@@ -251,7 +255,6 @@ library(MASS)
 data(iris)
 featureSignif(iris[,1:4], addSignifGradData=TRUE, addSignifCurvRegion=TRUE)
 }
-
 }
 
 \keyword{smooth} 

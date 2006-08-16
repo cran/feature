@@ -1,5 +1,5 @@
-vignette: feature.pdf
+vignette: 
 	mogrify -format jpg *eps
-	rm *.eps *.pdf Rplots.ps
+	rm -f *.eps *.pdf Rplots.ps
 	pdflatex feature.tex
 	 

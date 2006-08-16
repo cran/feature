@@ -10,7 +10,8 @@
 
 .onLoad <- function(libname=NULL, pkgname=feature)
 {
-  x <- installed.packages()
-  cat(pkgname, x[x[,1]==pkgname,3], "(2006)\n")
-  rm(x)
+  #x <- installed.packages()
+  #cat(pkgname, x[x[,1]==pkgname,3], "(2006)\n")
+  #rm(x)
+  cat("feature 1.1-4 (2006)\n") 
 }

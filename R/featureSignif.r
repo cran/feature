@@ -492,8 +492,16 @@ featureSignif <-
         points(x.rand, col=dataCol)
       else if (d>=3)
         points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol)
-   
-    return (SignifFeatureRegion.mat)
+
+    
+    if (!addSignifGradData & ! addSignifCurvData)
+      return (SignifFeatureRegion.mat)
+    else if (!addSignifGradData & addSignifCurvData)
+      return (c(SignifFeatureRegion.mat, list(curvData=SignifCurvData.mat)))
+    else if (addSignifGradData & !addSignifCurvData)
+      return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat)))
+    else if (addSignifGradData & addSignifCurvData)
+      return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat, curvData=SignifCurvData.mat)))
   }
 
  
@@ -538,7 +546,7 @@ featureSignif <-
           col=c("grey", "purple", "blue", "red"), ylab="bandwidth", xlab=xlab,
           xlim=xlim)
   }
-  
+
   if (d < 3)
     if (interactive)
     {
@@ -912,7 +920,7 @@ featureSignif <-
               "End of interactive session", color="deeppink", adj=0.3)
     }
   }
-  
+
   if (plotSiZer)
     feat.temp <- list(x.grid=x.seq,bw=exp(bw.seq), SiZer=SiZer.map)
   else

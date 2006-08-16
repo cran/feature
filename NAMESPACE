@@ -1,10 +1,10 @@
 useDynLib(feature)
 
-importFrom(utils, installed.packages)
-
 export(drvkde)
 export(featureSignif)
 
+
+importFrom(utils, installed.packages)
 
 ## not exported
 

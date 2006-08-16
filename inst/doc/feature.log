@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159-1.10b (Web2C 7.4.5) (format=pdflatex 2004.10.4)  15 AUG 2006 17:21
+This is pdfTeX, Version 3.14159-1.10b (Web2C 7.4.5) (format=pdflatex 2004.10.4)  20 AUG 2006 16:46
 **feature.tex
 (./feature.tex{/var/lib/texmf/pdftex/config/pdftex.cfg}
 LaTeX2e <2001/06/01>
@@ -179,35 +179,35 @@ File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 )))) (./feature.aux)
 \openout1 = `feature.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 9.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 9.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 11.
 
 (/usr/share/texmf/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 9.
-Package hyperref Info: Link coloring OFF on input line 9.
+LaTeX Font Info:    ... okay on input line 11.
+Package hyperref Info: Link coloring OFF on input line 11.
 
 (/usr/share/texmf/tex/latex/hyperref/nameref.sty
 Package: nameref 2001/01/27 v2.19 Cross-referencing by name of section
 \c@section@level=\count106
 )
-LaTeX Info: Redefining \ref on input line 9.
-LaTeX Info: Redefining \pageref on input line 9.
+LaTeX Info: Redefining \ref on input line 11.
+LaTeX Info: Redefining \pageref on input line 11.
  (./feature.out)
 (./feature.out)
 \openout3 = `feature.out'.
@@ -241,56 +241,56 @@ loading : Context Support Macros / PDF
 \everyMPtoPDFconversion=\toks20
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 12.
+(Font)              <12> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 12.
+(Font)              <8> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 12.
-LaTeX Font Info:    Try loading font information for T1+aett on input line 19.
+(Font)              <6> on input line 14.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 21.
  (/usr/share/texmf/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 )
-<feature-001.jpg, id=15, 433.62pt x 433.62pt>
+<feature-001.jpg, id=19, 433.62pt x 433.62pt>
 File: feature-001.jpg Graphic file (type jpg)
  <use feature-001.jpg>
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 83.
+(Font)              <7> on input line 84.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 83.
+(Font)              <5> on input line 84.
 
-<feature-002.jpg, id=16, 433.62pt x 433.62pt>
+<feature-002.jpg, id=20, 433.62pt x 433.62pt>
 File: feature-002.jpg Graphic file (type jpg)
  <use feature-002.jpg> [1
 
 {/var/lib/texmf/dvips/config/pdftex.map}] [2 <./feature-001.jpg>] [3 <./feature
--002.jpg>] <feature-003.jpg, id=55, 433.62pt x 433.62pt>
+-002.jpg>] <feature-003.jpg, id=59, 433.62pt x 433.62pt>
 File: feature-003.jpg Graphic file (type jpg)
  <use feature-003.jpg>
-<feature-004.jpg, id=56, 433.62pt x 433.62pt>
+<feature-004.jpg, id=60, 433.62pt x 433.62pt>
 File: feature-004.jpg Graphic file (type jpg)
  <use feature-004.jpg> [4
 
  <./feature-003.jpg>] [5 <./feature-004.jpg>] [6
 
-] (./feature.bbl) [7] (./feature.aux) ) 
+] (./feature.aux) ) 
 Here is how much of TeX's memory you used:
- 4002 strings out of 95437
- 54023 string characters out of 1190247
+ 4000 strings out of 95437
+ 54009 string characters out of 1190247
  101031 words of memory out of 1000001
- 6923 multiletter control sequences out of 10000+50000
+ 6924 multiletter control sequences out of 10000+50000
  26747 words of font info for 59 fonts, out of 500000 for 1000
  14 hyphenation exceptions out of 1000
  42i,6n,36p,255b,383s stack positions out of 1500i,500n,5000p,200000b,5000s
- 84 PDF objects out of 300000
+ 83 PDF objects out of 300000
  15 named destinations out of 131072
- 50 words of extra memory for PDF output out of 65536
-{/usr/share/texmf/dvips/tetex/f7b6d320.e
-nc}</usr/share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb>{/usr/share/texmf/dvips/
-tetex/74afc74c.enc}</usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb>{/usr/sh
-are/texmf/dvips/tetex/09fbbfac.enc}</usr/share/texmf/fonts/type1/bluesky/cm/cms
-ltt10.pfb>{/usr/share/texmf/dvips/tetex/aae443f0.enc}</usr/share/texmf/fonts/ty
-pe1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt10.pfb><
-/usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1
-/bluesky/cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr
-/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on feature.pdf (7 pages, 160966 bytes).
+ 57 words of extra memory for PDF output out of 65536
+{/usr/share/texmf/dvips/tetex/f7b6d320.enc}</usr/share/texmf
+/fonts/type1/bluesky/cm/cmbx10.pfb>{/usr/share/texmf/dvips/tetex/74afc74c.enc}<
+/usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb>{/usr/share/texmf/dvips/tete
+x/09fbbfac.enc}</usr/share/texmf/fonts/type1/bluesky/cm/cmsltt10.pfb>{/usr/shar
+e/texmf/dvips/tetex/aae443f0.enc}</usr/share/texmf/fonts/type1/bluesky/cm/cmmi1
+0.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt10.pfb></usr/share/texmf/fon
+ts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmbx12.p
+fb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/t
+ype1/bluesky/cm/cmr17.pfb>
+Output written on feature.pdf (6 pages, 159613 bytes).
