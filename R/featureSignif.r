@@ -11,9 +11,9 @@ featureSignif <-
            addKDE=TRUE, jitterRug=TRUE, signifLevel=0.05, 
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-           plotSiZer=FALSE, addAxes3d=TRUE, 
+           plotSiZer=FALSE, logbwSiZer=TRUE, addAxes3d=TRUE, 
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
-           axisCol="black", bgCol="white", gridsize)
+           axisCol="black", bgCol="white", gridsize, gridsizeSiZer)
                     
 {
   options(locatorBell=FALSE)
@@ -47,6 +47,8 @@ featureSignif <-
     if (d==3) gridsize <- rep(51,3)
     if (d==4) gridsize <- rep(21,4)
   }
+  if (missing(gridsizeSiZer))
+    gridsizeSiZer <- 101
   
   ## Set some defaults
 
@@ -509,26 +511,41 @@ featureSignif <-
     feat <- addSignifFeature(h=h)
   else                             ## draw SiZer plot
   {
-    x.seq <- dest$x.grid[[1]]
-    bw.seq <- seq(log(bw.range[[1]][1]), log(bw.range[[1]][2]), length=201)
-    SiZer.map <- matrix(0, ncol=length(bw.seq), nrow=length(x.seq))
+    gs.SiZer <- gridsizeSiZer
+    if ((length(bw)==1))   ## scalar b/w -> non-interactive
+    {
+      bw.range.SiZer  <- dfltBWrange(x,gridsize=gs.SiZer,tau)
+      bw.SiZer <- matrix(unlist(bw.range.SiZer), nrow=2, byrow=FALSE)
+    }
+    else
+      bw.SiZer <- bw
+    
+    dfltCounts.out.SiZer  <- dfltCounts(x,gridsize=gs.SiZer, apply(bw.SiZer, 2, max))
+    range.x.SiZer <-dfltCounts.out.SiZer$range.x
+    gcounts.SiZer <- dfltCounts.out.SiZer$counts
+    x.SiZer  <- seq(range.x.SiZer[[1]][1], range.x.SiZer[[1]][2], length=gs.SiZer) 
+    bw.SiZer  <- seq(log(bw.SiZer[1,1]), log(bw.SiZer[2,1]), length=101)
+    SiZer.map <- matrix(0, ncol=length(bw.SiZer), nrow=length(x.SiZer))
+
+    #x.seq <- dest$x[[1]] 
+    #bw.seq <- seq(log(bw.range[[1]][1]), log(bw.range[[1]][2]), length=101)
+    #SiZer.map <- matrix(0, ncol=length(bw.seq), nrow=length(x.seq))
     
     i <- 0
-    for (logh in bw.seq)
+    for (logh in bw.SiZer) #bw.seq)
     {
       h <- exp(logh)
       i <- i + 1
-      est.dens <- drvkde(gcounts,0,bandwidth=h, binned=TRUE,
-                         range.x=range.x, se=FALSE)$est
-      ESS <- n*est.dens*prod(h)*(sqrt(2*pi)^d)
+      est.dens <- drvkde(gcounts.SiZer,0,bandwidth=h, binned=TRUE,
+                         range.x=range.x.SiZer, se=FALSE)
+      ESS <- n*est.dens$est*prod(h)*(sqrt(2*pi)^d)
       sig.ESS <- ESS >= 5
       
+      sig.grad <- SignifFeatureRegion(n,d,gcounts.SiZer,gridsize=gs.SiZer, est.dens, h,signifLevel,
+                                      range.x.SiZer, grad=TRUE, curv=FALSE)$grad
       
-      sig.grad <- SignifFeatureRegion(n,d,gcounts,gridsize,dest, h,signifLevel,
-                                      range.x, grad=TRUE, curv=FALSE)$grad
-      
-      est.grad <- drvkde(gcounts, drv=1, bandwidth=h, binned=TRUE,
-                         range.x=range.x, se=FALSE)$est
+      est.grad <- drvkde(gcounts.SiZer, drv=1, bandwidth=h, binned=TRUE,
+                         range.x=range.x.SiZer, se=FALSE)$est
           
       ## Gradient SiZer map colours
       ## 0 = grey   = sparse data     
@@ -541,10 +558,15 @@ featureSignif <-
       SiZer.col[sig.ESS & sig.grad & est.grad <0] <- 3
       SiZer.map[,i] <- SiZer.col
     }
-
-    image(x.seq, exp(bw.seq), SiZer.map, breaks=c(-1,0,1,2,3),
-          col=c("grey", "purple", "blue", "red"), ylab="bandwidth", xlab=xlab,
-          xlim=xlim)
+   
+    if (logbwSiZer)
+      image(x.SiZer, bw.SiZer, SiZer.map, breaks=c(-1,0,1,2,3),
+            col=c("grey", "purple", "blue", "red"), ylab="log(bandwidth)", xlab=xlab,
+            xlim=xlim)
+    else
+      image(x.SiZer, exp(bw.SiZer), SiZer.map, breaks=c(-1,0,1,2,3),
+            col=c("grey", "purple", "blue", "red"), ylab="bandwidth", xlab=xlab,
+            xlim=xlim)
   }
 
   if (d < 3)
@@ -922,7 +944,7 @@ featureSignif <-
   }
 
   if (plotSiZer)
-    feat.temp <- list(x.grid=x.seq,bw=exp(bw.seq), SiZer=SiZer.map)
+    feat.temp <- list(x.grid=x.SiZer,bw=exp(bw.SiZer), SiZer=SiZer.map)
   else
   {
     feat.temp <- list(x=x, bw=h, fhat=dest)

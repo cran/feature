@@ -3,10 +3,9 @@
 \title{Feature significance for kernel density estimation}
 
 \description{
-  Identify significant features based on
-  kernel density estimates of 1- to 4-dimensional data. The user is able
-  to interactively choose the bandwidths or pre-specify the bandwidths
-  non-interactively for the kernel density estimate.  
+  Identify significant features of kernel density estimates of 1- to
+  4-dimensional data. This feature has an interactive and a
+  non-interactive mode.
 }
 
 \usage{
@@ -15,9 +14,9 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
    addKDE=TRUE, jitterRug=TRUE, signifLevel=0.05, 
    addSignifGradRegion=FALSE, addSignifGradData=FALSE,
    addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-   plotSiZer=FALSE, addAxes3d=TRUE,
+   plotSiZer=FALSE, logbwSiZer=TRUE, addAxes3d=TRUE,
    densCol, dataCol="black", gradCol="green4", curvCol="blue",
-   axisCol="black", bgCol="white", gridsize)
+   axisCol="black", bgCol="white", gridsize, gridsizeSiZer)
 }
 		  
 
@@ -43,12 +42,14 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
     Default is FALSE. Not available for 4-d data.}
   \item{addSignifCurvData}{flag for display of significant curvature
     data points. Default is FALSE.}
-  \item{plotSiZer}{flag for display of 1-d gradient SiZer map. Default is FALSE.}
+  \item{plotSiZer}{flag for displaying 1-d gradient SiZer map. Default is FALSE.}
+  \item{logbwSiZer}{flag for displaying log bandwidths in SiZer
+    map. Default is TRUE.}
   \item{addAxes3d}{flag for displaying axes in 3-d displays. Default is
     TRUE.}
   \item{signifLevel}{significance level. Default is 0.05.}
   \item{densCol}{colour of density estimate curve. Default for 1-d data
-    "DarkOrange". Default for 2-d data is heat.colors(1000). Default for
+    "DarkOrange", for 2-d data is heat.colors(1000), for
     3-d data is heat.colors(5).}
   \item{dataCol}{colour of data points. Default is
     "black".}
@@ -58,7 +59,10 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
     Default is "blue".}
   \item{axisCol}{colour of axes. Default is "black".}
   \item{bgCol}{colour of background. Default is "white".}
-  \item{gridsize}{vector of the number of grid points in each direction.} 
+  \item{gridsize}{vector of the number of grid points in each
+    direction.}
+  \item{gridsizeSiZer}{number of x-axis grid points for SiZer
+    map. Default is 101.} 
 }
 
 \value{
@@ -75,33 +79,33 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   latter is interpreted as a range of bandwidths with the first row are
   the minimum values and the second row the maximum values. 
 
-  For a range of bandwidths, it is in interactive mode. 
-  For a single bandwidth it is in non-interactive mode.
+  If a range of bandwidths is supplied, it goes into interactive mode. 
+  If a single bandwidth is supplied, it goes into non-interactive mode.
 
   Returns a list with the following fields\cr
   \code{x} - data matrix \cr
   \code{bw} - vector of bandwidths \cr
   \code{fhat} - kernel density estimate on a grid (output from
   \code{\link{drvkde}}) \cr
-  \code{grad} - logical matrix which indicates significant gradient on
-  grid (if \code{addSignigGradRegion=TRUE})\cr
-  \code{curv} - logical matrix which indicates significant curvature on
-  grid(if \code{addSignigCurvRegion=TRUE})\cr
-  \code{gradData} - logical vector which indicates significant gradient on
-  grid (if \code{addSignigGradData=TRUE})\cr
-  \code{curvData} - logical matrix which indicates significant curvature on
-  grid(if \code{addSignigCurvData=TRUE})
+  \code{grad} - logical array indicating significant gradient (if
+  \code{addSignigGradRegion=TRUE})\cr 
+  \code{curv} - logical array indicating significant curvature (if
+  \code{addSignigCurvRegion=TRUE})\cr 
+  \code{gradData} - logical vector indicating significant gradient (if
+  \code{addSignigGradData=TRUE})\cr 
+  \code{curvData} - logical vector indicating significant curvature (if
+  \code{addSignigCurvData=TRUE}) 
 
   In the interactive case, the return values are
   based on the last bandwidths chosen before the interactive session
   was ended. In the non-interactive case, the return values are based on the
   specified bandwidth.
   
-  For 1-d data, the gradient SiZer map for of Chaudhuri \& Marron (1999) is
+  For 1-d data, the gradient SiZer map  of Chaudhuri \& Marron (1999) is
   implemented. If this option is selected, it automatically goes into
-  non-interactive mode.
-  The horizontal axis is the data axis, the vertical axis are the
-  bandwidths. It returns a list with the following fields\cr
+  non-interactive mode. The horizontal axis is the data axis, the
+  vertical axis are the bandwidths. It returns a list with the following
+  fields \cr 
   \code{x.grid} - vector of grid points \cr
   \code{bw} - vector of bandwidths at grid points\cr
   \code{SiZer} - matrix (rows = grid points, columns = bandwidths) for
@@ -145,6 +149,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   overall level of significance. We use a Hochberg-type procedure. See
   Hochberg (1988) and Duong, Cowling, Koch \& Wand (2006).
 }
+  
 
 
 \references{
@@ -183,14 +188,7 @@ data(earthquake)
 eq3 <- -log10(-earthquake[,3])
 
 featureSignif(eq3, addSignifGradRegion=TRUE,xlab="-log(-depth)", bw=0.1)
-
-## combined signif. gradient plot and gradient SiZer plot
-layout(matrix(1:2, nrow=2))
-featureSignif(eq3, addSignifGradRegion=TRUE,xlab="-log(-depth)", bw=0.1)
-xlim <- par()$usr[1:2]
-featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)", xlim=xlim)
-lines(c(-2, 2), c(0.1, 0.1))
-layout(1)
+featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)")
 
 ## Bivariate example
 
@@ -232,10 +230,8 @@ duration <- geyser$duration
 
 featureSignif(duration)
 featureSignif(duration, addData=TRUE)
-featureSignif(duration, addSignifGradRegion=TRUE,
-   addSignifGradData=TRUE)
-featureSignif(duration, addSignifCurvRegion=TRUE,
-   addSignifCurvData=TRUE)
+featureSignif(duration, addSignifGradRegion=TRUE, addSignifGradData=TRUE)
+featureSignif(duration, addSignifCurvRegion=TRUE, addSignifCurvData=TRUE)
 
 ## Bivariate example
 

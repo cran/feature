@@ -25,6 +25,9 @@ feature
   Otherwise there is the non-interactive mode where the user can specify
   a single set of bandwidths. This is useful when the user has a more
   definite idea of suitable bandwidths.     
+
+  For a for comprehensive example for 1-d and 2-d data, see
+  \code{vignette("feature")}. 
 }
 
 

@@ -13,5 +13,5 @@
   #x <- installed.packages()
   #cat(pkgname, x[x[,1]==pkgname,3], "(2006)\n")
   #rm(x)
-  cat("feature 1.1-4 (2006)\n") 
+  cat("feature 1.1-5 (2006)\n") 
 }

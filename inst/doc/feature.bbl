@@ -1,27 +1,23 @@
-\begin{thebibliography}{xx}
+\begin{thebibliography}{}
 
-\harvarditem{Adler \harvardand\ Murdoch}{2006}{rgl}
-Adler, D. \harvardand\ Murdoch, D.  \harvardleft 2006\harvardright , {\em rgl:
-  3D visualization device system (OpenGL)}.
+\bibitem[Adler and Murdoch, 2006]{rgl}
+Adler, D. and Murdoch, D. (2006).
+\newblock {\em rgl: 3D visualization device system (OpenGL)}.
 \newblock R package version 0.67-2.
 
-\harvarditem{Chaudhuri \harvardand\ Marron}{1999}{chaudhuri99}
-Chaudhuri, P. \harvardand\ Marron, J.~S.  \harvardleft 1999\harvardright ,
-  `Si{Z}er for exploration of structures in curves', {\em Journal of the
-  American Statistical Association} {\bf 94},~807--823.
+\bibitem[Chaudhuri and Marron, 1999]{chaudhuri99}
+Chaudhuri, P. and Marron, J.~S. (1999).
+\newblock Si{Z}er for exploration of structures in curves.
+\newblock {\em Journal of the American Statistical Association}, 94:807--823.
 
-\harvarditem[Duong et~al.]{Duong, Cowling, Koch \harvardand\
-  Wand}{2006}{duong06}
-Duong, T., Cowling, A., Koch, I. \harvardand\ Wand, M.~P.  \harvardleft
-  2006\harvardright , `Feature significance for multivariate kernel density
-  estimation'.
+\bibitem[Duong et~al., 2006]{duong06}
+Duong, T., Cowling, A., Koch, I., and Wand, M.~P. (2006).
+\newblock Feature significance for multivariate kernel density estimation.
 \newblock Submitted.
 
-\harvarditem[Godtliebsen et~al.]{Godtliebsen, Marron \harvardand\
-  Chaudhuri}{2002}{godtliebsen02}
-Godtliebsen, F., Marron, J.~S. \harvardand\ Chaudhuri, P.  \harvardleft
-  2002\harvardright , `Significance in scale space for bivariate density
-  estimation', {\em Journal of Computational and Graphical Statistics} {\bf
-  11},~1--21.
+\bibitem[Godtliebsen et~al., 2002]{godtliebsen02}
+Godtliebsen, F., Marron, J.~S., and Chaudhuri, P. (2002).
+\newblock Significance in scale space for bivariate density estimation.
+\newblock {\em Journal of Computational and Graphical Statistics}, 11:1--21.
 
 \end{thebibliography}

@@ -8,7 +8,7 @@
 }
 
 \usage{
-drvkde(x,drv,bandwidth,gridsize,range.x,binned=FALSE,se=TRUE)
+drvkde(x, drv, bandwidth, gridsize, range.x, binned=FALSE, se=TRUE)
 }
 
 \arguments{
@@ -16,33 +16,51 @@ drvkde(x,drv,bandwidth,gridsize,range.x,binned=FALSE,se=TRUE)
   \item{drv}{vector of derivative indices}
   \item{bandwidth}{vector of bandwidths}
   \item{gridsize}{vector of grid sizes}
-  \item{range.x}{vector of ranges for x}
-  \item{binned}{TRUE if x is binned counts or FALSE (default) if x is
-    data matrix} 
-  \item{se}{TRUE (default) computes standard error (SE) for kernel
-    estimate or FALSE skips computing SE}    
+  \item{range.x}{list of vector of ranges for x}
+  \item{binned}{flag to indicate: TRUE = x is binned counts or FALSE = x is
+    data matrix. Default is TRUE} 
+  \item{se}{flag for computing standard error of kernel
+    estimate. Default is TRUE}    
 }
 
 \value{
-  If \code{se=TRUE}, it returns a list with fields
+  Returns a list with fields
   
   \code{x.grid}  - grid points \cr
   \code{est} - kernel estimate of partial derivative of density function
   indicated by \code{drv}\cr
-  \code{se} -  estimate of standard error of \code{est}.
+  \code{se} -  estimate of standard error of \code{est} (if \code{se=TRUE}).
 
-  Otherwise if
-  \code{se=FALSE}, only \code{x.grid} and \code{est} are returned.  
 }
 
 \details{The estimates and standard errors are computed over a grid of binned counts
   \code{x.grid}. If the binned counts are not supplied then they are computed
   inside this function.
 
+  If \code{gridsize} and \code{range.x} are not supplied, they are
+  computed inside this function.
+  
   This function doesn't need to be used directly as it called from
   \code{\link{featureSignif}}.
 }
 
+
+\examples{
+## univariate
+data(earthquake)
+eq3 <- -log10(-earthquake[,3])
+fhat <- drvkde(x=eq3, drv=0, bandwidth=0.1)    ## KDE of f
+fhat1 <- drvkde(x=eq3, drv=1, bandwidth=0.1)   ## KDE of df/dx
+
+## trivariate
+data(earthquake)
+earthquake[,3] <- -log10(-earthquake[,3])
+fhat <- drvkde(x=earthquake, drv=c(0,0,0), bandwidth=c(0.04,0.04,0.05),
+               se=FALSE)     ## KDE of f
+                                              
+fhat212 <- drvkde(x=earthquake, drv=c(2,1,2), bandwidth=c(0.04,0.04,0.05),
+                  se=FALSE)  ## KDE of d^3 f/ dx^2 dy dz^2
+}
 
 \references{
      Wand, M.P. and Jones, M.C. (1995) \emph{Kernel Smoothing} Chapman and Hall.
