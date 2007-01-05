@@ -16,7 +16,9 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
    addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
    plotSiZer=FALSE, logbwSiZer=TRUE, addAxes3d=TRUE,
    densCol, dataCol="black", gradCol="green4", curvCol="blue",
-   axisCol="black", bgCol="white", gridsize, gridsizeSiZer)
+   axisCol="black", bgCol="white", dataAlpha=0.1, gradDataAlpha=0.3,
+   gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3,
+   gridsize, gridsizeSiZer)
 }
 		  
 
@@ -59,6 +61,15 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
     Default is "blue".}
   \item{axisCol}{colour of axes. Default is "black".}
   \item{bgCol}{colour of background. Default is "white".}
+  \item{dataAlpha}{alpha-blending transparency value for data points.}
+  \item{gradDataAlpha}{alpha-blending transparency value for
+    significant gradient data points.}
+  \item{gradRegionAlpha}{alpha-blending transparency value for
+    significant gradient regions.}
+  \item{curvDataAlpha}{alpha-blending transparency value for
+    significant curvature data points.}
+  \item{curvRegionAlpha}{alpha-blending transparency value for
+    significant curvature regions.}
   \item{gridsize}{vector of the number of grid points in each
     direction.}
   \item{gridsizeSiZer}{number of x-axis grid points for SiZer
@@ -212,12 +223,6 @@ featureSignif(earthquake, addKDE=FALSE, scaleData=TRUE,
    bw=c(0.0381, 0.0381, 0.0442),
    xlim=c(0.4,0.5), ylim=c(0.4,0.5), zlim=c(0.8,0.9))
 
-## Quadrivariate example
-
-library(MASS)
-data(iris) 
-featureSignif(iris[,1:4], addSignifGradData=TRUE,
-   addSignifCurvRegion=TRUE, bw=c(0.457, 0.210, 0.960, 0.413))
 
 \dontrun{
 ## Interactive examples
@@ -245,11 +250,6 @@ data(earthquake)
 earthquake$depth <- -log10(-earthquake$depth)
 featureSignif(earthquake, addSignifGradRegion=TRUE, scaleData=TRUE)
 
-## Quadrivariate example
-
-library(MASS)
-data(iris)
-featureSignif(iris[,1:4], addSignifGradData=TRUE, addSignifCurvRegion=TRUE)
 }
 }
 

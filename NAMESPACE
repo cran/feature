@@ -2,7 +2,7 @@ useDynLib(feature)
 
 export(drvkde)
 export(featureSignif)
-
+export(plot.fs)
 
 importFrom(utils, installed.packages)
 

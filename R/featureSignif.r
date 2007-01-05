@@ -13,10 +13,13 @@ featureSignif <-
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
            plotSiZer=FALSE, logbwSiZer=TRUE, addAxes3d=TRUE, 
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
-           axisCol="black", bgCol="white", gridsize, gridsizeSiZer)
+           axisCol="black", bgCol="white",
+           dataAlpha=0.1, gradDataAlpha=0.3,
+           gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3,
+           gridsize, gridsizeSiZer)
                     
 {
-  options(locatorBell=FALSE)
+  options(locatorBell=FALSE) 
   names.x <- names(x)
 
   ## Determine appropriate value of parameter
@@ -51,8 +54,6 @@ featureSignif <-
     gridsizeSiZer <- 101
   
   ## Set some defaults
-
-  ##bg.col <- "white"
 
   if (missing(bw))           ## b/w not specified -> interactive 
   {
@@ -189,6 +190,7 @@ featureSignif <-
   }
   if (d >=3)
   {
+    open3d()
     clear3d()
     screen1 <- rgl.cur()
     if (interactive)
@@ -309,28 +311,10 @@ featureSignif <-
   
   if (d>=3)
   {
-    ##bgCol <- "white"
-    ##ax.col <- "black"
-    
     if (interactive)
     {
-      ## if there is already another RGL window open, plot the signif.
-      ## regions there
-      ## o/w open a new RGL window 
-      rgl.dev.list <- NULL
-      for (i in (1:1000)[-screen1])
-      {
-        err.msg <- try(rgl.set(i), silent=TRUE)
-        if (class(err.msg)!="try-error")
-          rgl.dev.list <- c(rgl.dev.list, i)
-      }
-     
-      if (is.null(rgl.dev.list))
-        open3d()
-      else
-        rgl.set(min(rgl.dev.list))
-      
-      screen2 <- rgl.cur() 
+       open3d()
+       screen2 <- rgl.cur() 
       clear3d()
       rgl.viewpoint(theta=0, phi=-90)
       rgl.bg(col=bgCol)
@@ -392,7 +376,6 @@ featureSignif <-
                   x=x.gd.1,y=x.gd.2,z=x.gd.3,color=densCol[il],alpha=alph[il],
                   add=(il!=1))   
     }
-    #lims <- c(xlim, ylim, zlim)
   }
   
   if (d==4) 
@@ -462,7 +445,7 @@ featureSignif <-
                                dest,lims)
       else if (d==3)
         addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
-                               dest,lims,trans.alpha=0.25)
+                               dest,lims,trans.alpha=gradRegionAlpha)
      
     if (addSignifCurvRegion)
       if (d<3)
@@ -470,16 +453,16 @@ featureSignif <-
                                curvCol,dest,lims)
       else if (d==3)
         addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
-                               dest,lims,trans.alpha=0.15)
+                               dest,lims,trans.alpha=curvRegionAlpha)
       else if (d==4)
         addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
                                dest,lims,trans.alpha=c(0.1,0.4))
    
     if (addSignifGradData)
-      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol)
+      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha)
     
     if (addSignifCurvData)
-      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol)
+      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
 
     if (addData)
       if (d==1)
@@ -493,7 +476,7 @@ featureSignif <-
       else if (d==2)
         points(x.rand, col=dataCol)
       else if (d>=3)
-        points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol)
+        points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
 
     
     if (!addSignifGradData & ! addSignifCurvData)
@@ -512,13 +495,14 @@ featureSignif <-
   else                             ## draw SiZer plot
   {
     gs.SiZer <- gridsizeSiZer
-    if ((length(bw)==1))   ## scalar b/w -> non-interactive
-    {
+    ##if ((length(bw)==1))   ## scalar b/w -> non-interactive
+    ##{
       bw.range.SiZer  <- dfltBWrange(x,gridsize=gs.SiZer,tau)
       bw.SiZer <- matrix(unlist(bw.range.SiZer), nrow=2, byrow=FALSE)
-    }
-    else
-      bw.SiZer <- bw
+    ##}
+    ##else
+    ##  bw.SiZer <- bw
+
     
     dfltCounts.out.SiZer  <- dfltCounts(x,gridsize=gs.SiZer, apply(bw.SiZer, 2, max))
     range.x.SiZer <-dfltCounts.out.SiZer$range.x
@@ -527,23 +511,22 @@ featureSignif <-
     bw.SiZer  <- seq(log(bw.SiZer[1,1]), log(bw.SiZer[2,1]), length=101)
     SiZer.map <- matrix(0, ncol=length(bw.SiZer), nrow=length(x.SiZer))
 
-    #x.seq <- dest$x[[1]] 
-    #bw.seq <- seq(log(bw.range[[1]][1]), log(bw.range[[1]][2]), length=101)
-    #SiZer.map <- matrix(0, ncol=length(bw.seq), nrow=length(x.seq))
-    
     i <- 0
-    for (logh in bw.SiZer) #bw.seq)
+    for (logh in bw.SiZer) 
     {
       h <- exp(logh)
       i <- i + 1
-      est.dens <- drvkde(gcounts.SiZer,0,bandwidth=h, binned=TRUE,
+      
+      est.dens <- drvkde(gcounts.SiZer,drv=0,bandwidth=h, binned=TRUE,
                          range.x=range.x.SiZer, se=FALSE)
+      est.dens$est[est.dens$est<0] <- 0
       ESS <- n*est.dens$est*prod(h)*(sqrt(2*pi)^d)
       sig.ESS <- ESS >= 5
       
-      sig.grad <- SignifFeatureRegion(n,d,gcounts.SiZer,gridsize=gs.SiZer, est.dens, h,signifLevel,
+      sig.grad <- SignifFeatureRegion(n,d,gcounts.SiZer,gridsize=gs.SiZer,
+                                      est.dens, h,signifLevel,
                                       range.x.SiZer, grad=TRUE, curv=FALSE)$grad
-      
+
       est.grad <- drvkde(gcounts.SiZer, drv=1, bandwidth=h, binned=TRUE,
                          range.x=range.x.SiZer, se=FALSE)$est
           
@@ -619,7 +602,6 @@ featureSignif <-
               c(0,0,0,0), col="red")
       texts3d(c(stop.box[1]+stop.box[2])/2,stop.box[3]-0.1, 0,
                 "STOP", col="red", adj=0.3)
-
 
       ## draw bandwidths notch
       x.bw.ck <- (log(h, 10) - logh.low)/sca.fac + bw.bar[1]    
@@ -933,10 +915,10 @@ featureSignif <-
     }
     if (d >=3)
     {
-      rgl.set(screen2)
-      texts3d(xlim[2], ylim[2], zlim[2],
-              paste("bandwidths = (", toString(signif(h,3)), ")",
-                    sep=""), color="purple4", alpha=1)
+      #rgl.set(screen2)
+      #texts3d(xlim[2], ylim[2], zlim[2],
+      #        paste("bandwidths = (", toString(signif(h,3)), ")",
+      #              sep=""), color="purple4", alpha=1)
       rgl.set(screen1)
       texts3d((bw.bar[1]+bw.bar[2])/2,bw.bar[4]+0.4,0,
               "End of interactive session", color="deeppink", adj=0.3)
@@ -949,6 +931,8 @@ featureSignif <-
   {
     feat.temp <- list(x=x, bw=h, fhat=dest)
     feat.temp <- c(feat.temp, feat)
+
+    class(feat.temp) <- "fs"
   }
   invisible(feat.temp)
 }

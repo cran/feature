@@ -17,20 +17,19 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
   Sig.scalar <- array(NA, dim=gridsize)
   Sig2.scalar <- array(NA, dim=gridsize)
 
+  dest$est[dest$est<0] <- 0  
   ## constant for variance of gradient estimate
-  Sig.scalar[dest$est>0] <- 1/2*(2*pi)^(-d)*n^(-1)*prod(h)^(-1)*dest$est[dest$est>0]
+  Sig.scalar <- 1/2*(2*pi)^(-d)*n^(-1)*prod(h)^(-1)*dest$est
 
   ##  constants for variance of curvature estimate  
   if (d==1)
-    Sig2.scalar[dest$est>0] <- (8*pi*n*prod(h))^(-1)*dest$est[dest$est>0]
+    Sig2.scalar <- (8*pi*n*prod(h))^(-1)*dest$est
   else if (d==2)
-    Sig2.scalar[dest$est>0] <- (16*pi*n*prod(h))^(-1)*dest$est[dest$est>0]
+    Sig2.scalar <- (16*pi*n*prod(h))^(-1)*dest$est
   else if (d==3)
-    Sig2.scalar[dest$est>0] <- (32*pi^(3/2)*n*prod(h))^(-1)*dest$est[dest$est>0]
+    Sig2.scalar <- (32*pi^(3/2)*n*prod(h))^(-1)*dest$est
   else if (d==4)
-    Sig2.scalar[dest$est>0] <- (64*pi^2*n*prod(h))^(-1)*dest$est[dest$est>0]
-     
-
+    Sig2.scalar <- (64*pi^2*n*prod(h))^(-1)*dest$est
 
   ## Matrix square root - taken from Stephen Lake 
   ## http://www5.biostat.wustl.edu/s-news/s-news-archive/200109/msg00067.html

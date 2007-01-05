@@ -5,14 +5,14 @@
 
 # Last changed: 18 JUL 2005
 
-dfltCounts <- function(x,gridsize=rep(64,NCOL(x)),h=rep(0,NCOL(x)))
+dfltCounts <- function(x,gridsize=rep(64,NCOL(x)),h=rep(0,NCOL(x)), supp=3.7)
 {
    x <- as.matrix(x)
    d <- ncol(x)
 
    range.x <- list()
    for (id in 1:d)
-      range.x[[id]] <- c(min(x[,id])-1.5*h[id],max(x[,id])+1.5*h[id])  
+      range.x[[id]] <- c(min(x[,id])-supp*h[id],max(x[,id])+supp*h[id])  
 
    a <- unlist(lapply(range.x,min))
    b <- unlist(lapply(range.x,max))

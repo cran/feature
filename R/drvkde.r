@@ -6,8 +6,7 @@
 
 # Last changed: 28 OCT 2005
 
-drvkde <- function(x,drv,bandwidth,gridsize,range.x,
-                   binned=FALSE,se=TRUE)
+drvkde <- function(x,drv,bandwidth,gridsize,range.x, binned=FALSE,se=TRUE)
 {  
    d <- length(drv)
 
@@ -89,7 +88,7 @@ drvkde <- function(x,drv,bandwidth,gridsize,range.x,
      kapmid[[id]] <- hmnew*kapmid[[id]]*(-1)^drv[id]
    }
    
-   
+ 
    if (d==1)
      kappam <- kapmid[[1]]/n
    
@@ -109,8 +108,11 @@ drvkde <- function(x,drv,bandwidth,gridsize,range.x,
    if (d==1) 
    { 
       kappam <- as.vector(kappam)
+      ##if (length(kappam)==1)                  ## error trap added for sparse data
+      ##  est <- rep(0, length=nrow(gcounts))
+      ##else
       est <- symconv(kappam,gcounts,skewflag=(-1)^drv)
-      
+  
       if (!se)
         return(list(x.grid=gpoints,est=est))
       
