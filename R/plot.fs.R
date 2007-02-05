@@ -13,7 +13,7 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
            axisCol="black", bgCol="white",
            dataAlpha=0.1, gradDataAlpha=0.3,
-           gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3, gridsize) 
+           gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3) 
 {
   names.x <- colnames(fs$x)
   
@@ -21,7 +21,7 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   d <- ncol(x)
   n <- nrow(x)
   h <- fs$bw
-  
+  gridsize <- dim(fs$fhat$est) 
 
   ## Determine default axis labels.
 
@@ -30,23 +30,14 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   if (missing(zlab)) zlab <- NULL
   labs <- dfltLabs(d,names.x,xlab,ylab,zlab)
   xlab <- labs$xlab ; ylab <- labs$ylab ; zlab <- labs$zlab
-  
-  if (missing(gridsize)) 
-  {
-    if (d==1) gridsize <- 401
-    if (d==2) gridsize <- rep(151,2)
-    if (d==3) gridsize <- rep(51,3)
-    if (d==4) gridsize <- rep(21,4)
-  }
-
  
-  dfltCounts.out <- dfltCounts(x, gridsize, fs$bw)
-  gcounts <- dfltCounts.out$counts
-  range.x <- dfltCounts.out$range.x  
+  #dfltCounts.out <- dfltCounts(x, gridsize, fs$bw)
+  #gcounts <- dfltCounts.out$counts
+  #range.x <- dfltCounts.out$range.x  
 
-  dest <- drvkde(gcounts, rep(0,d), bandwidth=h, binned=TRUE,
-                 range.x=range.x, se=FALSE)
-  
+  ##dest <- drvkde(gcounts, rep(0,d), bandwidth=h, binned=TRUE,
+  ##               range.x=range.x, se=FALSE)
+  dest <- fs$fhat
   
   ## random sample of data points used for display
   nsamp <- min(addDataNum, n)

@@ -15,7 +15,11 @@ November\or December\fi
 %\topmargin=-2.54mm
 %\textheight=236.2mm
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Change this for a different vignette
 %\VignetteIndexEntry{feature} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \title{feature: an R package for feature significance for multivariate
 kernel density estimation}

@@ -17,7 +17,7 @@
    addAxes3d=TRUE, densCol, dataCol="black", gradCol="green4",
    curvCol="blue", axisCol="black", bgCol="white",
    dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2,
-   curvDataAlpha=0.3, curvRegionAlpha=0.3, gridsize)
+   curvDataAlpha=0.3, curvRegionAlpha=0.3)
 }
 
 \arguments{
@@ -64,8 +64,6 @@
     significant curvature data points.}
   \item{curvRegionAlpha}{alpha-blending transparency value for
     significant curvature regions.}
-  \item{gridsize}{vector of the number of grid points in each
-    direction.}
   \item{...}{other graphics parameters}
 }
   

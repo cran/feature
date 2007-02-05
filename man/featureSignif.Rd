@@ -215,6 +215,7 @@ names(fs)
 data(earthquake)
 earthquake[,3] <- -log10(-earthquake[,3])
 
+open3d()
 featureSignif(earthquake, scaleData=TRUE, addData=TRUE,
     bw=c(0.0381, 0.0381, 0.0442))
 
