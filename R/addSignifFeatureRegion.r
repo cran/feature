@@ -54,7 +54,7 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
                          (1:nrow(x.mesh))[x.mesh[,2]>=range.x.plot[[2]][1]])
     inds.on <- intersect(inds.on,
                          (1:nrow(x.mesh))[x.mesh[,2]<=range.x.plot[[2]][2]])
-    
+
     if (add.bars)
       points(x.mesh[inds.on,1],x.mesh[inds.on,2],pch=".",
              col=featureCol, cex=2) 
@@ -69,7 +69,6 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
     x.gd.1 <- dest$x.grid[[1]] ; x.gd.2 <- dest$x.grid[[2]]
     x.gd.3 <- dest$x.grid[[3]]
 
-    
     if (!all(SignifFeature==FALSE))
       contour3d(SignifFeature,level=0.5,x=x.gd.1,color=featureCol,
                 y=x.gd.2,z=x.gd.3,alpha=trans.alpha,add=TRUE)

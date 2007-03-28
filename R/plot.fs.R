@@ -9,7 +9,7 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
            addKDE=TRUE, jitterRug=TRUE,  
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-           addAxes3d=TRUE, 
+           addAxes3d=TRUE,
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
            axisCol="black", bgCol="white",
            dataAlpha=0.1, gradDataAlpha=0.3,
@@ -21,8 +21,11 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   d <- ncol(x)
   n <- nrow(x)
   h <- fs$bw
-  gridsize <- dim(fs$fhat$est) 
-
+  if (d >1)
+    gridsize <- dim(fs$fhat$est) 
+  else
+    gridsize <- length(fs$fhat$est) 
+  
   ## Determine default axis labels.
 
   if (missing(xlab)) xlab <- NULL
@@ -38,6 +41,9 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   ##dest <- drvkde(gcounts, rep(0,d), bandwidth=h, binned=TRUE,
   ##               range.x=range.x, se=FALSE)
   dest <- fs$fhat
+
+  ESS <- n*dest$est*prod(h)*(sqrt(2*pi)^d)
+  SigESS <- ESS >= 5
   
   ## random sample of data points used for display
   nsamp <- min(addDataNum, n)
@@ -113,14 +119,15 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
     if (addSignifGradRegion)
       addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
                              dest,lims)
-      
+
     if (addSignifCurvRegion)
       addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
                              dest,lims)
     
     if (addSignifGradData)
       addSignifFeatureData(x.rand,SignifGradData.mat,gradCol)
-    
+
+
     if (addSignifCurvData)
       addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol)
     
@@ -164,24 +171,25 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
     
     SignifGradRegion.mat <- fs$grad
     SignifCurvRegion.mat <- fs$curv
-    
+
     if (addSignifGradData)  
       SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
     
     if (addSignifCurvData)
       SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
     
+  
     if (addSignifGradRegion)
       addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
                              dest,lims)
-      
-    if (addSignifCurvRegion)
-      addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
+     
+     if (addSignifCurvRegion)
+       addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
                              dest,lims)
-    
-    if (addSignifGradData)
+
+     if (addSignifGradData)
       addSignifFeatureData(x.rand,SignifGradData.mat,gradCol)
-    
+
     if (addSignifCurvData)
       addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol)
     
@@ -213,6 +221,7 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
                   x=x.gd.1,y=x.gd.2,z=x.gd.3,color=densCol[il],alpha=alph[il],
                   add=(il!=1))   
     }
+
     SignifGradRegion.mat <- fs$grad
     SignifCurvRegion.mat <- fs$curv
     if (addSignifGradData)
@@ -224,7 +233,7 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
     if (addSignifGradRegion)
       addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
                              dest,lims,trans.alpha=gradRegionAlpha)
-     
+
     if (addSignifCurvRegion)
       addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
                              dest,lims,trans.alpha=curvRegionAlpha)

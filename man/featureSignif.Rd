@@ -15,9 +15,10 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
    addSignifGradRegion=FALSE, addSignifGradData=FALSE,
    addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
    plotSiZer=FALSE, logbwSiZer=TRUE, addAxes3d=TRUE,
-   densCol, dataCol="black", gradCol="green4", curvCol="blue",
-   axisCol="black", bgCol="white", dataAlpha=0.1, gradDataAlpha=0.3,
-   gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3,
+   densCol, dataCol="black", gradCol="green4",
+   curvCol="blue", axisCol="black", bgCol="white",
+   dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2,
+   curvDataAlpha=0.3, curvRegionAlpha=0.3,
    gridsize, gridsizeSiZer)
 }
 		  
@@ -132,7 +133,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   density estimate.
   This was developed for 1-d data by Chaudhuri \& Marron (1995), for
   2-d data by Godtliebsen, Marron \& Chaudhuri (1999), and for 3-d and 4-d
-  data by Duong, Cowling, Koch \& Wand (2006).
+  data by Duong, Cowling, Koch \& Wand (2007).
 
   The test statistic for gradient testing is at a point \eqn{\mathbf{x}}{x} is
   \deqn{W(\mathbf{x}) = \Vert \widehat{\nabla f} (\mathbf{x}; \mathbf{H}) \Vert^2}{%
@@ -158,7 +159,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   Since this is a situation with many dependent hypothesis tests, we
   use a multiple comparison or simultaneous test to control the
   overall level of significance. We use a Hochberg-type procedure. See
-  Hochberg (1988) and Duong, Cowling, Koch \& Wand (2006).
+  Hochberg (1988) and Duong, Cowling, Koch \& Wand (2007).
 }
   
 
@@ -169,7 +170,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   \emph{Journal of the American Statistical Association},
   \bold{94},  807-823.
 
-  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2006)
+  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2007)
   Feature significance for multivariate kernel density estimation.
   \emph{Submitted.}
 
@@ -210,20 +211,19 @@ fs <- featureSignif(geyser, addSignifGradRegion=TRUE,
      addSignifCurvRegion=TRUE, bw=c(4.5, 0.37))
 names(fs)
 
+\dontrun{
 ## Trivariate example
 
 data(earthquake)
 earthquake[,3] <- -log10(-earthquake[,3])
-
-open3d()
 featureSignif(earthquake, scaleData=TRUE, addData=TRUE,
     bw=c(0.0381, 0.0381, 0.0442))
 
 featureSignif(earthquake, addKDE=FALSE, scaleData=TRUE,
    addSignifGradRegion=TRUE, addSignifCurvRegion=TRUE,
-   bw=c(0.0381, 0.0381, 0.0442),
+   bw=c(0.0381, 0.0381, 0.0442),  
    xlim=c(0.4,0.5), ylim=c(0.4,0.5), zlim=c(0.8,0.9))
-
+}
 
 \dontrun{
 ## Interactive examples

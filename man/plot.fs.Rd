@@ -79,7 +79,7 @@
   \emph{Journal of the American Statistical Association},
   \bold{94},  807-823.
 
-  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2006)
+  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2007)
   Feature significance for multivariate kernel density estimation.
   \emph{Submitted.}
   

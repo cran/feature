@@ -19,11 +19,11 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
 
   dest$est[dest$est<0] <- 0  
   ## constant for variance of gradient estimate
-  Sig.scalar <- 1/2*(2*pi)^(-d)*n^(-1)*prod(h)^(-1)*dest$est
+  Sig.scalar <- 1/2*(2*sqrt(pi))^(-d)*n^(-1)*prod(h)^(-1)*dest$est
 
   ##  constants for variance of curvature estimate  
   if (d==1)
-    Sig2.scalar <- (8*pi*n*prod(h))^(-1)*dest$est
+    Sig2.scalar <- (8*sqrt(pi)*n*prod(h))^(-1)*dest$est
   else if (d==2)
     Sig2.scalar <- (16*pi*n*prod(h))^(-1)*dest$est
   else if (d==3)
@@ -95,7 +95,8 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
             WaldGrad[i1,i2] <- sum((Sig.inv12 * c(fhat10[i1,i2], fhat01[i1,i2]))^2) 
           }
     }
-    
+
+
     if (curv)
     {         
       Sig2.mat <-
@@ -161,6 +162,7 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
             }
     }
 
+  
     if (curv)
     {
       obj200 <- drvkde(gcounts,drv=c(2,0,0),bandwidth=h,
@@ -217,6 +219,7 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
               local.mode[i1,i2,i3] <- all(lambda < 0)
           }
     }
+    
   }
   
   if (d==4)
@@ -331,27 +334,17 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
 
   ## multiple hypothesis testing - based on Hochberg's method
   ## - modified Bonferroni method using ordered p-values
-
   
-  ##ESS.bar <- mean(ESS[SigESS])
-  ESS.bar <- mean(ESS)
-  #ell <- prod(gridsize)/ESS.bar
-  #signifLevel.dash <- 1 - (1-signifLevel)^(1/ell)
-
-
   ## test statistic for gradient
   if (grad)
   {
-    WaldGrad[is.na(WaldGrad)] <- 0
-    #Grad.cut.off <- qchisq(1-signifLevel.dash, d)
-    #SignifGrad <- (WaldGrad > Grad.cut.off) & SigESS
-
     pval.Grad <- 1 - pchisq(WaldGrad, d)
     pval.Grad.ord <- pval.Grad[order(pval.Grad)]
-
-    num.test <- length(pval.Grad) 
-    reject.nonzero <- ((pval.Grad.ord <= signifLevel/(num.test+ 1 - 1:num.test)) &
-                       (pval.Grad.ord > 0))
+    num.test <- sum(!is.na(pval.Grad.ord))
+    
+    num.test.seq <- c(1:num.test, rep(NA, prod(gridsize) - num.test))
+    reject.nonzero <- ((pval.Grad.ord <= signifLevel/(num.test + 1 - num.test.seq)) &
+                       (pval.Grad.ord > 0))  
     reject.nonzero.ind <- which(reject.nonzero)
 
     ## p-value == 0 => reject null hypotheses automatically
@@ -366,26 +359,24 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
   ## test statistic for curvature
   if (curv)
   {
-    WaldCurv[is.na(WaldCurv)] <- 0
-    ##Curv.cut.off <- qchisq(1-signifLevel.dash, d*(d+1)/2)
-    ##SignifCurv <- (WaldCurv > Curv.cut.off) & SigESS & local.mode
-    
     pval.Curv <- 1 - pchisq(WaldCurv, d*(d+1)/2)
     pval.Curv.ord <- pval.Curv[order(pval.Curv)]
+    num.test <- sum(!is.na(pval.Curv.ord))
     
-    num.test <- length(pval.Curv)
-    reject.nonzero <- ((pval.Curv.ord <= signifLevel/(num.test+ 1 - 1:num.test)) &
-                       (pval.Curv.ord > 0))
+    num.test.seq <- c(1:num.test, rep(NA, prod(gridsize) - num.test))
+    reject.nonzero <- ((pval.Curv.ord <= signifLevel/(num.test + 1 - num.test.seq)) &
+                       (pval.Curv.ord > 0))  
     reject.nonzero.ind <- which(reject.nonzero)
-    
+
     SignifCurv <- array(FALSE, dim=gridsize)
+
     ## p-value == 0 => reject null hypotheses automatically
     SignifCurv[which(pval.Curv==0, arr.ind=TRUE)] <- TRUE
 
-    ## p-value > 0 then reject null hypotheses indicated in reject.nonzero.ind 
+    ## p-value > 0 then reject null hypotheses indicated in reject.nonzero.ind
     for (i in reject.nonzero.ind)
       SignifCurv[which(pval.Curv==pval.Curv.ord[i], arr.ind=TRUE)] <- TRUE 
-    
+
     SignifCurv <- SignifCurv & local.mode
   }
   

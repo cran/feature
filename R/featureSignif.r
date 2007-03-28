@@ -391,7 +391,7 @@ featureSignif <-
 
   ## significant features sub-function
 
-  addSignifFeature <- function(h)
+  addSignifFeature <- function(h, dest)
   {
     if (d>=3 & addAxes3d)
     {
@@ -426,7 +426,10 @@ featureSignif <-
                           h,signifLevel,range.x,
                           grad=(addSignifGradRegion | addSignifGradData),
                           curv=(addSignifCurvRegion | addSignifCurvData))
-    
+
+    ESS <- n*dest$est*prod(h)*(sqrt(2*pi)^d)
+    SigESS <- ESS >= 5
+
     if (addSignifGradRegion | addSignifGradData)
       SignifGradRegion.mat <- SignifFeatureRegion.mat$grad
     
@@ -445,8 +448,8 @@ featureSignif <-
                                dest,lims)
       else if (d==3)
         addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
-                               dest,lims,trans.alpha=gradRegionAlpha)
-     
+                              dest,lims,trans.alpha=gradRegionAlpha)
+                               
     if (addSignifCurvRegion)
       if (d<3)
         addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,
@@ -489,9 +492,8 @@ featureSignif <-
       return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat, curvData=SignifCurvData.mat)))
   }
 
- 
   if (!plotSiZer)                  ## draw feature significance plot
-    feat <- addSignifFeature(h=h)
+    feat <- addSignifFeature(h=h, dest=dest)
   else                             ## draw SiZer plot
   {
     gs.SiZer <- gridsizeSiZer
@@ -740,7 +742,7 @@ featureSignif <-
                 lwd=2,col="black")
         }
 
-        feat <- addSignifFeature(h=h)
+        feat <- addSignifFeature(h=h, dest=dest)
 
         screen(1, new=FALSE)
         plot(0, xlim=c(0,1), ylim=c(0,1), type="n", axes=FALSE)
@@ -849,7 +851,7 @@ featureSignif <-
          
         }
 
-        feat <- addSignifFeature(h=h)
+        feat <- addSignifFeature(h=h, dest=dest)
         
         rgl.set(screen1)
              
