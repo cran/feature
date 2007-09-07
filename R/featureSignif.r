@@ -3,19 +3,17 @@
 # For dynamic kernel density estimation; with
 # feature significance options.
 
-# Last changed: 19 JUL 2006
-  
 featureSignif <-
   function(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
-           addData=FALSE, scaleData=FALSE, addDataNum=1000,
-           addKDE=TRUE, jitterRug=TRUE, signifLevel=0.05, 
+           addData=FALSE, scaleData=FALSE, addDataNum=1000, addKDE=TRUE, 
+           signifLevel=0.05, plotFS=TRUE, addAxes3d=TRUE,
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-           plotSiZer=FALSE, logbwSiZer=TRUE, addAxes3d=TRUE, 
+           plotSiZer=FALSE, logbwSiZer=TRUE, 
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
-           axisCol="black", bgCol="white",
-           dataAlpha=0.1, gradDataAlpha=0.3,
-           gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3,
+           axisCol="black", bgCol="white", jitterRug=TRUE,
+           dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2, 
+           curvDataAlpha=0.3, curvRegionAlpha=0.3,
            gridsize, gridsizeSiZer)
                     
 {
@@ -112,45 +110,47 @@ featureSignif <-
   
   ## adjust values of density estimate to be positive
   dest$est[dest$est<0] <- 0 #1e-6*min(abs(dest$est[dest$est>0]))
-  
-  ## random sample of data points used for display
-  n <- nrow(x)
-  nsamp <- min(addDataNum, n)
-  
-  if (nsamp < n)
+ 
+  if (plotFS)
   {
-    rand.inds <- sort(sample(1:n, nsamp, replace=FALSE))
-    x.rand <- as.matrix(x[rand.inds,])
-  }
-  else
-    x.rand <- x
+    ## random sample of data points used for display
+    n <- nrow(x)
+    nsamp <- min(addDataNum, n)
   
-  ## Determine default xlim, ylim, zlim
-  if (missing(xlim))
-     if (d==1)
-       xlim <- c(min(x)-h[1],max(x)+h[1])
-     else
-       xlim <- c(min(x[,1])-h[1],max(x[,1])+h[1])
+    if (nsamp < n)
+    {
+      rand.inds <- sort(sample(1:n, nsamp, replace=FALSE))
+      x.rand <- as.matrix(x[rand.inds,])
+    }
+    else
+      x.rand <- x
+  
+    ## Determine default xlim, ylim, zlim
+    if (missing(xlim))
+       if (d==1)
+         xlim <- c(min(x)-h[1],max(x)+h[1])
+       else
+         xlim <- c(min(x[,1])-h[1],max(x[,1])+h[1])
 
-  if (missing(ylim))
+    if (missing(ylim))
+      if (d==1)
+        ylim <- c(0,1.5)*max(dest$est)
+      else if (d>1)
+        ylim <- c(min(x[,2])-h[2],max(x[,2])+h[2])
+  
+    if (missing(zlim) & d>2)
+      zlim <- c(min(x[,3])-h[3],max(x[,3])+h[3])
+
     if (d==1)
-      ylim <- c(0,1.5)*max(dest$est)
-    else if (d>1)
-      ylim <- c(min(x[,2])-h[2],max(x[,2])+h[2])
-  
-  if (missing(zlim) & d>2)
-    zlim <- c(min(x[,3])-h[3],max(x[,3])+h[3])
+      lims <- list(xlim)
+    if (d==2)
+      lims <- list(xlim, ylim)
+    if (d==3)
+      lims <- list(xlim, ylim, zlim)
+    if (d==4)
+       lims <- list(xlim, ylim, zlim, c(min(x[,4])-h[4],max(x[,4])+h[4]))
 
-  if (d==1)
-    lims <- list(xlim)
-  if (d==2)
-    lims <- list(xlim, ylim)
-  if (d==3)
-    lims <- list(xlim, ylim, zlim)
-  if (d==4)
-    lims <- list(xlim, ylim, zlim, c(min(x[,4])-h[4],max(x[,4])+h[4]))
-
-  ## Determine default axis labels.
+    ## Determine default axis labels.
 
   if (missing(xlab)) xlab <- NULL
   if (missing(ylab)) ylab <- NULL
@@ -181,10 +181,6 @@ featureSignif <-
  
   if (d<3)
   {
-  #  op <- par(plt=par("plt"),xpd=par("xpd"),bg=par("bg"))
-  #  plt.dflt <- par("plt"); plt.new <-  plt.dflt
-  #  plt.new[3] <- 2.5*plt.new[3] ; par(plt=plt.new)
-  #  par(xpd=TRUE)
     par(bg=bgCol)
     old.mar <- c(5.1, 4.1, 4.1, 4.1) 
   }
@@ -388,12 +384,13 @@ featureSignif <-
       cat("\nDisplay of signif. gradient regions for 4-d data not available\n")
     addSignifGradRegion <- FALSE
   } 
-
+  }
+  
   ## significant features sub-function
 
   addSignifFeature <- function(h, dest)
   {
-    if (d>=3 & addAxes3d)
+    if (d>=3 & addAxes3d & plotFS)
     {
       lines3d(xlim, rep(ylim[1],2), rep(zlim[1],2), size=3, color=axisCol, alpha=1)
       lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
@@ -441,7 +438,9 @@ featureSignif <-
     
     if (addSignifCurvData)
       SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
-    
+   
+    if (plotFS)
+    { 
     if (addSignifGradRegion)
       if (d<3)  
         addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
@@ -480,7 +479,7 @@ featureSignif <-
         points(x.rand, col=dataCol)
       else if (d>=3)
         points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
-
+    }
     
     if (!addSignifGradData & ! addSignifCurvData)
       return (SignifFeatureRegion.mat)
@@ -493,7 +492,17 @@ featureSignif <-
   }
 
   if (!plotSiZer)                  ## draw feature significance plot
-    feat <- addSignifFeature(h=h, dest=dest)
+  {  
+     feat <- addSignifFeature(h=h, dest=dest)
+     if (!plotFS)
+     { 
+        feat.temp <- list(x=x, bw=h, fhat=dest)
+        feat.temp <- c(feat.temp, feat)
+
+        class(feat.temp) <- "fs"
+        return (feat.temp)
+     }
+  }
   else                             ## draw SiZer plot
   {
     gs.SiZer <- gridsizeSiZer

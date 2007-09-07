@@ -10,14 +10,14 @@
 
 \usage{
 featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
-   addData=FALSE, scaleData=FALSE, addDataNum=1000,
-   addKDE=TRUE, jitterRug=TRUE, signifLevel=0.05, 
+   addData=FALSE, scaleData=FALSE, addDataNum=1000, addKDE=TRUE, 
+   signifLevel=0.05, plotFS=TRUE, addAxes3d=TRUE, 
    addSignifGradRegion=FALSE, addSignifGradData=FALSE,
    addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-   plotSiZer=FALSE, logbwSiZer=TRUE, addAxes3d=TRUE,
-   densCol, dataCol="black", gradCol="green4",
-   curvCol="blue", axisCol="black", bgCol="white",
-   dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2,
+   plotSiZer=FALSE, logbwSiZer=TRUE, 
+   densCol, dataCol="black", gradCol="green4", curvCol="blue", 
+   axisCol="black", bgCol="white", jitterRug=TRUE, 
+   dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2, 
    curvDataAlpha=0.3, curvRegionAlpha=0.3,
    gridsize, gridsizeSiZer)
 }
@@ -35,6 +35,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
     displays. Default is 1000.}
   \item{addKDE}{flag for display of kernel density estimates. Default
     is TRUE. Not available for 4-d data.}
+  \item{plotFS}{flag for plotting. Default is TRUE.} 
   \item{jitterRug}{flag for jittering of rug-plot for univariate 
     data display. Default is TRUE.}
   \item{addSignifGradRegion}{flag for display of significant gradient regions.
@@ -208,8 +209,9 @@ library(MASS)
 data(geyser)
 
 fs <- featureSignif(geyser, addSignifGradRegion=TRUE,
-     addSignifCurvRegion=TRUE, bw=c(4.5, 0.37))
+     addSignifCurvRegion=TRUE, bw=c(4.5, 0.37), plotFS=FALSE)
 names(fs)
+plot(fs)
 
 \dontrun{
 ## Trivariate example

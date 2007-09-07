@@ -9,7 +9,7 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
            addKDE=TRUE, jitterRug=TRUE,  
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-           addAxes3d=TRUE,
+           addAxes3d=TRUE, 
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
            axisCol="black", bgCol="white",
            dataAlpha=0.1, gradDataAlpha=0.3,
@@ -252,9 +252,9 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
       lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
       lines3d(rep(xlim[1],2), rep(ylim[1],2), zlim, size=3, color=axisCol, alpha=1)
       
-      texts3d(xlim[2],ylim[1],zlim[1],xlab,size=3, color=axisCol, adj=0, alpha=1)
-      texts3d(xlim[1],ylim[2],zlim[1],ylab,size=3, color=axisCol, adj=1, alpha=1)
-      texts3d(xlim[1],ylim[1],zlim[2],zlab,size=3, color=axisCol, adj=1, alpha=1)
+      texts3d(xlim[2],ylim[1],zlim[1],xlab,color=axisCol, adj=0, alpha=1)
+      texts3d(xlim[1],ylim[2],zlim[1],ylab,color=axisCol, adj=1, alpha=1)
+      texts3d(xlim[1],ylim[1],zlim[2],zlab,color=axisCol, adj=1, alpha=1)
     }
     
   }
