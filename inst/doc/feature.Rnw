@@ -66,7 +66,6 @@ are the sections of this density estimate which have significant gradient
 (i.e. significantly different from zero). The rug plot is 
 the log(--depth) measurements.
 
-%\begin{figure}
 \setkeys{Gin}{width=0.5\textwidth}
 \begin{center}
 <<fig=TRUE,results=hide,print=FALSE>>=
@@ -75,10 +74,8 @@ data(earthquake)
 eq3 <- -log10(-earthquake[,3])
 featureSignif(eq3, addData=TRUE, addSignifGradRegion=TRUE, xlab="-log(-depth)", bw=0.1)
 @
-%\caption{Univariate data: significant gradient region with kernel density estimate}
-%\label{fig:fs1}
 \end{center}
-%\end{figure}
+
 
 Below is the same kernel density estimate and 
 significant gradient region plot along with the SiZer plot of \citet*{chaudhuri99}.
@@ -94,7 +91,6 @@ featureSignif(eq3, addSignifGradRegion=TRUE,xlab="-log(-depth)", bw=0.1)
 featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)")
 lines(c(-2, 2), c(log(0.1), log(0.1)))
 @
-%\begin{figure}[!ht]
 \begin{center}
 <<fig=TRUE,echo=FALSE,print=FALSE>>=
 layout(matrix(1:2, nrow=2))
@@ -107,7 +103,6 @@ layout(1)
 %\caption{Univariate data: significant gradient regions and SiZer plot}
 %\label{fig:fs2}
 \end{center}
-%\end{figure}
 
 \section{Bivariate data example}
 
@@ -116,19 +111,19 @@ in the \texttt{MASS} library. The
 horizontal axis is the waiting time (in minutes) between two eruptions, and
 the vertical axis is the duration time (in minutes) of an eruption.
 Below is a kernel density estimate with
-bandwidth (4.5, 0.37) with the significant gradient regions in green
-and the significant curvature regions in blue superimposed.
+bandwidth (4.5, 0.37) with %the significant gradient regions in green
+the significant curvature regions in blue superimposed.
 %\begin{figure}[!ht]
 \begin{center}
 <<fig=FALSE,print=FALSE,eval=FALSE>>=
 library(MASS)
 data(geyser)
-featureSignif(geyser, addSignifGradRegion=TRUE, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37))
+featureSignif(geyser, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37))
 @
 <<fig=TRUE,print=FALSE,echo=FALSE>>=
 library(MASS)
 data(geyser)
-fs <- featureSignif(geyser, addSignifGradRegion=TRUE, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37),gridsize=c(51,51))
+fs <- featureSignif(geyser, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37),gridsize=c(51,51))
 @
 \end{center}
 %\caption{Bivariate data: significant gradient and curvature regions}
@@ -136,16 +131,16 @@ fs <- featureSignif(geyser, addSignifGradRegion=TRUE, addSignifCurvRegion=TRUE, 
 %\end{figure}
 
 A variation on plotting the significant regions is to plot the data points which
-fall inside these regions: 
-significant gradient data points are in green,  
+fall inside these regions:
+%%significant gradient data points are in green,  
 significant curvature data points are in blue.
 %\begin{figure}[!ht]
 \begin{center}
 <<eval=FALSE>>=
-fs <- featureSignif(geyser, addSignifGradData=TRUE, addSignifCurvData=TRUE, bw=c(4.5, 0.37))
+fs <- featureSignif(geyser, addSignifCurvData=TRUE, bw=c(4.5, 0.37))
 @
 <<fig=TRUE,echo=FALSE,print=FALSE>>=
-fs <- featureSignif(geyser, addSignifGradData=TRUE, addSignifCurvData=TRUE, bw=c(4.5, 0.37), gridsize=c(51,51))
+fs <- featureSignif(geyser, addSignifCurvData=TRUE, bw=c(4.5, 0.37), gridsize=c(51,51))
 @
 %\caption{Bivariate data: significant gradient and curvature data points}
 %\label{fig:fs5}
@@ -160,9 +155,9 @@ names(fs)
 where \texttt{x} is the data, \texttt{bw} is the bandwidth, \texttt{fhat\$est} 
 is the kernel density estimate
 on the grid \texttt{fhat\$x.grid}, 
-\texttt{grad} is the logical matrix indicating signficant gradient on a grid, 
+%\texttt{grad} is the logical matrix indicating signficant gradient on a grid, 
 \texttt{curv} is the logical matrix indicating signficant curvature on a grid,
-\texttt{gradData} is the logical vector indicating signficant gradient data points and 
+%\texttt{gradData} is the logical vector indicating signficant gradient data points and 
 \texttt{curvData} is the logical vector indicating signficant curvature data points.
 So the points with significant curvature are 
 <<eval=FALSE>>=

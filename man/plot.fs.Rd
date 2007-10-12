@@ -90,14 +90,13 @@
 }
 
 \details{
-  This plotting function is called automatically from inside
-  \code{featureSignif}. 
-
-  Its other primary use is with \code{fs} objects created from
-  \code{featureSignif}. If the user creates an \code{fs} object with the
+  This is a plot method for \code{fs} objects created from
+  \code{featureSignif}. This plotting function is called
+  automatically from inside
+  \code{featureSignif} except when \code{plotFS=FALSE}.
+  If the user creates an \code{fs} object with the
   significant gradient and curvature, then it is easier and more
-  efficient to modify the graphical display using \code{plot.fs} than to
-  recompute the everything with a call to \code{featureSignif}. See
+  efficient to modify the graphical display just using \code{plot.fs}. See
   examples below.    
   
 }
@@ -110,7 +109,7 @@ library(MASS)
 data(geyser)
 
 fs <- featureSignif(geyser, addSignifGradRegion=TRUE,
-     addSignifCurvRegion=TRUE, bw=c(4.5, 0.37))
+     addSignifCurvRegion=TRUE, bw=c(4.5, 0.37), plotFS=FALSE)
 
 plot(fs, addKDE=FALSE, addData=TRUE)  ## data only
 plot(fs, addKDE=TRUE)                 ## KDE plot only

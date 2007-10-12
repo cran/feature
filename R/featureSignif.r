@@ -149,15 +149,16 @@ featureSignif <-
       lims <- list(xlim, ylim, zlim)
     if (d==4)
        lims <- list(xlim, ylim, zlim, c(min(x[,4])-h[4],max(x[,4])+h[4]))
-
+    
     ## Determine default axis labels.
 
-  if (missing(xlab)) xlab <- NULL
-  if (missing(ylab)) ylab <- NULL
-  if (missing(zlab)) zlab <- NULL
-  labs <- dfltLabs(d,names.x,xlab,ylab,zlab)
-  xlab <- labs$xlab ; ylab <- labs$ylab ; zlab <- labs$zlab
-  
+    if (missing(xlab)) xlab <- NULL
+    if (missing(ylab)) ylab <- NULL
+    if (missing(zlab)) zlab <- NULL
+    labs <- dfltLabs(d,names.x,xlab,ylab,zlab)
+    xlab <- labs$xlab ; ylab <- labs$ylab ; zlab <- labs$zlab
+    
+    
   ## Determine plotting indices.
   
   plot.inds <- list()
@@ -189,10 +190,10 @@ featureSignif <-
     open3d()
     clear3d()
     screen1 <- rgl.cur()
-    if (interactive)
-      rgl.viewpoint(theta=0, phi=0)
-    else
-      rgl.viewpoint(theta=0, phi=-90)
+    ##if (interactive)
+    ##  rgl.viewpoint(theta=0, phi=0)
+    ##else
+    ##  rgl.viewpoint(theta=0, phi=-90)
     rgl.bg(col=bgCol)
     pop3d(type="lights")
     light3d(theta=0, phi=30)
@@ -309,10 +310,10 @@ featureSignif <-
   {
     if (interactive)
     {
-       open3d()
-       screen2 <- rgl.cur() 
+      open3d()
+      screen2 <- rgl.cur() 
       clear3d()
-      rgl.viewpoint(theta=0, phi=-90)
+      ##rgl.viewpoint(theta=0, phi=-90)
       rgl.bg(col=bgCol)
     }
   }
@@ -343,17 +344,7 @@ featureSignif <-
            dest$est[plot.inds[[1]],plot.inds[[2]]],col=densCol,
            xlim=xlim, ylim=ylim, xlab=xlab,ylab=ylab,bty="n")
      
-     ## Add a border around the image
-
-     x1.bor.low <- min(x.grid.1[plot.inds[[1]]]) 
-     x1.bor.upp <- max(x.grid.1[plot.inds[[1]]]) 
-     x2.bor.low <- min(x.grid.2[plot.inds[[2]]]) 
-     x2.bor.upp <- max(x.grid.2[plot.inds[[2]]]) 
-
-     lines(c(x1.bor.low,x1.bor.upp),rep(x2.bor.low,2),lwd=2,col="black")
-     lines(c(x1.bor.low,x1.bor.upp),rep(x2.bor.upp,2),lwd=2,col="black")
-     lines(rep(x1.bor.low,2),c(x2.bor.low,x2.bor.upp),lwd=2,col="black")
-     lines(rep(x1.bor.upp,2),c(x2.bor.low,x2.bor.upp),lwd=2,col="black")
+     box()
    }
 
   if (d==3) 
@@ -361,7 +352,8 @@ featureSignif <-
     x.gd.1 <- dest$x.grid[[1]] ; x.gd.2 <- dest$x.grid[[2]]
     x.gd.3 <- dest$x.grid[[3]]
     num.levs <- length(densCol)
-    
+
+    plot3d(x.gd.1, x.gd.2, x.gd.3, type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d)
     if (addKDE)
     { 
       alph <- seq(0.1,0.5,length=num.levs)
@@ -370,7 +362,7 @@ featureSignif <-
       for (il in 1:num.levs)
         contour3d(dest$est,level=lev.vals[il],
                   x=x.gd.1,y=x.gd.2,z=x.gd.3,color=densCol[il],alpha=alph[il],
-                  add=(il!=1))   
+                  add=TRUE)   
     }
   }
   
@@ -390,34 +382,6 @@ featureSignif <-
 
   addSignifFeature <- function(h, dest)
   {
-    if (d>=3 & addAxes3d & plotFS)
-    {
-      lines3d(xlim, rep(ylim[1],2), rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), rep(ylim[1],2), zlim, size=3, color=axisCol, alpha=1)
-  
-      texts3d(xlim[2],ylim[1],zlim[1],xlab,size=3, color=axisCol, adj=0, alpha=1)
-      texts3d(xlim[1],ylim[2],zlim[1],ylab,size=3, color=axisCol, adj=1, alpha=1)
-      texts3d(xlim[1],ylim[1],zlim[2],zlab,size=3, color=axisCol, adj=1, alpha=1)
-
-      ## something wrong with the stack of rgl objects - objects being deleted
-      ## when swapping between rgl windows
-      ## so need to repeat plotting of axes and axes labels
-      lines3d(xlim, rep(ylim[1],2), rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), rep(ylim[1],2), zlim, size=3, color=axisCol, alpha=1)
-      texts3d(xlim[2],ylim[1],zlim[1],xlab,size=3, color=axisCol, adj=0, alpha=1)
-      texts3d(xlim[1],ylim[2],zlim[1],ylab,size=3, color=axisCol, adj=1, alpha=1)
-      texts3d(xlim[1],ylim[1],zlim[2],zlab,size=3, color=axisCol, adj=1, alpha=1)
-
-      lines3d(xlim, rep(ylim[1],2), rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), rep(ylim[1],2), zlim, size=3, color=axisCol, alpha=1)
-      texts3d(xlim[2],ylim[1],zlim[1],xlab,size=3, color=axisCol, adj=0, alpha=1)
-      texts3d(xlim[1],ylim[2],zlim[1],ylab,size=3, color=axisCol, adj=1, alpha=1)
-      texts3d(xlim[1],ylim[1],zlim[2],zlab,size=3, color=axisCol, adj=1, alpha=1)
-    }
-
     SignifFeatureRegion.mat <-
       SignifFeatureRegion(n,d,gcounts,gridsize,dest,
                           h,signifLevel,range.x,
@@ -441,44 +405,44 @@ featureSignif <-
    
     if (plotFS)
     { 
-    if (addSignifGradRegion)
-      if (d<3)  
-        addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
-                               dest,lims)
-      else if (d==3)
-        addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
-                              dest,lims,trans.alpha=gradRegionAlpha)
-                               
-    if (addSignifCurvRegion)
-      if (d<3)
-        addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,
-                               curvCol,dest,lims)
-      else if (d==3)
-        addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
-                               dest,lims,trans.alpha=curvRegionAlpha)
-      else if (d==4)
-        addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
-                               dest,lims,trans.alpha=c(0.1,0.4))
-   
-    if (addSignifGradData)
-      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha)
-    
-    if (addSignifCurvData)
-      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
-
-    if (addData)
-      if (d==1)
-      {
-        if (jitterRug)
-          x.rug <- jitter(x.rand)
-        else
+      if (addSignifGradRegion)
+        if (d<3)  
+          addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
+                                 dest,lims)
+        else if (d==3)
+          addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
+                                 dest,lims,trans.alpha=gradRegionAlpha)
+      
+      if (addSignifCurvRegion)
+        if (d<3)
+          addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,
+                                 curvCol,dest,lims)
+        else if (d==3)
+          addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
+                                 dest,lims,trans.alpha=curvRegionAlpha)
+        else if (d==4)
+          addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
+                                 dest,lims,trans.alpha=c(0.1,0.4))
+      
+      if (addSignifGradData)
+        addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha)
+      
+      if (addSignifCurvData)
+        addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
+      
+      if (addData)
+        if (d==1)
+        {
+          if (jitterRug)
+            x.rug <- jitter(x.rand)
+          else
           x.rug <- x.rand
-        rug(x.rug)
-      }
-      else if (d==2)
-        points(x.rand, col=dataCol)
-      else if (d>=3)
-        points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
+          rug(x.rug)
+        }
+        else if (d==2)
+          points(x.rand, col=dataCol)
+        else if (d>=3)
+          points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
     }
     
     if (!addSignifGradData & ! addSignifCurvData)
@@ -490,38 +454,33 @@ featureSignif <-
     else if (addSignifGradData & addSignifCurvData)
       return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat, curvData=SignifCurvData.mat)))
   }
-
+  
   if (!plotSiZer)                  ## draw feature significance plot
   {  
-     feat <- addSignifFeature(h=h, dest=dest)
-     if (!plotFS)
-     { 
-        feat.temp <- list(x=x, bw=h, fhat=dest)
-        feat.temp <- c(feat.temp, feat)
-
-        class(feat.temp) <- "fs"
-        return (feat.temp)
-     }
+    feat <- addSignifFeature(h=h, dest=dest)
+    if (!plotFS)
+    { 
+      feat.temp <- list(x=x, bw=h, fhat=dest)
+      feat.temp <- c(feat.temp, feat)
+      
+      class(feat.temp) <- "fs"
+      return (feat.temp)
+    }
   }
   else                             ## draw SiZer plot
   {
     gs.SiZer <- gridsizeSiZer
     ##if ((length(bw)==1))   ## scalar b/w -> non-interactive
-    ##{
-      bw.range.SiZer  <- dfltBWrange(x,gridsize=gs.SiZer,tau)
-      bw.SiZer <- matrix(unlist(bw.range.SiZer), nrow=2, byrow=FALSE)
-    ##}
-    ##else
-    ##  bw.SiZer <- bw
-
-    
+    bw.range.SiZer  <- dfltBWrange(x,gridsize=gs.SiZer,tau)
+    bw.SiZer <- matrix(unlist(bw.range.SiZer), nrow=2, byrow=FALSE)
+   
     dfltCounts.out.SiZer  <- dfltCounts(x,gridsize=gs.SiZer, apply(bw.SiZer, 2, max))
     range.x.SiZer <-dfltCounts.out.SiZer$range.x
     gcounts.SiZer <- dfltCounts.out.SiZer$counts
     x.SiZer  <- seq(range.x.SiZer[[1]][1], range.x.SiZer[[1]][2], length=gs.SiZer) 
     bw.SiZer  <- seq(log(bw.SiZer[1,1]), log(bw.SiZer[2,1]), length=101)
     SiZer.map <- matrix(0, ncol=length(bw.SiZer), nrow=length(x.SiZer))
-
+    
     i <- 0
     for (logh in bw.SiZer) 
     {
@@ -552,7 +511,7 @@ featureSignif <-
       SiZer.col[sig.ESS & sig.grad & est.grad <0] <- 3
       SiZer.map[,i] <- SiZer.col
     }
-   
+    
     if (logbwSiZer)
       image(x.SiZer, bw.SiZer, SiZer.map, breaks=c(-1,0,1,2,3),
             col=c("grey", "purple", "blue", "red"), ylab="log(bandwidth)", xlab=xlab,
@@ -562,7 +521,7 @@ featureSignif <-
             col=c("grey", "purple", "blue", "red"), ylab="bandwidth", xlab=xlab,
             xlim=xlim)
   }
-
+  
   if (d < 3)
     if (interactive)
     {
@@ -577,28 +536,19 @@ featureSignif <-
       
       ## draw bandwidth bar message
       text((bw.bar[1]+bw.bar[2])/2, 0.15, clk.bar.msg1, col="black")
-      #text((bw.bar[1]+bw.bar[2])/2, 0.15, clk.bar.msg2, col="dark green")
-      #text((bw.bar[1]+bw.bar[2])/2, 0.15, clk.bar.msg3, col="red")
     }
     else
       if ((addKDE | addSignifGradRegion | addSignifGradData |
           addSignifCurvRegion | addSignifCurvData) & !plotSiZer)
         title(sub=bw.text,col.sub="purple4")
-
+  
   if (d>=3) 
   {
     
     if (interactive)
     {
       rgl.set(screen1)
-
-      ## something wrong with stack of RGL objects when swapping between RGL
-      ## windows - instead of just pop3d-ing the wait symbol, have to redraw
-      ## all objects
-      
-      ## erase wait symbol
-      ## pop3d();pop3d()
-
+ 
       clear3d(type="shapes")
       material3d(alpha=1)
       
@@ -612,7 +562,7 @@ featureSignif <-
               c(stop.box[3], stop.box[4], stop.box[4], stop.box[3]),
               c(0,0,0,0), col="red")
       texts3d(c(stop.box[1]+stop.box[2])/2,stop.box[3]-0.1, 0,
-                "STOP", col="red", adj=0.3)
+              "STOP", col="red", adj=0.3)
 
       ## draw bandwidths notch
       x.bw.ck <- (log(h, 10) - logh.low)/sca.fac + bw.bar[1]    
@@ -623,10 +573,10 @@ featureSignif <-
       ## draw bandwidths 
       bw.text <- paste("bandwidths = (", toString(signif(h,3)), ")", sep="")
       texts3d((bw.bar[1]+bw.bar[2])/2,bw.bar[4]+0.2, 0,
-                   "bandwidths = ", col="purple4", adj=0.3)
+              "bandwidths = ", col="purple4", adj=0.3)
       texts3d((bw.bar[1]+bw.bar[2])/2,bw.bar[4]+0.1, 0,  
-                   paste("(", toString(signif(h,3)), ")", sep=""),
-                   col="purple4", adj=0.3)
+              paste("(", toString(signif(h,3)), ")", sep=""),
+              col="purple4", adj=0.3)
      
       ## draw bandwidth bar message
       texts3d((bw.bar[1]+bw.bar[2])/2,bw.bar[3]-0.15, 0,
@@ -740,15 +690,8 @@ featureSignif <-
           image(x.grid.1[plot.inds[[1]]],x.grid.2[plot.inds[[2]]],
                 dest$est[plot.inds[[1]],plot.inds[[2]]], xlab=xlab,
                 ylab=ylab, bty="n", col=densCol, xlim=xlim, ylim=ylim)
-          
-          lines(c(x1.bor.low,x1.bor.upp),rep(x2.bor.low,2),
-                lwd=2,col="black")
-          lines(c(x1.bor.low,x1.bor.upp),rep(x2.bor.upp,2),
-                lwd=2,col="black")
-          lines(rep(x1.bor.low,2),c(x2.bor.low,x2.bor.upp),
-                lwd=2,col="black")
-          lines(rep(x1.bor.upp,2),c(x2.bor.low,x2.bor.upp),
-                lwd=2,col="black")
+
+          box()
         }
 
         feat <- addSignifFeature(h=h, dest=dest)
@@ -764,8 +707,6 @@ featureSignif <-
         
         ## draw bandwidth bar message
         text((bw.bar[1]+bw.bar[2])/2, 0.15, clk.bar.msg1, col="black")
-        #text((bw.bar[1]+bw.bar[2])/2, 0.15, clk.bar.msg2, col="dark green")
-        #text((bw.bar[1]+bw.bar[2])/2, 0.15, clk.bar.msg3, col="red")
       }
     }                 
   }
@@ -773,7 +714,6 @@ featureSignif <-
   
   while (!finished & interactive & d >= 3)
   {
-    
     rgl.set(screen1)
     rgl.viewpoint(theta=0, phi=0)
     
@@ -840,7 +780,7 @@ featureSignif <-
         
         rgl.set(screen2)
         clear3d()
-        rgl.viewpoint(theta=0, phi=-90)
+        
         dest <- drvkde(gcounts,rep(0,d),bandwidth=h,binned=TRUE,
                        range.x=range.x, se=FALSE)
         dest$est[dest$est<0] <- 0
@@ -851,27 +791,20 @@ featureSignif <-
           x.gd.1 <- dest$x.grid[[1]]; x.gd.2 <- dest$x.grid[[2]]
           x.gd.3 <- dest$x.grid[[3]]
 
+          plot3d(x.gd.1, x.gd.2, x.gd.3, type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d)
+
           alph <- seq(0.1,0.5,length=num.levs)
           lev.vals <- seq(0, max(dest$est), length=num.levs+2)[-c(1, num.levs+2)]
           if (addKDE)
             for (il in 1:num.levs)
               contour3d(dest$est, level=lev.vals[il],x=x.gd.1,y=x.gd.2,z=x.gd.3,
-                        color=densCol[il],alpha=alph[il],add=(il!=1))
+                        color=densCol[il],alpha=alph[il], add=TRUE) ##,add=(il!=1))
          
         }
-
+        
         feat <- addSignifFeature(h=h, dest=dest)
         
         rgl.set(screen1)
-             
-        ## something wrong with stack of RGL objects when swapping between RGL
-        ## windows - instead of just pop3d-ing the wait symbol, have to redraw
-        ## all objects
-
-        ## erase wait symbol
-        ##pop3d(); pop3d(); 
-
-        
         clear3d(type="shapes")
         material3d(alpha=1)
         
@@ -917,8 +850,6 @@ featureSignif <-
   {
     if (d < 3)
     {  
-      #text((bw.bar[1]+bw.bar[2])/2, bw.bar[4]+0.4, col=bgCol,
-      #     " WARNING: clicks must be within the green bar.\n")
       text((bw.bar[1]+bw.bar[2])/2, bw.bar[4]+0.5 , col="deeppink",
            "\n End of interactive session")
       par(bg="transparent", mar=old.mar)
@@ -926,10 +857,6 @@ featureSignif <-
     }
     if (d >=3)
     {
-      #rgl.set(screen2)
-      #texts3d(xlim[2], ylim[2], zlim[2],
-      #        paste("bandwidths = (", toString(signif(h,3)), ")",
-      #              sep=""), color="purple4", alpha=1)
       rgl.set(screen1)
       texts3d((bw.bar[1]+bw.bar[2])/2,bw.bar[4]+0.4,0,
               "End of interactive session", color="deeppink", adj=0.3)

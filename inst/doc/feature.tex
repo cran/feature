@@ -28,7 +28,7 @@ kernel density estimation}
 
 
 %\SweaveOpts{}
-\usepackage{/usr/lib/R/share/texmf/Sweave}
+\usepackage{/usr/share/R/share/texmf/Sweave}
 \begin{document}
 
 
@@ -67,7 +67,6 @@ are the sections of this density estimate which have significant gradient
 (i.e. significantly different from zero). The rug plot is 
 the log(--depth) measurements.
 
-%\begin{figure}
 \setkeys{Gin}{width=0.5\textwidth}
 \begin{center}
 \begin{Schunk}
@@ -80,10 +79,8 @@ the log(--depth) measurements.
 \end{Sinput}
 \end{Schunk}
 \includegraphics{feature-001}
-%\caption{Univariate data: significant gradient region with kernel density estimate}
-%\label{fig:fs1}
 \end{center}
-%\end{figure}
+
 
 Below is the same kernel density estimate and 
 significant gradient region plot along with the SiZer plot of \citet*{chaudhuri99}.
@@ -101,13 +98,11 @@ is for the bandwidth $0.1$.
 > lines(c(-2, 2), c(log(0.1), log(0.1)))
 \end{Sinput}
 \end{Schunk}
-%\begin{figure}[!ht]
 \begin{center}
 \includegraphics{feature-003}
 %\caption{Univariate data: significant gradient regions and SiZer plot}
 %\label{fig:fs2}
 \end{center}
-%\end{figure}
 
 \section{Bivariate data example}
 
@@ -116,16 +111,16 @@ in the \texttt{MASS} library. The
 horizontal axis is the waiting time (in minutes) between two eruptions, and
 the vertical axis is the duration time (in minutes) of an eruption.
 Below is a kernel density estimate with
-bandwidth (4.5, 0.37) with the significant gradient regions in green
-and the significant curvature regions in blue superimposed.
+bandwidth (4.5, 0.37) with %the significant gradient regions in green
+the significant curvature regions in blue superimposed.
 %\begin{figure}[!ht]
 \begin{center}
 \begin{Schunk}
 \begin{Sinput}
 > library(MASS)
 > data(geyser)
-> featureSignif(geyser, addSignifGradRegion = TRUE, addSignifCurvRegion = TRUE, 
-+     bw = c(4.5, 0.37))
+> featureSignif(geyser, addSignifCurvRegion = TRUE, bw = c(4.5, 
++     0.37))
 \end{Sinput}
 \end{Schunk}
 \includegraphics{feature-005}
@@ -135,15 +130,15 @@ and the significant curvature regions in blue superimposed.
 %\end{figure}
 
 A variation on plotting the significant regions is to plot the data points which
-fall inside these regions: 
-significant gradient data points are in green,  
+fall inside these regions:
+%%significant gradient data points are in green,  
 significant curvature data points are in blue.
 %\begin{figure}[!ht]
 \begin{center}
 \begin{Schunk}
 \begin{Sinput}
-> fs <- featureSignif(geyser, addSignifGradData = TRUE, addSignifCurvData = TRUE, 
-+     bw = c(4.5, 0.37))
+> fs <- featureSignif(geyser, addSignifCurvData = TRUE, bw = c(4.5, 
++     0.37))
 \end{Sinput}
 \end{Schunk}
 \includegraphics{feature-007}
@@ -159,15 +154,15 @@ but in this example, we assigned it to the variable \texttt{fs}.
 > names(fs)
 \end{Sinput}
 \begin{Soutput}
-[1] "x"        "bw"       "fhat"     "grad"     "curv"     "gradData" "curvData"
+[1] "x"        "bw"       "fhat"     "curv"     "curvData"
 \end{Soutput}
 \end{Schunk}
 where \texttt{x} is the data, \texttt{bw} is the bandwidth, \texttt{fhat\$est} 
 is the kernel density estimate
 on the grid \texttt{fhat\$x.grid}, 
-\texttt{grad} is the logical matrix indicating signficant gradient on a grid, 
+%\texttt{grad} is the logical matrix indicating signficant gradient on a grid, 
 \texttt{curv} is the logical matrix indicating signficant curvature on a grid,
-\texttt{gradData} is the logical vector indicating signficant gradient data points and 
+%\texttt{gradData} is the logical vector indicating signficant gradient data points and 
 \texttt{curvData} is the logical vector indicating signficant curvature data points.
 So the points with significant curvature are 
 \begin{Schunk}

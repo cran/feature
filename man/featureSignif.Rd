@@ -100,9 +100,9 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   \code{bw} - vector of bandwidths \cr
   \code{fhat} - kernel density estimate on a grid (output from
   \code{\link{drvkde}}) \cr
-  \code{grad} - logical array indicating significant gradient (if
+  \code{grad} - logical array (grid) indicating significant gradient (if
   \code{addSignigGradRegion=TRUE})\cr 
-  \code{curv} - logical array indicating significant curvature (if
+  \code{curv} - logical array (grid) indicating significant curvature (if
   \code{addSignigCurvRegion=TRUE})\cr 
   \code{gradData} - logical vector indicating significant gradient (if
   \code{addSignigGradData=TRUE})\cr 
@@ -146,8 +146,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   approximately chi-squared distributed with \eqn{d} degrees of freedom
   where \eqn{d} is the dimension of the data.
 
-  The test statistic for curvature is analogous to that for gradient
-  testing:
+  The analogous test statistic for curvature is  
   \deqn{W^{(2)}(\mathbf{x}) = \Vert \mathrm{vech}
     \widehat{\nabla^{(2)}f} (\mathbf{x}; \mathbf{H})\Vert ^2}{%
     W2(x) = ||vech hat{curv f}(x; H)||^2}
@@ -188,14 +187,8 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
 }
 
 
-\seealso{
-\code{\link[KernSmooth]{bkde}} (in package `KernSmooth'),
-\code{\link[KernSmooth]{bkde2D}} (in package `KernSmooth'),
-\code{\link[stats]{density}}
-}
-\examples{
-## Non-interactive examples
 
+\examples{
 ## Univariate example
 data(earthquake)
 eq3 <- -log10(-earthquake[,3])
@@ -208,24 +201,22 @@ featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)")
 library(MASS)
 data(geyser)
 
-fs <- featureSignif(geyser, addSignifGradRegion=TRUE,
-     addSignifCurvRegion=TRUE, bw=c(4.5, 0.37), plotFS=FALSE)
-names(fs)
-plot(fs)
+fs <- featureSignif(geyser, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37),
+      plotFS=FALSE)
+plot(fs, addSignifCurvRegion=TRUE)
 
-\dontrun{
 ## Trivariate example
 
 data(earthquake)
 earthquake[,3] <- -log10(-earthquake[,3])
+
 featureSignif(earthquake, scaleData=TRUE, addData=TRUE,
     bw=c(0.0381, 0.0381, 0.0442))
-
 featureSignif(earthquake, addKDE=FALSE, scaleData=TRUE,
    addSignifGradRegion=TRUE, addSignifCurvRegion=TRUE,
    bw=c(0.0381, 0.0381, 0.0442),  
    xlim=c(0.4,0.5), ylim=c(0.4,0.5), zlim=c(0.8,0.9))
-}
+
 
 \dontrun{
 ## Interactive examples
@@ -255,6 +246,8 @@ featureSignif(earthquake, addSignifGradRegion=TRUE, scaleData=TRUE)
 
 }
 }
+
+\seealso{\code{\link{plot.fs}}}
 
 \keyword{smooth} 
 

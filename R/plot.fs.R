@@ -1,10 +1,10 @@
 plot.fs <- function(x, ...)
 {
-  plotfs(x, ...)
+  plotfs1(x, ...)
   invisible() 
 }
 
-plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
+plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
            addData=FALSE, scaleData=FALSE, addDataNum=1000,
            addKDE=TRUE, jitterRug=TRUE,  
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
@@ -142,8 +142,8 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   }
   else if (d==2)
   {
-     par(bg=bgCol)
-     x.grid.1 <- dest$x.grid[[1]] ; x.grid.2 <- dest$x.grid[[2]]
+    par(bg=bgCol)
+    x.grid.1 <- dest$x.grid[[1]] ; x.grid.2 <- dest$x.grid[[2]]
     
     if (addKDE)
     {  
@@ -154,28 +154,19 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
     else
     {
       image(x.grid.1[plot.inds[[1]]],x.grid.2[plot.inds[[2]]],
-             dest$est[plot.inds[[1]],plot.inds[[2]]],col="transparent",
+            dest$est[plot.inds[[1]],plot.inds[[2]]],col="transparent",
             xlim=xlim, ylim=ylim, xlab=xlab,ylab=ylab,bty="n")
     }
-    ## Add a border around the image
-    
-    x1.bor.low <- min(x.grid.1[plot.inds[[1]]]) 
-    x1.bor.upp <- max(x.grid.1[plot.inds[[1]]]) 
-    x2.bor.low <- min(x.grid.2[plot.inds[[2]]]) 
-    x2.bor.upp <- max(x.grid.2[plot.inds[[2]]]) 
-
-    lines(c(x1.bor.low,x1.bor.upp),rep(x2.bor.low,2),lwd=2,col="black")
-    lines(c(x1.bor.low,x1.bor.upp),rep(x2.bor.upp,2),lwd=2,col="black")
-    lines(rep(x1.bor.low,2),c(x2.bor.low,x2.bor.upp),lwd=2,col="black")
-    lines(rep(x1.bor.upp,2),c(x2.bor.low,x2.bor.upp),lwd=2,col="black")
+     
+    box()
     
     SignifGradRegion.mat <- fs$grad
     SignifCurvRegion.mat <- fs$curv
-
+    
     if (addSignifGradData)  
       SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
-    
-    if (addSignifCurvData)
+     
+     if (addSignifCurvData)
       SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
     
   
@@ -210,6 +201,9 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
     num.levs <- length(densCol)
     x.gd.1 <- dest$x.grid[[1]] ; x.gd.2 <- dest$x.grid[[2]]
     x.gd.3 <- dest$x.grid[[3]]
+
+    plot3d(x.gd.1, x.gd.2, x.gd.3, type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d)
+
     
     if (addKDE)
     { 
@@ -246,16 +240,16 @@ plotfs <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
     if (addData)
       points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
 
-    if (addAxes3d)
-    {
-      lines3d(xlim, rep(ylim[1],2), rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-      lines3d(rep(xlim[1],2), rep(ylim[1],2), zlim, size=3, color=axisCol, alpha=1)
-      
-      texts3d(xlim[2],ylim[1],zlim[1],xlab,color=axisCol, adj=0, alpha=1)
-      texts3d(xlim[1],ylim[2],zlim[1],ylab,color=axisCol, adj=1, alpha=1)
-      texts3d(xlim[1],ylim[1],zlim[2],zlab,color=axisCol, adj=1, alpha=1)
-    }
+    #if (addAxes3d)
+    #{
+    #  lines3d(xlim, rep(ylim[1],2), rep(zlim[1],2), size=3, color=axisCol, alpha=1)
+    #  lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
+    #  lines3d(rep(xlim[1],2), rep(ylim[1],2), zlim, size=3, color=axisCol, alpha=1)
+    #  
+    #  texts3d(xlim[2],ylim[1],zlim[1],xlab,color=axisCol, adj=0, alpha=1)
+    #  texts3d(xlim[1],ylim[2],zlim[1],ylab,color=axisCol, adj=1, alpha=1)
+    #  texts3d(xlim[1],ylim[1],zlim[2],zlab,color=axisCol, adj=1, alpha=1)
+    #}
     
   }
 }
