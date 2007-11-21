@@ -23,7 +23,7 @@ November\or December\fi
 
 \title{feature: an R package for feature significance for multivariate
 kernel density estimation}
-\author{Tarn Duong \\ Department of Statistics, University of New South Wales \\ Sydney Australia}
+\author{Tarn Duong}
 
 
 

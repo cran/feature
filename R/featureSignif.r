@@ -9,7 +9,7 @@ featureSignif <-
            signifLevel=0.05, plotFS=TRUE, addAxes3d=TRUE,
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-           plotSiZer=FALSE, logbwSiZer=TRUE, 
+           plotSiZer=FALSE, logbwSiZer=TRUE, bwSiZer,  
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
            axisCol="black", bgCol="white", jitterRug=TRUE,
            dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2, 
@@ -49,7 +49,10 @@ featureSignif <-
     if (d==4) gridsize <- rep(21,4)
   }
   if (missing(gridsizeSiZer))
-    gridsizeSiZer <- 101
+    gridsizeSiZer <- rep(101,2)
+
+  if (length(gridsizeSiZer)==1)
+    gridsizeSiZer <- rep(gridsizeSiZer, 2)
   
   ## Set some defaults
 
@@ -469,16 +472,22 @@ featureSignif <-
   }
   else                             ## draw SiZer plot
   {
-    gs.SiZer <- gridsizeSiZer
-    ##if ((length(bw)==1))   ## scalar b/w -> non-interactive
-    bw.range.SiZer  <- dfltBWrange(x,gridsize=gs.SiZer,tau)
-    bw.SiZer <- matrix(unlist(bw.range.SiZer), nrow=2, byrow=FALSE)
+    gs.SiZer <- gridsizeSiZer[1]
+    
    
+    if (missing(bwSiZer))
+    {
+      bw.range.SiZer  <- dfltBWrange(x,gridsize=gs.SiZer,tau)
+      bw.SiZer <- matrix(unlist(bw.range.SiZer), nrow=2, byrow=FALSE)
+    }
+    else
+      bw.SiZer <- matrix(bwSiZer, ncol=1, nrow=2)
+    
     dfltCounts.out.SiZer  <- dfltCounts(x,gridsize=gs.SiZer, apply(bw.SiZer, 2, max))
     range.x.SiZer <-dfltCounts.out.SiZer$range.x
     gcounts.SiZer <- dfltCounts.out.SiZer$counts
     x.SiZer  <- seq(range.x.SiZer[[1]][1], range.x.SiZer[[1]][2], length=gs.SiZer) 
-    bw.SiZer  <- seq(log(bw.SiZer[1,1]), log(bw.SiZer[2,1]), length=101)
+    bw.SiZer  <- seq(log(bw.SiZer[1,1]), log(bw.SiZer[2,1]), length=gridsizeSiZer[2])
     SiZer.map <- matrix(0, ncol=length(bw.SiZer), nrow=length(x.SiZer))
     
     i <- 0

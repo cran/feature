@@ -14,7 +14,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
    signifLevel=0.05, plotFS=TRUE, addAxes3d=TRUE, 
    addSignifGradRegion=FALSE, addSignifGradData=FALSE,
    addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-   plotSiZer=FALSE, logbwSiZer=TRUE, 
+   plotSiZer=FALSE, logbwSiZer=TRUE, bwSiZer,
    densCol, dataCol="black", gradCol="green4", curvCol="blue", 
    axisCol="black", bgCol="white", jitterRug=TRUE, 
    dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2, 
@@ -49,6 +49,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   \item{plotSiZer}{flag for displaying 1-d gradient SiZer map. Default is FALSE.}
   \item{logbwSiZer}{flag for displaying log bandwidths in SiZer
     map. Default is TRUE.}
+  \item{bwSiZer}{range of bandwidths for SiZer map.}
   \item{addAxes3d}{flag for displaying axes in 3-d displays. Default is
     TRUE.}
   \item{signifLevel}{significance level. Default is 0.05.}
@@ -74,8 +75,8 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
     significant curvature regions.}
   \item{gridsize}{vector of the number of grid points in each
     direction.}
-  \item{gridsizeSiZer}{number of x-axis grid points for SiZer
-    map. Default is 101.} 
+  \item{gridsizeSiZer}{number of x- and axis grid points for SiZer
+    map. Default is c(101,101).} 
 }
 
 \value{
@@ -195,6 +196,8 @@ eq3 <- -log10(-earthquake[,3])
 
 featureSignif(eq3, addSignifGradRegion=TRUE,xlab="-log(-depth)", bw=0.1)
 featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)")
+featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)", bwSiZer=c(0.05, 1.3),
+  gridsizeSiZer=c(401, 101))
 
 ## Bivariate example
 
