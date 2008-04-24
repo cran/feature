@@ -41,7 +41,7 @@ plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   ##dest <- drvkde(gcounts, rep(0,d), bandwidth=h, binned=TRUE,
   ##               range.x=range.x, se=FALSE)
   dest <- fs$fhat
-
+  
   ESS <- n*dest$est*prod(h)*(sqrt(2*pi)^d)
   SigESS <- ESS >= 5
   
@@ -189,6 +189,8 @@ plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   }
   else if (d==3)
   {
+    require(rgl); require(misc3d)
+
     clear3d()
     rgl.viewpoint(theta=0, phi=-90)
     rgl.bg(col=bgCol)

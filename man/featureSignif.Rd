@@ -101,14 +101,10 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   \code{bw} - vector of bandwidths \cr
   \code{fhat} - kernel density estimate on a grid (output from
   \code{\link{drvkde}}) \cr
-  \code{grad} - logical array (grid) indicating significant gradient (if
-  \code{addSignigGradRegion=TRUE})\cr 
-  \code{curv} - logical array (grid) indicating significant curvature (if
-  \code{addSignigCurvRegion=TRUE})\cr 
-  \code{gradData} - logical vector indicating significant gradient (if
-  \code{addSignigGradData=TRUE})\cr 
-  \code{curvData} - logical vector indicating significant curvature (if
-  \code{addSignigCurvData=TRUE}) 
+  \code{grad} - logical array (grid) indicating significant gradient \cr
+  \code{curv} - logical array (grid) indicating significant curvature \cr
+  \code{gradData}, \code{gradDataPoints} - logical vector indicating and data points with significant gradient \cr
+  \code{curvData} - logical vector indicating and data points with significant curvature  
 
   In the interactive case, the return values are
   based on the last bandwidths chosen before the interactive session
@@ -119,7 +115,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   implemented. If this option is selected, it automatically goes into
   non-interactive mode. The horizontal axis is the data axis, the
   vertical axis are the bandwidths. It returns a list with the following
-  fields \cr 
+  fields \cr
   \code{x.grid} - vector of grid points \cr
   \code{bw} - vector of bandwidths at grid points\cr
   \code{SiZer} - matrix (rows = grid points, columns = bandwidths) for
@@ -173,7 +169,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
 
   Duong, T., Cowling, A., Koch, I., Wand, M.P. (2007)
   Feature significance for multivariate kernel density estimation.
-  \emph{Submitted.}
+  \emph{Computational Statistics and Data Analysis}, In press.
 
   Hochberg, Y. (1988) A sharper Bonferroni procedure for multiple tests
   of significance. \emph{Biometrika}, \bold{75}, 800-802.

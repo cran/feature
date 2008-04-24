@@ -31,7 +31,7 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
   else if (d==4)
     Sig2.scalar <- (64*pi^2*n*prod(h))^(-1)*dest$est
 
-  ## Matrix square root - taken from Stephen Lake 
+  ## Matrix square root - taken from Stephen Lake
   ## http://www5.biostat.wustl.edu/s-news/s-news-archive/200109/msg00067.html
   
   matrix.sqrt <- function(A)

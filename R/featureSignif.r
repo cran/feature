@@ -190,6 +190,8 @@ featureSignif <-
   }
   if (d >=3)
   {
+    require(rgl); require(misc3d)
+    
     open3d()
     clear3d()
     screen1 <- rgl.cur()
@@ -396,18 +398,24 @@ featureSignif <-
 
     if (addSignifGradRegion | addSignifGradData)
       SignifGradRegion.mat <- SignifFeatureRegion.mat$grad
-    
+
     if (addSignifGradData)  
-      SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
+    {
+      SignifGradData.mat <- SignifFeatureData(x, d, dest,SignifGradRegion.mat)
+      SignifGradDataPoints <- x[SignifGradData.mat,]
+    }
     
     if (addSignifCurvRegion | addSignifCurvData)
       SignifCurvRegion.mat <- SignifFeatureRegion.mat$curv
     
     if (addSignifCurvData)
-      SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
-   
+    {
+      SignifCurvData.mat <- SignifFeatureData(x, d, dest,SignifCurvRegion.mat)
+      SignifCurvDataPoints <- x[SignifCurvData.mat,]
+    }
+    
     if (plotFS)
-    { 
+    {
       if (addSignifGradRegion)
         if (d<3)  
           addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
@@ -447,15 +455,15 @@ featureSignif <-
         else if (d>=3)
           points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
     }
-    
+
     if (!addSignifGradData & ! addSignifCurvData)
       return (SignifFeatureRegion.mat)
     else if (!addSignifGradData & addSignifCurvData)
-      return (c(SignifFeatureRegion.mat, list(curvData=SignifCurvData.mat)))
+      return (c(SignifFeatureRegion.mat, list(curvData=SignifCurvData.mat, curvDataPoints=SignifCurvDataPoints)))
     else if (addSignifGradData & !addSignifCurvData)
-      return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat)))
+      return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat, gradDataPoints=SignifGradDataPoints)))
     else if (addSignifGradData & addSignifCurvData)
-      return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat, curvData=SignifCurvData.mat)))
+      return (c(SignifFeatureRegion.mat, list(gradData=SignifGradData.mat, gradDataPoints=SignifGradDataPoints, curvData=SignifCurvData.mat, curvDataPoints=SignifCurvDataPoints)))
   }
   
   if (!plotSiZer)                  ## draw feature significance plot
