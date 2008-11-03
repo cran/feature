@@ -151,7 +151,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
     H)} is the kernel estimate of the curvature of
   \eqn{f(\mathbf{x})}{f(x)}, and vech is the vector-half operator.
   \eqn{W^{(2)}(\mathbf{x})}{W2(x)} is
-  approx. chi-squared distributed with \eqn{d(d+1)/2} degrees of freedom.
+  approximately chi-squared distributed with \eqn{d(d+1)/2} degrees of freedom.
 
   Since this is a situation with many dependent hypothesis tests, we
   use a multiple comparison or simultaneous test to control the
@@ -167,9 +167,9 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   \emph{Journal of the American Statistical Association},
   \bold{94},  807-823.
 
-  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2007)
+  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2008)
   Feature significance for multivariate kernel density estimation.
-  \emph{Computational Statistics and Data Analysis}, In press.
+  \emph{Computational Statistics and Data Analysis}, \bold{52}, 4225-4242. 
 
   Hochberg, Y. (1988) A sharper Bonferroni procedure for multiple tests
   of significance. \emph{Biometrika}, \bold{75}, 800-802.
@@ -180,7 +180,7 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
   \bold{11}, 1-22.
 
   Wand, M.P. and Jones, M.C. (1995)
-  \emph{Kernel Smoothing} Chapman and Hall.
+  \emph{Kernel Smoothing.} Chapman \& Hall/CRC, London.
 }
 
 
@@ -210,10 +210,9 @@ data(earthquake)
 earthquake[,3] <- -log10(-earthquake[,3])
 
 featureSignif(earthquake, scaleData=TRUE, addData=TRUE,
-    bw=c(0.0381, 0.0381, 0.0442))
+    bw=c(0.0618, 0.0602, 0.0558))
 featureSignif(earthquake, addKDE=FALSE, scaleData=TRUE,
-   addSignifGradRegion=TRUE, addSignifCurvRegion=TRUE,
-   bw=c(0.0381, 0.0381, 0.0442),  
+   addSignifCurvRegion=TRUE, bw=c(0.0618, 0.0602, 0.0558),  
    xlim=c(0.4,0.5), ylim=c(0.4,0.5), zlim=c(0.8,0.9))
 
 
@@ -233,15 +232,16 @@ featureSignif(duration, addSignifCurvRegion=TRUE, addSignifCurvData=TRUE)
 
 ## Bivariate example
 
-featureSignif(geyser, addData=TRUE, addSignifGradRegion=TRUE,
-   addSignifGradData=TRUE, bw=rbind(c(1, 0.1), c(5, 0.9)))
+featureSignif(geyser, addData=TRUE, addSignifCurvRegion=TRUE)
+featureSignif(geyser, addData=TRUE, addSignifCurvRegion=TRUE,
+   bw=rbind(c(1, 0.1), c(5, 0.9)))
    ## bandwidths ranges: h1 in c(1, 5), h2 in c(0.1, 0.9)
 
 ## Trivariate example
 
 data(earthquake)
 earthquake$depth <- -log10(-earthquake$depth)
-featureSignif(earthquake, addSignifGradRegion=TRUE, scaleData=TRUE)
+featureSignif(earthquake, addSignifCurvRegion=TRUE, scaleData=TRUE)
 
 }
 }

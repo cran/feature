@@ -63,10 +63,11 @@ fhat212 <- drvkde(x=earthquake, drv=c(2,1,2), bandwidth=c(0.04,0.04,0.05),
 }
 
 \references{
-     Wand, M.P. and Jones, M.C. (1995) \emph{Kernel Smoothing} Chapman and Hall.
+     Wand, M.P. and Jones, M.C. (1995) \emph{Kernel Smoothing}. Chapman
+	 \& Hall/CRC, London.
    }
    
-\author{M.P. Wand  \email{wand@maths.unsw.edu.au}}
+%\author{M.P. Wand  \email{wand@uow.edu.au}}
 
 \seealso{
 \code{\link{featureSignif}}

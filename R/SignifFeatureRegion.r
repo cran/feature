@@ -341,8 +341,12 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
     pval.Grad <- 1 - pchisq(WaldGrad, d)
     pval.Grad.ord <- pval.Grad[order(pval.Grad)]
     num.test <- sum(!is.na(pval.Grad.ord))
+
+    if (num.test>=1)
+      num.test.seq <- c(1:num.test, rep(NA, prod(gridsize) - num.test))
+    else
+      num.test.seq <- rep(NA, prod(gridsize))
     
-    num.test.seq <- c(1:num.test, rep(NA, prod(gridsize) - num.test))
     reject.nonzero <- ((pval.Grad.ord <= signifLevel/(num.test + 1 - num.test.seq)) &
                        (pval.Grad.ord > 0))  
     reject.nonzero.ind <- which(reject.nonzero)
@@ -362,10 +366,12 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
     pval.Curv <- 1 - pchisq(WaldCurv, d*(d+1)/2)
     pval.Curv.ord <- pval.Curv[order(pval.Curv)]
     num.test <- sum(!is.na(pval.Curv.ord))
-    
-    num.test.seq <- c(1:num.test, rep(NA, prod(gridsize) - num.test))
-    reject.nonzero <- ((pval.Curv.ord <= signifLevel/(num.test + 1 - num.test.seq)) &
-                       (pval.Curv.ord > 0))  
+
+    if (num.test>=1)
+      num.test.seq <- c(1:num.test, rep(NA, prod(gridsize) - num.test))
+    else
+      num.test.seq <- rep(NA, prod(gridsize))
+    reject.nonzero <- ((pval.Curv.ord <= signifLevel/(num.test + 1 - num.test.seq)) &(pval.Curv.ord > 0))  
     reject.nonzero.ind <- which(reject.nonzero)
 
     SignifCurv <- array(FALSE, dim=gridsize)

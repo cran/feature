@@ -58,7 +58,7 @@ featureSignif <-
 
   if (missing(bw))           ## b/w not specified -> interactive 
   {
-    bw.range <- dfltBWrange(x,gridsize,tau)
+    bw.range <- dfltBWrange(x,gridsize,tau, scale.fac=1.5)
     bw <- matrix(unlist(bw.range), nrow=2, byrow=FALSE)
     dfltCounts.out <- dfltCounts(x,gridsize, apply(bw, 2, max))
     interactive <- TRUE 
@@ -97,7 +97,8 @@ featureSignif <-
   {
     h.low <- bw[1,]
     h.upp <- bw[2,]
-    h.init <- sqrt(h.low*h.upp)
+    hmix.prop <- 1/4
+    h.init <- h.low^(hmix.prop)*h.upp^(1-hmix.prop) ##sqrt(h.low*h.upp)
     logh.low <- logb(h.low,10)
     logh.upp <- logb(h.upp,10)
     h <- h.init
@@ -251,7 +252,6 @@ featureSignif <-
       ## draw bandwidth bar 
       bw.bar <- c(0.2, 0.8, 0.3, 0.5) ## (x1, x2, y1, y2)
       rect(bw.bar[1], bw.bar[3], bw.bar[2], bw.bar[4], col="green", border=FALSE) 
-
       ## draw stop box
       stop.box <- c(0.9, 0.95, 0.3, 0.5) 
       rect(stop.box[1],stop.box[3], stop.box[2], stop.box[4], col="red",
@@ -658,7 +658,7 @@ featureSignif <-
 
         ## erase bandwidth bar message
         text((bw.bar[1]+bw.bar[2])/2, 0.15, clk.bar.msg1, col=bgCol)
-
+        
         prev.click.vec <- click.vec
         curr.log10h <- logh.low + sca.fac*(x.ck-bw.bar[1])    
         h <- 10^curr.log10h

@@ -32,7 +32,7 @@ feature
 
 
 \author{
-Tarn Duong <tduong@maths.unsw.edu.au> & Matt Wand <wand@maths.unsw.edu.au>
+Tarn Duong <tarn.duong@gmail.com> & Matt Wand <wand@uow.edu.au>
 }
 \references{
   Chaudhuri, P. and Marron, J.S. (1999) 
@@ -40,9 +40,9 @@ Tarn Duong <tduong@maths.unsw.edu.au> & Matt Wand <wand@maths.unsw.edu.au>
   \emph{Journal of the American Statistical Association},
   \bold{94},  807-823.
 
-  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2006)
+  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2008)
   Feature significance for multivariate kernel density estimation.
-  \emph{Computational Statistics and Data Analysis}, In press.
+  \emph{Computational Statistics and Data Analysis}, \bold{52}, 4225-4242. 
 
   Godtliebsen, F., Marron, J.S. and Chaudhuri, P. (2002) 
   Significance in scale space for bivariate density estimation.
