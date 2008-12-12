@@ -403,6 +403,8 @@ featureSignif <-
     {
       SignifGradData.mat <- SignifFeatureData(x, d, dest,SignifGradRegion.mat)
       SignifGradDataPoints <- x[SignifGradData.mat,]
+      SignifGradData.mat.rand <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
+      SignifGradDataPoints.rand <- x.rand[SignifGradData.mat.rand,]
     }
     
     if (addSignifCurvRegion | addSignifCurvData)
@@ -412,6 +414,8 @@ featureSignif <-
     {
       SignifCurvData.mat <- SignifFeatureData(x, d, dest,SignifCurvRegion.mat)
       SignifCurvDataPoints <- x[SignifCurvData.mat,]
+      SignifCurvData.mat.rand <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
+      SignifCurvDataPoints.rand <- x.rand[SignifCurvData.mat.rand,]
     }
     
     if (plotFS)
@@ -434,12 +438,12 @@ featureSignif <-
         else if (d==4)
           addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
                                  dest,lims,trans.alpha=c(0.1,0.4))
-      
+
       if (addSignifGradData)
-        addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha)
+        addSignifFeatureData(x.rand,SignifGradData.mat.rand,gradCol, trans.alpha=gradDataAlpha)
       
       if (addSignifCurvData)
-        addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
+        addSignifFeatureData(x.rand,SignifCurvData.mat.rand,curvCol, trans.alpha=curvDataAlpha)
       
       if (addData)
         if (d==1)
