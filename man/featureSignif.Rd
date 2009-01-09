@@ -4,125 +4,40 @@
 
 \description{
   Identify significant features of kernel density estimates of 1- to
-  4-dimensional data. This feature has an interactive and a
-  non-interactive mode.
+  4-dimensional data. 
 }
 
 \usage{
-featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
-   addData=FALSE, scaleData=FALSE, addDataNum=1000, addKDE=TRUE, 
-   signifLevel=0.05, plotFS=TRUE, addAxes3d=TRUE, 
-   addSignifGradRegion=FALSE, addSignifGradData=FALSE,
-   addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-   plotSiZer=FALSE, logbwSiZer=TRUE, bwSiZer,
-   densCol, dataCol="black", gradCol="green4", curvCol="blue", 
-   axisCol="black", bgCol="white", jitterRug=TRUE, 
-   dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2, 
-   curvDataAlpha=0.3, curvRegionAlpha=0.3,
-   gridsize, gridsizeSiZer)
+featureSignif(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE,
+   addSignifCurv=TRUE, signifLevel=0.05)  
 }
 		  
 
 \arguments{
   \item{x}{data matrix}
-  \item{bw}{bandwidth(s) - see below for details on how to specify bandwidths}
-  \item{xlim, ylim, zlim}{x-, y-, z-axis limits}
-  \item{xlab, ylab, zlab}{x-, y-, z-axis labels}
+  \item{bw}{vector of bandwidth(s)}
+  \item{gridsize}{vector of estimation grid sizes}
   \item{scaleData}{flag for scaling the data i.e. transforming to unit
-    variance for each dimension. Default is FALSE.}
-  \item{addData}{flag for display of the data. Default is FALSE.}
-  \item{addDataNum}{maximum number of data points plotted in
-    displays. Default is 1000.}
-  \item{addKDE}{flag for display of kernel density estimates. Default
-    is TRUE. Not available for 4-d data.}
-  \item{plotFS}{flag for plotting. Default is TRUE.} 
-  \item{jitterRug}{flag for jittering of rug-plot for univariate 
-    data display. Default is TRUE.}
-  \item{addSignifGradRegion}{flag for display of significant gradient regions.
-    Default is FALSE. Not available for 4-d data.}
-  \item{addSignifGradData}{flag for display of significant gradient
-    data points. Default is FALSE.}
-  \item{addSignifCurvRegion}{flag for display of significant curvature regions.
-    Default is FALSE. Not available for 4-d data.}
-  \item{addSignifCurvData}{flag for display of significant curvature
-    data points. Default is FALSE.}
-  \item{plotSiZer}{flag for displaying 1-d gradient SiZer map. Default is FALSE.}
-  \item{logbwSiZer}{flag for displaying log bandwidths in SiZer
-    map. Default is TRUE.}
-  \item{bwSiZer}{range of bandwidths for SiZer map.}
-  \item{addAxes3d}{flag for displaying axes in 3-d displays. Default is
-    TRUE.}
-  \item{signifLevel}{significance level. Default is 0.05.}
-  \item{densCol}{colour of density estimate curve. Default for 1-d data
-    "DarkOrange", for 2-d data is heat.colors(1000), for
-    3-d data is heat.colors(5).}
-  \item{dataCol}{colour of data points. Default is
-    "black".}
-  \item{gradCol}{colour of significant gradient regions/points. Default
-    is "green4".}
-  \item{curvCol}{colour of significant curvature regions/points.
-    Default is "blue".}
-  \item{axisCol}{colour of axes. Default is "black".}
-  \item{bgCol}{colour of background. Default is "white".}
-  \item{dataAlpha}{alpha-blending transparency value for data points.}
-  \item{gradDataAlpha}{alpha-blending transparency value for
-    significant gradient data points.}
-  \item{gradRegionAlpha}{alpha-blending transparency value for
-    significant gradient regions.}
-  \item{curvDataAlpha}{alpha-blending transparency value for
-    significant curvature data points.}
-  \item{curvRegionAlpha}{alpha-blending transparency value for
-    significant curvature regions.}
-  \item{gridsize}{vector of the number of grid points in each
-    direction.}
-  \item{gridsizeSiZer}{number of x- and axis grid points for SiZer
-    map. Default is c(101,101).} 
+    variance for each dimension.}
+  \item{addSignifGrad}{flag for computing significant gradient regions}
+  \item{addSignifCurv}{flag for computing significant curvature regions}
+  \item{signifLevel}{significance level}
 }
 
 \value{
-  If \code{bw} is not specified, then a range of possible bandwidths is
-  automatically calculated. 
-  
-  For univariate data, \code{bw} can be either a scalar or a
-  vector. With the former, a 
-  KDE is computed with this scalar bandwidth. The latter is interpreted
-  as a range of bandwidths.
-
-  For multivariate data, \code{bw} can either be a vector or a matrix.
-  With the former, a KDE is computed with this vector bandwidth. The
-  latter is interpreted as a range of bandwidths with the first row are
-  the minimum values and the second row the maximum values. 
-
-  If a range of bandwidths is supplied, it goes into interactive mode. 
-  If a single bandwidth is supplied, it goes into non-interactive mode.
-
-  Returns a list with the following fields\cr
+  Returns an object of class \code{fs} which is a list with the following fields\cr
   \code{x} - data matrix \cr
+  \code{names} - name labels used for plotting \cr
   \code{bw} - vector of bandwidths \cr
-  \code{fhat} - kernel density estimate on a grid (output from
-  \code{\link{drvkde}}) \cr
-  \code{grad} - logical array (grid) indicating significant gradient \cr
-  \code{curv} - logical array (grid) indicating significant curvature \cr
-  \code{gradData}, \code{gradDataPoints} - logical vector indicating and data points with significant gradient \cr
-  \code{curvData} - logical vector indicating and data points with significant curvature  
-
-  In the interactive case, the return values are
-  based on the last bandwidths chosen before the interactive session
-  was ended. In the non-interactive case, the return values are based on the
-  specified bandwidth.
-  
-  For 1-d data, the gradient SiZer map  of Chaudhuri \& Marron (1999) is
-  implemented. If this option is selected, it automatically goes into
-  non-interactive mode. The horizontal axis is the data axis, the
-  vertical axis are the bandwidths. It returns a list with the following
-  fields \cr
-  \code{x.grid} - vector of grid points \cr
-  \code{bw} - vector of bandwidths at grid points\cr
-  \code{SiZer} - matrix (rows = grid points, columns = bandwidths) for
-  SiZer map:  3 = decreasing gradient (red), 
-  2 = increasing gradient (blue), 1 = zero gradient (purple), 0 =
-  sparse region (grey).
-  
+  \code{fhat} - kernel density estimate on a grid \cr
+  \code{grad} - logical grid for significant gradient \cr
+  \code{curv} - logical grid for significant curvature \cr
+  \code{gradData} - logical vector for significant gradient data
+  points \cr
+  \code{gradDataPoints} - significant gradient data points \cr
+  \code{curvData} - logical vector for significant curvature data
+  points \cr
+  \code{curvDataPoints} - significant curvature data points 
 }
 
 \details{
@@ -189,64 +104,24 @@ featureSignif(x, bw, xlab, ylab, zlab, xlim, ylim, zlim,
 ## Univariate example
 data(earthquake)
 eq3 <- -log10(-earthquake[,3])
-
-featureSignif(eq3, addSignifGradRegion=TRUE,xlab="-log(-depth)", bw=0.1)
-featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)")
-featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)", bwSiZer=c(0.05, 1.3),
-  gridsizeSiZer=c(401, 101))
+fs <- featureSignif(eq3, bw=0.1)
+plot(fs, addSignifGradRegion=TRUE)
 
 ## Bivariate example
-
 library(MASS)
 data(geyser)
-
-fs <- featureSignif(geyser, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37),
-      plotFS=FALSE)
+fs <- featureSignif(geyser)
 plot(fs, addSignifCurvRegion=TRUE)
 
 ## Trivariate example
-
 data(earthquake)
 earthquake[,3] <- -log10(-earthquake[,3])
-
-featureSignif(earthquake, scaleData=TRUE, addData=TRUE,
-    bw=c(0.0618, 0.0602, 0.0558))
-featureSignif(earthquake, addKDE=FALSE, scaleData=TRUE,
-   addSignifCurvRegion=TRUE, bw=c(0.0618, 0.0602, 0.0558),  
-   xlim=c(0.4,0.5), ylim=c(0.4,0.5), zlim=c(0.8,0.9))
-
-
-\dontrun{
-## Interactive examples
-
-library(MASS)
-data(geyser)
-duration <- geyser$duration 
-
-## Univariate example
-
-featureSignif(duration)
-featureSignif(duration, addData=TRUE)
-featureSignif(duration, addSignifGradRegion=TRUE, addSignifGradData=TRUE)
-featureSignif(duration, addSignifCurvRegion=TRUE, addSignifCurvData=TRUE)
-
-## Bivariate example
-
-featureSignif(geyser, addData=TRUE, addSignifCurvRegion=TRUE)
-featureSignif(geyser, addData=TRUE, addSignifCurvRegion=TRUE,
-   bw=rbind(c(1, 0.1), c(5, 0.9)))
-   ## bandwidths ranges: h1 in c(1, 5), h2 in c(0.1, 0.9)
-
-## Trivariate example
-
-data(earthquake)
-earthquake$depth <- -log10(-earthquake$depth)
-featureSignif(earthquake, addSignifCurvRegion=TRUE, scaleData=TRUE)
-
-}
+fs <- featureSignif(earthquake, scaleData=TRUE, bw=c(0.06, 0.06, 0.05))
+plot(fs, addKDE=TRUE)
+plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE)
 }
 
-\seealso{\code{\link{plot.fs}}}
+\seealso{\code{\link{featureSignifGUI}}, \code{\link{plot.fs}}}
 
 \keyword{smooth} 
 

@@ -5,27 +5,23 @@
 feature
 }
 \description{
-  Package for feature significance for multivariate kernel density estimation (for
-  1- to 4-dimensional data). 
+  Package for feature significance for multivariate kernel density estimation. 
   
 }
 \details{
-  There is one main function in this package,
-  \code{\link{featureSignif}}. It has a range of options which allow
-  the user to display compute and kernel density estimates, significant gradient
+  The \pkg{feature} package contains functions 
+  to display and compute kernel density estimates, significant gradient
   and significant curvature regions. Significant gradient and/or
   curvature regions often correspond to significant features (e.g.
   local modes). 
 
-  It's available in an interactive mode where the user selects
-  bandwidths in the graphics window and the significant regions are computed in
-  real-time. This interactive mode is useful for initial exploratory
-  data analysis.
-
-  Otherwise there is the non-interactive mode where the user can specify
-  a single set of bandwidths. This is useful when the user has a more
-  definite idea of suitable bandwidths.     
-
+  There are two main functions in this package. 
+  \code{\link{featureSignifGUI}} is the interactive function where
+  the user can select bandwidths from a pre-defined range. This
+  mode is useful for initial exploratory
+  data analysis. \code{\link{featureSignif}} is the non-interactive function.
+  This is useful when the user has a more
+  definite idea of suitable values for the bandwidths.     
   For a more detailed example for 1-d and 2-d data, see
   \code{vignette("feature")}. 
 }

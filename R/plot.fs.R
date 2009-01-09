@@ -1,26 +1,22 @@
-plot.fs <- function(x, ...)
-{
-  plotfs1(x, ...)
-  invisible() 
-}
-
-plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
+plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
            addData=FALSE, scaleData=FALSE, addDataNum=1000,
            addKDE=TRUE, jitterRug=TRUE,  
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-           addAxes3d=TRUE, 
+           addAxes3d=TRUE,
            densCol, dataCol="black", gradCol="green4", curvCol="blue",
            axisCol="black", bgCol="white",
            dataAlpha=0.1, gradDataAlpha=0.3,
            gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3) 
 {
-  names.x <- colnames(fs$x)
-  
+  fs <- x
+
   x <- as.matrix(fs$x)
   d <- ncol(x)
   n <- nrow(x)
   h <- fs$bw
+  names.x <- fs$names
+  
   if (d >1)
     gridsize <- dim(fs$fhat$est) 
   else
@@ -34,14 +30,7 @@ plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   labs <- dfltLabs(d,names.x,xlab,ylab,zlab)
   xlab <- labs$xlab ; ylab <- labs$ylab ; zlab <- labs$zlab
  
-  #dfltCounts.out <- dfltCounts(x, gridsize, fs$bw)
-  #gcounts <- dfltCounts.out$counts
-  #range.x <- dfltCounts.out$range.x  
-
-  ##dest <- drvkde(gcounts, rep(0,d), bandwidth=h, binned=TRUE,
-  ##               range.x=range.x, se=FALSE)
   dest <- fs$fhat
-  
   ESS <- n*dest$est*prod(h)*(sqrt(2*pi)^d)
   SigESS <- ESS >= 5
   
@@ -50,7 +39,7 @@ plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   
   if (nsamp < n)
   {
-    rand.inds <- sort(sample(1:n, nsamp, replace=FALSE))
+    rand.inds <- 1:nsamp ###sort(sample(1:n, nsamp, replace=FALSE))
     x.rand <- as.matrix(x[rand.inds,])
   }
   else
@@ -95,48 +84,29 @@ plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
     else if (d==2)
       densCol <- rev(heat.colors(1000))
     else if (d==3)
-      densCol <- rev(heat.colors(5))
+      densCol <- rev(heat.colors(3))
 
+ 
   if (d==1)
   {
     par(bg=bgCol)
-    plot(dest$x.grid[[1]][plot.inds[[1]]], dest$est[plot.inds[[1]]],
-         type="n",bty="l" ,col=densCol, lwd=2, xlim=xlim, ylim=ylim,
-         xlab=xlab,ylab="kernel density estimate")
+    if (addKDE)
+    {
+      plot(dest$x.grid[[1]][plot.inds[[1]]], dest$est[plot.inds[[1]]],
+           type="n",bty="l" ,col=densCol, lwd=2, xlim=xlim, ylim=ylim,
+           xlab=xlab,ylab="kernel density estimate")
     
-    lines(dest$x.grid[[1]][plot.inds[[1]]],dest$est[plot.inds[[1]]],
-          bty="l",col=densCol,lwd=2)
- 
-    SignifGradRegion.mat <- fs$grad
-    SignifCurvRegion.mat <- fs$curv
-    
-    if (addSignifGradData)  
-      SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
-    
-    if (addSignifCurvData)
-      SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
-    
-    if (addSignifGradRegion)
-      addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
-                             dest,lims)
+      lines(dest$x.grid[[1]][plot.inds[[1]]],dest$est[plot.inds[[1]]],
+            bty="l",col=densCol,lwd=2)
+    }
 
-    if (addSignifCurvRegion)
-      addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
-                             dest,lims)
-    
-    if (addSignifGradData)
-      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol)
-
-
-    if (addSignifCurvData)
-      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol)
+    ##if (!add & !addKDE)
+    ##  plot(dest$x.grid[[1]], xlim=xlim, ylim=ylim, xlab=xlab,ylab="kernel density estimate",type="n")
     
     if (addData)
     {
-      if (jitterRug)
-        x.rug <- jitter(x.rand)
-      else
-        x.rug <- x.rand
+      if (jitterRug) x.rug <- jitter(x.rand)
+      else x.rug <- x.rand
       rug(x.rug)
     }  
   }
@@ -144,115 +114,75 @@ plotfs1 <-  function(fs, xlab, ylab, zlab, xlim, ylim, zlim,
   {
     par(bg=bgCol)
     x.grid.1 <- dest$x.grid[[1]] ; x.grid.2 <- dest$x.grid[[2]]
-    
+
     if (addKDE)
-    {  
       image(x.grid.1[plot.inds[[1]]],x.grid.2[plot.inds[[2]]],
-             dest$est[plot.inds[[1]],plot.inds[[2]]],col=densCol,
+            dest$est[plot.inds[[1]],plot.inds[[2]]],col=densCol,
             xlim=xlim, ylim=ylim, xlab=xlab,ylab=ylab,bty="n")
-    }
-    else
-    {
-      image(x.grid.1[plot.inds[[1]]],x.grid.2[plot.inds[[2]]],
-            dest$est[plot.inds[[1]],plot.inds[[2]]],col="transparent",
-            xlim=xlim, ylim=ylim, xlab=xlab,ylab=ylab,bty="n")
-    }
-     
+    if (!add & !addKDE)
+      plot(x.grid.1, x.grid.2, xlim=xlim, ylim=ylim, xlab=xlab,ylab=ylab,type="n")
+    
     box()
-    
-    SignifGradRegion.mat <- fs$grad
-    SignifCurvRegion.mat <- fs$curv
-    
-    if (addSignifGradData)  
-      SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
-     
-     if (addSignifCurvData)
-      SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
-    
-  
-    if (addSignifGradRegion)
-      addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
-                             dest,lims)
-     
-     if (addSignifCurvRegion)
-       addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
-                             dest,lims)
 
-     if (addSignifGradData)
-      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol)
-
-    if (addSignifCurvData)
-      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol)
-    
     if (addData)
-      points(x.rand, col=dataCol)  
+      points(x.rand, col=dataCol)
   }
   else if (d==3)
   {
     require(rgl); require(misc3d)
-
-    clear3d()
-    rgl.viewpoint(theta=0, phi=-90)
-    rgl.bg(col=bgCol)
-    pop3d(type="lights")
-    light3d(theta=0, phi=30)
-
-    material3d(alpha=1)
-    material3d(back="fill")
-
+   
     num.levs <- length(densCol)
     x.gd.1 <- dest$x.grid[[1]] ; x.gd.2 <- dest$x.grid[[2]]
     x.gd.3 <- dest$x.grid[[3]]
 
-    plot3d(x.gd.1, x.gd.2, x.gd.3, type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d)
+    if (!add)
+    {
+      clear3d()
+      ##rgl.viewpoint(theta=0, phi=-90)
+      rgl.bg(col=bgCol)
+      pop3d(type="lights")
+      light3d(theta=0, phi=30)
+      
+      material3d(alpha=1)
+      material3d(back="fill")
 
-    
-    if (addKDE)
-    { 
-      alph <- seq(0.1,0.5,length=num.levs)
-      lev.vals <- seq(0, max(dest$est), length=num.levs+2)[-c(1, num.levs+2)]
-
-      for (il in 1:num.levs)
-        contour3d(dest$est,level=lev.vals[il],
-                  x=x.gd.1,y=x.gd.2,z=x.gd.3,color=densCol[il],alpha=alph[il],
-                  add=(il!=1))   
+      plot3d(mean(xlim), mean(ylim), mean(zlim), type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=FALSE, box=FALSE)
+      if (addAxes3d) axes3d(c('x','y','z'))
     }
 
-    SignifGradRegion.mat <- fs$grad
-    SignifCurvRegion.mat <- fs$curv
-    if (addSignifGradData)
-      SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
-       
-    if (addSignifCurvData)
-      SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
-    
-    if (addSignifGradRegion)
-      addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol,
-                             dest,lims,trans.alpha=gradRegionAlpha)
-
-    if (addSignifCurvRegion)
-      addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol,
-                             dest,lims,trans.alpha=curvRegionAlpha)
-   
-    if (addSignifGradData)
-      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha)
-    if (addSignifCurvData)
-      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
-
+    if (addKDE)
+    {
+      kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(21,3))
+      alph <- seq(0.1,0.5,length=num.levs)
+      ##lev.vals <- contourLevels(kde.temp, cont=seq(90, 10, length=num.levs))
+      plot(kde.temp, add=TRUE)
+      ##for (il in 1:num.levs)
+      ##  contour3d(dest$est,level=lev.vals[il], x=x.gd.1,y=x.gd.2,z=x.gd.3,color=densCol[il],alpha=alph[il], add=TRUE)   
+    }
     if (addData)
       points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
-
-    #if (addAxes3d)
-    #{
-    #  lines3d(xlim, rep(ylim[1],2), rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-    #  lines3d(rep(xlim[1],2), ylim, rep(zlim[1],2), size=3, color=axisCol, alpha=1)
-    #  lines3d(rep(xlim[1],2), rep(ylim[1],2), zlim, size=3, color=axisCol, alpha=1)
-    #  
-    #  texts3d(xlim[2],ylim[1],zlim[1],xlab,color=axisCol, adj=0, alpha=1)
-    #  texts3d(xlim[1],ylim[2],zlim[1],ylab,color=axisCol, adj=1, alpha=1)
-    #  texts3d(xlim[1],ylim[1],zlim[2],zlab,color=axisCol, adj=1, alpha=1)
-    #}
-    
   }
+
+  SignifGradRegion.mat <- fs$grad
+  SignifCurvRegion.mat <- fs$curv
+
+ 
+  if (!is.null(SignifGradRegion.mat))
+  {
+    SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
+    if (addSignifGradRegion)
+      addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol, dest,lims, trans.alpha=gradRegionAlpha)
+    if (addSignifGradData)
+      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha)
+  }
+  if (!is.null(SignifCurvRegion.mat))
+  {
+    SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
+    if (addSignifCurvRegion)
+      addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol, dest,lims, trans.alpha=curvRegionAlpha)
+    if (addSignifCurvData)
+      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
+  } 
+  invisible()
 }
   

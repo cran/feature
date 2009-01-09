@@ -9,11 +9,6 @@ April\or May\or June\or July\or August\or September\or October\or
 November\or December\fi 
 \space  \number \year \endgroup}
 
-%\oddsidemargin=0.0mm
-%\evensidemargin=0.0mm
-%\textwidth=158.75mm             % A4 paper is 8.25in wide
-%\topmargin=-2.54mm
-%\textheight=236.2mm
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Change this for a different vignette
@@ -34,24 +29,20 @@ kernel density estimation}
 \maketitle
 
 \section{Introduction}
-
 Feature significance is an extension of kernel density estimation
 which is used to establish the statistical significance of 
 features (e.g. local modes). See \citet*{chaudhuri99} for 1-dimensional data,
-\citet*{godtliebsen02} for  2-dimensional data and \citet*{duong07}
-for 3- and 4-dimensional data. \texttt{feature} is an R package for 
-feature significance for 1- to 4-dimensional data.
-  There is one main function in this package, \texttt{featureSignif}. 
-It has a range of options which allow
-the user to compute and display kernel density estimates, significant gradient
+\citet*{godtliebsen02} for 2-dimensional data and \citet*{duong07}
+for 3- and 4-dimensional data.
+The \texttt{feature} package contains a range of options
+to display and compute kernel density estimates, significant gradient
 and significant curvature regions. Significant gradient and/or
 curvature regions often correspond to significant features. 
 In this vignette we focus on 1- and 2-dimensional data.
 
 
 \section{Univariate data example}
-The \texttt{earthquake} data set is contained in 
-\texttt{feature}. It contains 510 observations, each consisting
+The \texttt{earthquake} data set contains 510 observations, each consisting
 of measurements of an earthquake beneath the Mt St Helens volcano.
 The first is the longitude (in degrees, where a negative number
 indicates west of the International Date Line), second  is
@@ -66,19 +57,7 @@ are the sections of this density estimate which have significant gradient
 (i.e. significantly different from zero). The rug plot is 
 the log(--depth) measurements.
 
-\setkeys{Gin}{width=0.5\textwidth}
-\begin{center}
-<<fig=TRUE,results=hide,print=FALSE>>=
-library(feature)
-data(earthquake)
-eq3 <- -log10(-earthquake[,3])
-featureSignif(eq3, addData=TRUE, addSignifGradRegion=TRUE, xlab="-log(-depth)", bw=0.1)
-@
-\end{center}
-
-
-Below is the same kernel density estimate and 
-significant gradient region plot along with the SiZer plot of \citet*{chaudhuri99}.
+Below this is the SiZer plot of \citet*{chaudhuri99}.
 In the SiZer plot, blue indicates significantly increasing gradient,
 red is significantly decreasing gradient, purple is non-significant gradient
 and grey is data too sparse for reliable estimation. The horizontal black line
@@ -86,18 +65,25 @@ is for the bandwidth $0.1$.
 
 \setkeys{Gin}{width=0.5\textwidth}
 <<eval=FALSE>>=
-featureSignif(eq3, addSignifGradRegion=TRUE,xlab="-log(-depth)", bw=0.1)
-
-featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)")
-lines(c(-2, 2), c(log(0.1), log(0.1)))
+library(feature)
+data(earthquake)
+eq3 <- log10(-earthquake[,3])
+eq3.fs <- featureSignif(eq3, bw=0.1)
+plot(eq3.fs, xlab="-log(-depth)")
+eq3.SiZer <- SiZer(eq3, bw=c(0.05, 0.5), xlab="-log(-depth)")
 @
 \begin{center}
-<<fig=TRUE,echo=FALSE,print=FALSE>>=
+<<fig=TRUE,echo=FALSE,print=FALSE,results=hide>>=
+library(feature)
+data(earthquake)
+eq3 <- log10(-earthquake[,3])
+par(mar=c(4.5,4,2,2))
 layout(matrix(1:2, nrow=2))
-featureSignif(eq3, addSignifGradRegion=TRUE, xlab="-log(-depth)", bw=0.1)
+eq3.fs <- featureSignif(eq3, bw=0.1)
+plot(eq3.fs, xlab="-log(-depth)", addSignifGradRegion=TRUE, addData=TRUE)
 xlim <- par()$usr[1:2]
-featureSignif(eq3, plotSiZer=TRUE, xlab="-log(-depth)", xlim=xlim)
-lines(c(-2, 2), c(log(0.1), log(0.1)))
+eq3.SiZer <- SiZer(eq3, xlim=xlim, bw=c(0.05, 0.5), xlab="-log(-depth)")
+abline(h=log(0.1))
 layout(1)
 @
 %\caption{Univariate data: significant gradient regions and SiZer plot}
@@ -118,12 +104,14 @@ the significant curvature regions in blue superimposed.
 <<fig=FALSE,print=FALSE,eval=FALSE>>=
 library(MASS)
 data(geyser)
-featureSignif(geyser, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37))
+geyser.fs <- featureSignif(geyser, bw=c(4.5, 0.37))
+plot(geyser.fs, addSignifCurvRegion=TRUE)
 @
 <<fig=TRUE,print=FALSE,echo=FALSE>>=
 library(MASS)
 data(geyser)
-fs <- featureSignif(geyser, addSignifCurvRegion=TRUE, bw=c(4.5, 0.37),gridsize=c(51,51))
+geyser.fs <- featureSignif(geyser, bw=c(4.5, 0.37), gridsize=c(51,51))
+plot(geyser.fs, addSignifCurvRegion=TRUE)
 @
 \end{center}
 %\caption{Bivariate data: significant gradient and curvature regions}
@@ -137,53 +125,39 @@ significant curvature data points are in blue.
 %\begin{figure}[!ht]
 \begin{center}
 <<eval=FALSE>>=
-fs <- featureSignif(geyser, addSignifCurvData=TRUE, bw=c(4.5, 0.37))
+plot(geyser.fs, addSignifCurvData=TRUE)
 @
 <<fig=TRUE,echo=FALSE,print=FALSE>>=
-fs <- featureSignif(geyser, addSignifCurvData=TRUE, bw=c(4.5, 0.37), gridsize=c(51,51))
+plot(geyser.fs, addSignifCurvData=TRUE)
 @
 %\caption{Bivariate data: significant gradient and curvature data points}
 %\label{fig:fs5}
 \end{center}
 %\end{figure}
 
-Usually \texttt{featureSignif} returns invisibly to the command line 
-but in this example, we assigned it to the variable \texttt{fs}.
+The result of \texttt{featureSignif} is an object of class \texttt{fs}
+which is a list with fields
 <<>>=
-names(fs)
+names(geyser.fs)
 @
-where \texttt{x} is the data, \texttt{bw} is the bandwidth, \texttt{fhat\$est} 
-is the kernel density estimate
-on the grid \texttt{fhat\$x.grid}, 
-%\texttt{grad} is the logical matrix indicating signficant gradient on a grid, 
+where \texttt{x} is the data, \texttt{names} are the name labels used for plotting, \texttt{bw} is the bandwidth, \texttt{fhat} 
+is the kernel density estimate, 
+\texttt{grad} is the logical matrix indicating signficant gradient on a grid, 
 \texttt{curv} is the logical matrix indicating signficant curvature on a grid,
-%\texttt{gradData} is the logical vector indicating signficant gradient data points and 
-\texttt{curvData} is the logical vector indicating signficant curvature data points.
-So the points with significant curvature are 
-<<eval=FALSE>>=
-fs$x[fs$curvData,]
-@ 
-<<echo=FALSE>>=
-fs$x[fs$curvData,][1:5,]
-@ 
-\vdots
+\texttt{gradData} is the logical vector indicating signficant gradient data points, \texttt{gradDataPoints} are the signficant gradient data points, 
+\texttt{curvData} is the logical vector indicating signficant curvature data points, and \texttt{curvDataPoints} are the signficant curvature data points.
 
 \section{Functionality not documented in this vignette}
 
-\texttt{feature} includes 
-feature significance for 3- and 4-dimensional
-data. However the displays in these dimensions rely on the rgl engine
-\citep{rgl} which is not quite integrated with \texttt{Sweave} 
+This package includes feature significance for 3-dimensional
+data. However these displays rely on an rgl engine
+which is not integrated with \texttt{Sweave} 
 so we have excluded examples for the time being. See 
 the example code in \texttt{?featureSignif}.   
-
-These examples have used \texttt{featureSignif} in its non-interactive
-mode i.e. where the user supplies a particular value of the bandwidth. 
-In its interactive mode, the user is able to choose a
-bandwidth from a range of bandwidths and the significant features are
-displayed in real-time.
-Again it's not possible to illustrate this in this vignette,
-see \texttt{?featureSignif}.   
+The function \texttt{featureSignif} is non-interactive. Its
+interactive version is \texttt{featureSignifGUI}.
+We don't illustrate it in this vignette,
+see \texttt{?featureSignifGUI}.   
  
 
 \bibliographystyle{apalike}
@@ -191,11 +165,6 @@ see \texttt{?featureSignif}.
 %\bibliography{/c/tduong/home/research/references}
 
 \begin{thebibliography}{}
-
-\bibitem[Adler and Murdoch, 2006]{rgl}
-Adler, D. and Murdoch, D. (2006).
-\newblock {\em rgl: 3D visualization device system (OpenGL)}.
-\newblock R package version 0.67-2.
 
 \bibitem[Chaudhuri and Marron, 1999]{chaudhuri99}
 Chaudhuri, P. and Marron, J.~S. (1999).

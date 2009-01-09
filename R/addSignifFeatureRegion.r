@@ -70,8 +70,7 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
     x.gd.3 <- dest$x.grid[[3]]
 
     if (!all(SignifFeature==FALSE))
-      contour3d(SignifFeature,level=0.5,x=x.gd.1,color=featureCol,
-                y=x.gd.2,z=x.gd.3,alpha=trans.alpha,add=TRUE)
+      contour3d(SignifFeature,level=0.5,x=x.gd.1,color=featureCol,y=x.gd.2,z=x.gd.3,alpha=trans.alpha,add=TRUE)
   }
 
   ## for d==4, only significant curvature is calculated and plotted

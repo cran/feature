@@ -9,7 +9,6 @@
 
 SignifFeatureData <- function(x, d, dest, SignifFeature)
 {
-  
   n <- nrow(x)
   x.ind <- matrix(0, ncol=d, nrow=n)
   signif <- rep(FALSE, length=n)
