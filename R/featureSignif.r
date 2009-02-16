@@ -44,7 +44,7 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
   if (missing(bw))           ## b/w not specified -> interactive 
   {
     ##bw.range <- dfltBWrange(x,gridsize,tau, scale.fac=1.5)
-    bw.range <- dfltBWrange(as.matrix(x),tau, scale.fac=1.5)
+    bw.range <- dfltBWrange(as.matrix(x),tau)
     
     bw <- matrix(unlist(bw.range), nrow=2, byrow=FALSE)
     dfltCounts.out <- dfltCounts(x,gridsize, apply(bw, 2, max))
@@ -63,9 +63,9 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
     h <- bw
   }
   gcounts <- dfltCounts.out$counts
-  range.x <- dfltCounts.out$range.x  
-
-  dest <- drvkde(gcounts, rep(0,d), bandwidth=h, binned=TRUE, range.x=range.x, se=FALSE)
+  range.x <- dfltCounts.out$range.x
+  
+  dest <- drvkde(gcounts, drv=rep(0,d), bandwidth=h, binned=TRUE, range.x=range.x, se=FALSE, gridsize=gridsize)
   dest$est[dest$est<0] <- 0 
  
   ## significant features 

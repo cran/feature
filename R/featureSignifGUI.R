@@ -140,7 +140,7 @@ featureSignifGUI <- function(x, scaleData=FALSE)
   if (d==2) gridsize <- 151
   if (d==3) gridsize <- 31
   if (d==4) gridsize <- 21
-  bw.range <- dfltBWrange(x, tau, scale.fac=1.5)
+  bw.range <- dfltBWrange(x, tau)
   bw <- matrix(unlist(bw.range), nrow=2, byrow=FALSE)
   h.low <- bw[1,]
   h.upp <- bw[2,]

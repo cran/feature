@@ -51,7 +51,7 @@ SiZer <- function(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,  plotSiZer
   {
     h <- exp(logh)
     i <- i + 1
-      
+
     est.dens <- drvkde(gcounts,drv=0,bandwidth=h, binned=TRUE, range.x=range.x, se=FALSE)
     est.dens$est[est.dens$est<0] <- 0
     ESS <- n*est.dens$est*prod(h)*(sqrt(2*pi)^d)

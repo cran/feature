@@ -43,6 +43,7 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
       stop("Matrix square root is not defined")
     return(Asqrt)
   }
+
   
   if (d>1)
   {
@@ -52,7 +53,7 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
   }
   
   if (d==1)
-  { 
+  {
     if (grad)
     {    
       obj1 <- drvkde(gcounts,drv=1,bandwidth=h, binned=TRUE, range.x=range.x,

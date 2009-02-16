@@ -5,7 +5,7 @@
 
 # Last changed: 22 JUL 2005
 
-dfltBWrange <- function(x,tau,scale.fac=1.2) {
+dfltBWrange <- function(x,tau) {
   d <- NCOL(x)
   if (d==1) x <- as.matrix(x)
 
@@ -24,10 +24,11 @@ dfltBWrange <- function(x,tau,scale.fac=1.2) {
   range.h <- list()
   for (id in 1:d)
   {
-    h.upp <- cmb.fac.upp*scale.fac*sig.hats[id]
-    h.low <- cmb.fac.low*scale.fac*sig.hats[id] ##3*(range.vals[id] + 2*tau*h.upp)/((gridsize[id]-1)*tau)
+    h.upp <- cmb.fac.upp*sig.hats[id]
+    h.low <- 0.1*cmb.fac.low*sig.hats[id] ##3*(range.vals[id] + 2*tau*h.upp)/((gridsize[id]-1)*tau)
     range.h[[id]] <- c(h.low,h.upp)
   }
+
   return(range.h)
 }
 
