@@ -46,18 +46,13 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
     x.grid.1 <- dest$x.grid[[1]] ; x.grid.2 <- dest$x.grid[[2]]
     x.mesh <- expand.grid(x.grid.1,x.grid.2)
     inds.on <- (1:nrow(x.mesh))[as.vector(SignifFeature)]
-    inds.on <- intersect(inds.on,
-                         (1:nrow(x.mesh))[x.mesh[,1]>=range.x.plot[[1]][1]])
-    inds.on <- intersect(inds.on,
-                         (1:nrow(x.mesh))[x.mesh[,1]<=range.x.plot[[1]][2]])
-    inds.on <- intersect(inds.on,
-                         (1:nrow(x.mesh))[x.mesh[,2]>=range.x.plot[[2]][1]])
-    inds.on <- intersect(inds.on,
-                         (1:nrow(x.mesh))[x.mesh[,2]<=range.x.plot[[2]][2]])
+    inds.on <- intersect(inds.on, (1:nrow(x.mesh))[x.mesh[,1]>=range.x.plot[[1]][1]])
+    inds.on <- intersect(inds.on,(1:nrow(x.mesh))[x.mesh[,1]<=range.x.plot[[1]][2]])
+    inds.on <- intersect(inds.on, (1:nrow(x.mesh))[x.mesh[,2]>=range.x.plot[[2]][1]])
+    inds.on <- intersect(inds.on, (1:nrow(x.mesh))[x.mesh[,2]<=range.x.plot[[2]][2]])
 
     if (add.bars)
-      points(x.mesh[inds.on,1],x.mesh[inds.on,2],pch=".",
-             col=featureCol, cex=2) 
+      points(x.mesh[inds.on,1],x.mesh[inds.on,2],pch=".",col=featureCol, cex=2)
 
     contour(x.grid.1[plot.inds[[1]]],x.grid.2[plot.inds[[2]]],
            SignifFeature[plot.inds[[1]],plot.inds[[2]]],add=TRUE,

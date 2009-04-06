@@ -66,11 +66,11 @@ library(MASS)
 data(geyser)
 duration <- geyser$duration 
 featureSignifGUI(duration)  ## univariate example
-featureSignif(geyser)       ## bivariate example 
+featureSignifGUI(geyser)    ## bivariate example 
 
 data(earthquake)            ## trivariate example
 earthquake$depth <- -log10(-earthquake$depth)
-featureSignif(earthquake,  scaleData=TRUE)
+featureSignifGUI(earthquake,  scaleData=TRUE)
 }
 }
 

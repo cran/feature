@@ -1,14 +1,13 @@
-useDynLib(feature)
+##useDynLib(feature)
 
-##export(drvkde)
 export(featureSignif)
 export(featureSignifGUI)
 export(SiZer)
 
 S3method(plot, fs)
 importFrom(utils, installed.packages)
-importFrom(ks, drvkde)
-## not exported
+importFrom(ks, drvkde, dfltCounts)
+
 
 
 

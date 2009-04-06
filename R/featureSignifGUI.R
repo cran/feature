@@ -8,6 +8,7 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     if (d>=2) ylim <- as.numeric(c(panel$ylim1, panel$ylim2))
     if (d>=3) zlim <- as.numeric(c(panel$zlim1, panel$zlim2))
     bw <- c(panel$bw1, panel$bw2, panel$bw3)
+   
     gs <- rep(as.numeric(panel$gridsize), d)
     panel$fs <- featureSignif(x, bw=bw, addSignifGrad=TRUE, addSignifCurv=TRUE, gridsize=gs)
     if (d==1) plot(panel$fs, addKDE=TRUE, add=FALSE, xlim=xlim, xlab=panel$xlab)
