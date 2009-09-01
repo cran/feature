@@ -55,6 +55,6 @@ Tarn Duong <tarn.duong@gmail.com> & Matt Wand <wand@uow.edu.au>
 \keyword{ package }
 
 \seealso{
-\code{\link[sm:sm-package]{sm}}, \code{\link[KernSmooth]{KernSmooth}}
+\code{sm}, \code{KernSmooth}
 }
 

@@ -69,7 +69,7 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
   dest$est[dest$est<0] <- 0 
  
   ## significant features 
-
+  
   SignifFeatureRegion.mat <- SignifFeatureRegion(n,d,gcounts,gridsize,dest, h, signifLevel, range.x, grad=addSignifGrad, curv=addSignifCurv)
   ESS <- n*dest$est*prod(h)*(sqrt(2*pi)^d)
   SigESS <- ESS >= 5

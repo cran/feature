@@ -18,14 +18,16 @@ SignifFeatureData <- function(x, d, dest, SignifFeature)
     for (j in 1:d)
       x.ind[i,j] <- sum(x[i,j] >= dest$x.grid[[j]])
 
+    ##if (!is.null(SignifFeature))
     if (d==1)
-      signif[i] <- SignifFeature[x.ind[i,1]]
+      sigf <- SignifFeature[x.ind[i,1]]
     else if (d==2)
-      signif[i] <- SignifFeature[x.ind[i,1], x.ind[i,2]]
+      sigf <- SignifFeature[x.ind[i,1], x.ind[i,2]]
     else if (d==3)
-      signif[i] <- SignifFeature[x.ind[i,1], x.ind[i,2], x.ind[i,3]]
+      sigf <- SignifFeature[x.ind[i,1], x.ind[i,2], x.ind[i,3]]
     else if (d==4)
-      signif[i] <- SignifFeature[x.ind[i,1], x.ind[i,2], x.ind[i,3], x.ind[i,4]]
+      sigf <- SignifFeature[x.ind[i,1], x.ind[i,2], x.ind[i,3], x.ind[i,4]]
+    if (!is.null(sigf)) signif[i] <- sigf  
   }  
   
   return(signif)
