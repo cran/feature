@@ -24,7 +24,7 @@
 
 \source{
   Scott, D.W. (1992). \emph{Multivariate Density Estimation: Theory, Practice
-    and Visualization.} John Wiley \& Sons Inc., New York.
+    and Visualization.} John Wiley & Sons Inc., New York.
   
 }
 

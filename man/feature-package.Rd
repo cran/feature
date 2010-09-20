@@ -30,31 +30,10 @@ feature
 \author{
 Tarn Duong <tarn.duong@gmail.com> & Matt Wand <wand@uow.edu.au>
 }
-\references{
-  Chaudhuri, P. and Marron, J.S. (1999) 
-  SiZer for exploration of structures in curves.
-  \emph{Journal of the American Statistical Association},
-  \bold{94},  807-823.
-
-  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2008)
-  Feature significance for multivariate kernel density estimation.
-  \emph{Computational Statistics and Data Analysis}, \bold{52}, 4225-4242. 
-
-  Godtliebsen, F., Marron, J.S. and Chaudhuri, P. (2002) 
-  Significance in scale space for bivariate density estimation.
-  \emph{Journal of Computational and Graphical Statistics},
-  \bold{11}, 1-22.
-  
-  Scott, D.W. (1992) \emph{Multivariate Density Estimation: Theory,
-    Practice, and Visualization}. John Wiley \& Sons. New York.
-
-  Wand, M.P. \& Jones, M.C. (1995) \emph{Kernel Smoothing}. Chapman \&
-  Hall/CRC. London.
-}
 
 \keyword{ package }
 
 \seealso{
-\code{sm}, \code{KernSmooth}
+\code{ks}, \code{sm}, \code{KernSmooth}
 }
 

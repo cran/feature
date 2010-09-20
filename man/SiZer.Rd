@@ -33,7 +33,7 @@ SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,
 }
 
 \details{
-  The gradient SiZer map of Chaudhuri \& Marron (1999) is
+  The gradient SiZer map of Chaudhuri & Marron (1999) is
   implemented. The horizontal axis is the data axis, the
   vertical axis are the bandwidths.
   %It returns a list with the following fields \cr
@@ -49,7 +49,7 @@ SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,
 \seealso{\code{\link{featureSignif}}}
 
 \references{
-  Chaudhuri, P. and Marron, J.S. (1999) 
+  Chaudhuri, P. & Marron, J.S. (1999) 
   SiZer for exploration of structures in curves.
   \emph{Journal of the American Statistical Association},
   \bold{94},  807-823.

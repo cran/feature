@@ -146,18 +146,18 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
       material3d(alpha=1)
       material3d(back="fill")
 
-      plot3d(mean(xlim), mean(ylim), mean(zlim), type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=FALSE, box=FALSE)
-      if (addAxes3d) axes3d(c('x','y','z'))
+      plot3d(mean(xlim), mean(ylim), mean(zlim), type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d)
+      ##if (addAxes3d) axes3d(c('x','y','z'))
     }
 
     if (addKDE)
     {
-      kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(21,3))
+      kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx=TRUE)
       alph <- seq(0.1,0.5,length=num.levs)
       ##lev.vals <- contourLevels(kde.temp, cont=seq(90, 10, length=num.levs))
-      plot(kde.temp, add=TRUE)
-      ##for (il in 1:num.levs)
-      ##  contour3d(dest$est,level=lev.vals[il], x=x.gd.1,y=x.gd.2,z=x.gd.3,color=densCol[il],alpha=alph[il], add=TRUE)   
+      plot(kde.temp, box=FALSE, axes=FALSE, add=TRUE)
+      ##for (il in 1:length(kde.temp$cont))
+      ##  contour3d(kde.temp$estimate,level=kde.temp$cont[il], x=kde.temp$eval.points[[1]],y=kde.temp$eval.points[[2]],z=kde.temp$eval.points[[2]], color=densCol[il], alpha=alph[il], add=TRUE)   
     }
     if (addData)
       points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)

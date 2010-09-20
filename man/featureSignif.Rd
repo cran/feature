@@ -25,28 +25,28 @@ featureSignif(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE,
 }
 
 \value{
-  Returns an object of class \code{fs} which is a list with the following fields\cr
-  \code{x} - data matrix \cr
-  \code{names} - name labels used for plotting \cr
-  \code{bw} - vector of bandwidths \cr
-  \code{fhat} - kernel density estimate on a grid \cr
-  \code{grad} - logical grid for significant gradient \cr
-  \code{curv} - logical grid for significant curvature \cr
-  \code{gradData} - logical vector for significant gradient data
-  points \cr
-  \code{gradDataPoints} - significant gradient data points \cr
-  \code{curvData} - logical vector for significant curvature data
-  points \cr
-  \code{curvDataPoints} - significant curvature data points 
+  Returns an object of class \code{fs} which is a list with the following fields
+  \describe{
+  \item{\code{x}}{data matrix}
+  \item{\code{names}}{name labels used for plotting}
+  \item{\code{bw}}{vector of bandwidths}
+  \item{\code{fhat}}{kernel density estimate on a grid}
+  \item{\code{grad}}{logical grid for significant gradient}
+  \item{\code{curv}}{logical grid for significant curvature}
+  \item{\code{gradData}}{logical vector for significant gradient data points}
+  \item{\code{gradDataPoints}}{significant gradient data points}
+  \item{\code{curvData}}{logical vector for significant curvature data points}
+  \item{\code{curvDataPoints}}{significant curvature data points}
+  } 
 }
 
 \details{
   Feature significance is based on significance testing of the gradient
   (first derivative) and curvature (second derivative) of a kernel
   density estimate.
-  This was developed for 1-d data by Chaudhuri \& Marron (1995), for
-  2-d data by Godtliebsen, Marron \& Chaudhuri (1999), and for 3-d and 4-d
-  data by Duong, Cowling, Koch \& Wand (2007).
+  This was developed for 1-d data by Chaudhuri & Marron (1995), for
+  2-d data by Godtliebsen, Marron & Chaudhuri (1999), and for 3-d and 4-d
+  data by Duong, Cowling, Koch & Wand (2007).
 
   The test statistic for gradient testing is at a point \eqn{\mathbf{x}}{x} is
   \deqn{W(\mathbf{x}) = \Vert \widehat{\nabla f} (\mathbf{x}; \mathbf{H}) \Vert^2}{%
@@ -66,36 +66,35 @@ featureSignif(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE,
     H)} is the kernel estimate of the curvature of
   \eqn{f(\mathbf{x})}{f(x)}, and vech is the vector-half operator.
   \eqn{W^{(2)}(\mathbf{x})}{W2(x)} is
-  approximately chi-squared distributed with \eqn{d(d+1)/2} degrees of freedom.
+  approximately chi-squared distributed with \eqn{d(d+1)/2}{d(d+1)/2} degrees of freedom.
 
   Since this is a situation with many dependent hypothesis tests, we
   use a multiple comparison or simultaneous test to control the
   overall level of significance. We use a Hochberg-type procedure. See
-  Hochberg (1988) and Duong, Cowling, Koch \& Wand (2007).
+  Hochberg (1988) and Duong, Cowling, Koch & Wand (2007).
 }
-  
 
 
 \references{
-  Chaudhuri, P. and Marron, J.S. (1999) 
+  Chaudhuri, P. & Marron, J.S. (1999) 
   SiZer for exploration of structures in curves.
   \emph{Journal of the American Statistical Association},
   \bold{94},  807-823.
 
-  Duong, T., Cowling, A., Koch, I., Wand, M.P. (2008)
+  Duong, T., Cowling, A., Koch, I. & Wand, M.P. (2008)
   Feature significance for multivariate kernel density estimation.
   \emph{Computational Statistics and Data Analysis}, \bold{52}, 4225-4242. 
 
   Hochberg, Y. (1988) A sharper Bonferroni procedure for multiple tests
   of significance. \emph{Biometrika}, \bold{75}, 800-802.
   
-  Godtliebsen, F., Marron, J.S. and Chaudhuri, P. (2002) 
+  Godtliebsen, F., Marron, J.S. & Chaudhuri, P. (2002) 
   Significance in scale space for bivariate density estimation.
   \emph{Journal of Computational and Graphical Statistics},
   \bold{11}, 1-22.
 
-  Wand, M.P. and Jones, M.C. (1995)
-  \emph{Kernel Smoothing.} Chapman \& Hall/CRC, London.
+  Wand, M.P. & Jones, M.C. (1995)
+  \emph{Kernel Smoothing.} Chapman & Hall/CRC, London.
 }
 
 

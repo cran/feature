@@ -17,11 +17,6 @@ featureSignifGUI(x, scaleData=FALSE)
 	each dimension}
 }
 
-%\value{
-%  The result is the output from \link{featureSignif}, an object of class
-%  \code{fs}. 
-%}
-
 \details{
   In the first column are the sliders for selecting the bandwidths (one
   for each dimension). Move
@@ -70,8 +65,7 @@ featureSignifGUI(geyser)    ## bivariate example
 
 data(earthquake)            ## trivariate example
 earthquake$depth <- -log10(-earthquake$depth)
-featureSignifGUI(earthquake,  scaleData=TRUE)
-}
+featureSignifGUI(earthquake,  scaleData=TRUE)}
 }
 
 \keyword{smooth} 

@@ -1,128 +1,147 @@
-
-
 featureSignifGUI <- function(x, scaleData=FALSE)
 {
-  fscreate <- function(panel)
+  fscreate.tcl <- function()
   {
-    xlim <- as.numeric(c(panel$xlim1, panel$xlim2))
-    if (d>=2) ylim <- as.numeric(c(panel$ylim1, panel$ylim2))
-    if (d>=3) zlim <- as.numeric(c(panel$zlim1, panel$zlim2))
-    bw <- c(panel$bw1, panel$bw2, panel$bw3)
-   
-    gs <- rep(as.numeric(panel$gridsize), d)
-    panel$fs <- featureSignif(x, bw=bw, addSignifGrad=TRUE, addSignifCurv=TRUE, gridsize=gs)
-    if (d==1) plot(panel$fs, addKDE=TRUE, add=FALSE, xlim=xlim, xlab=panel$xlab)
-    if (d==2) plot(panel$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, xlab=panel$xlab, ylab=panel$ylab)
-    if (d==3) plot(panel$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=panel$xlab, ylab=panel$ylab, zlab=panel$zlab)
-    ##assign("fs.gui", panel$fs, envir=globalenv())
-    ##rp.messagebox("Feature significance computations complete and saved as `fs.gui' in the R workspace.")
-    rp.messagebox("Feature significance computations complete.")
-    return(panel)
+    xlim <- as.numeric(c(tclvalue(xlim1.tcl), tclvalue(xlim2.tcl)))
+    bw <- as.numeric(tclvalue(bw1.tcl))
+    if (d>=2)
+    {
+      ylim <- as.numeric(c(tclvalue(ylim1.tcl), tclvalue(ylim2.tcl)))
+      bw <- as.numeric(c(tclvalue(bw1.tcl), tclvalue(bw2.tcl)))
+    }
+    if (d>=3)
+    {
+      zlim <- as.numeric(c(tclvalue(zlim1.tcl), tclvalue(zlim2.tcl)))
+      bw <- as.numeric(c(tclvalue(bw1.tcl), tclvalue(bw2.tcl), tclvalue(bw3.tcl)))
+    }
+    gs <- rep(as.numeric(tclvalue(gridsize.tcl)), d)
+    fs <- featureSignif(x, bw=bw, addSignifGrad=TRUE, addSignifCurv=TRUE, gridsize=gs)
+    assign("fs", fs, envir=fs.env)
+
+    if (d==1) plot(fs, addKDE=TRUE, add=FALSE, xlim=xlim, xlab=tclvalue(xlab.tcl))
+    if (d==2) plot(fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl))
+    if (d==3) plot(fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl), zlab=tclvalue(zlab.tcl), addAxes3d=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
+    tkmessageBox(title="featureSignifGUI", message="Feature significance computations complete.", type="ok")
+    return()
   }
   
-  fssizer <- function(panel)
+  fssizer.tcl <- function()
   {
-    xlim <- as.numeric(c(panel$xlim1, panel$xlim2))
-    ##bw <- c(panel$bw1, panel$bw2, panel$bw3)
-    xlab <- panel$xlab
-    gs <- rep(as.numeric(panel$gridsize), d)
-    panel$fs.SiZer <- SiZer(x, bw=bw.range[[1]], gridsize=gs, xlim=xlim, xlab=xlab, plotSiZer=TRUE)
-    ##assign("fs.SiZer.gui", panel$fs.SiZer, envir=globalenv())
-    ##rp.messagebox("SiZer map complete and saved as `fs.SiZer.gui' in the R workspace.")
-    rp.messagebox("SiZer map complete.")
-    return(panel)
+    xlim <- as.numeric(c(tclvalue(xlim1.tcl), tclvalue(xlim2.tcl)))
+    xlab <- tclvalue(xlab.tcl)
+    gs <- rep(as.numeric(tclvalue(gridsize.tcl)), d)
+    fs.env$fs.SiZer <- SiZer(x, bw=bw.range[[1]], gridsize=gs, xlim=xlim, xlab=xlab, plotSiZer=TRUE)
+    tkmessageBox(title="featureSignifGUI", message="SiZer map computed.", type="ok")
+    return()
   }
 
-  fsdata <- function(panel)
+  fsdata.tcl <- function()
   {
-    addDataNum <- as.numeric(panel$addDataNum)
-    if (!is.null(panel$fs))
+    addDataNum <- as.numeric(tclvalue(addDataNum.tcl))
+    if (d>=3) dataAlpha <- as.numeric(tclvalue(dataAlpha.tcl))
+    if (!is.null(fs.env$fs))
       if (d<3)
-        plot(panel$fs, addKDE=FALSE, addData=TRUE, add=TRUE, addDataNum=addDataNum)
+        plot(fs.env$fs, addKDE=FALSE, addData=TRUE, add=TRUE, addDataNum=addDataNum)
       else
-        plot(panel$fs, addKDE=FALSE, addData=TRUE, add=TRUE, dataAlpha=panel$dataAlpha, addDataNum=addDataNum)
-    return(panel)
+        plot(fs.env$fs, addKDE=FALSE, addData=TRUE, add=TRUE, dataAlpha=dataAlpha, addDataNum=addDataNum)
+    return()
   }
 
-  fsgraddata <- function(panel)
+  fsgraddata.tcl <- function()
   {
-    addDataNum <- as.numeric(panel$addDataNum)
-    if (!is.null(panel$fs))
+    addDataNum <- as.numeric(tclvalue(addDataNum.tcl))
+    if (d>=3) gradDataAlpha <- as.numeric(tclvalue(gradDataAlpha.tcl))
+    if (!is.null(fs.env$fs))
       if (d<3)
-        plot(panel$fs, addKDE=FALSE, addSignifGradData=TRUE, add=TRUE, addDataNum=addDataNum)
+        plot(fs.env$fs, addKDE=FALSE, addSignifGradData=TRUE, add=TRUE, addDataNum=addDataNum)
       else
-        plot(panel$fs, addKDE=FALSE, addSignifGradData=TRUE, add=TRUE, gradDataAlpha=panel$gradDataAlpha, addDataNum=addDataNum)
-    return(panel)
+        plot(fs.env$fs, addKDE=FALSE, addSignifGradData=TRUE, add=TRUE, gradDataAlpha=gradDataAlpha, addDataNum=addDataNum)
+    return()
   }
 
-  fsgradregion <- function(panel)
+  fsgradregion.tcl <- function(panel)
   {
-    if (!is.null(panel$fs))
+    if (d>=3) gradRegionAlpha <- as.numeric(tclvalue(gradRegionAlpha.tcl))
+    if (!is.null(fs.env$fs))
       if (d<3)
-        plot(panel$fs, addKDE=FALSE, addSignifGradRegion=TRUE, add=TRUE)
+        plot(fs.env$fs, addKDE=FALSE, addSignifGradRegion=TRUE, add=TRUE)
       else
-        plot(panel$fs, addKDE=FALSE, addSignifGradRegion=TRUE, add=TRUE, gradRegionAlpha=panel$gradRegionAlpha)
-    return(panel)
+        plot(fs.env$fs, addKDE=FALSE, addSignifGradRegion=TRUE, add=TRUE, gradRegionAlpha=gradRegionAlpha, addAxes=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
+    return()
   }
 
-  fscurvdata <- function(panel)
+  fscurvdata.tcl <- function(panel)
   {
-    addDataNum <- as.numeric(panel$addDataNum)
-    if (!is.null(panel$fs))
+    addDataNum <- as.numeric(tclvalue(addDataNum.tcl))
+    if (d>=3) curvDataAlpha <- as.numeric(tclvalue(curvDataAlpha.tcl))
+    if (!is.null(fs.env$fs))
       if (d <3)
-        plot(panel$fs, addKDE=FALSE, addSignifCurvData=TRUE, add=TRUE, addDataNum=addDataNum)
+        plot(fs.env$fs, addKDE=FALSE, addSignifCurvData=TRUE, add=TRUE, addDataNum=addDataNum)
       else
-        plot(panel$fs, addKDE=FALSE, addSignifCurvData=TRUE, add=TRUE, curvDataAlpha=panel$curvDataAlpha, addDataNum=addDataNum)
-    return(panel)
+        plot(fs.env$fs, addKDE=FALSE, addSignifCurvData=TRUE, add=TRUE, curvDataAlpha=curvDataAlpha, addDataNum=addDataNum)
+    return()
   }
 
-  fscurvregion <- function(panel)
+  fscurvregion.tcl <- function(panel)
   {
-    if (!is.null(panel$fs))
+    if (d>=3) curvRegionAlpha <- as.numeric(tclvalue(curvRegionAlpha.tcl))
+    if (!is.null(fs.env$fs))
       if (d <3)
-         plot(panel$fs, addKDE=FALSE, addSignifCurvRegion=TRUE, add=TRUE)
+         plot(fs.env$fs, addKDE=FALSE, addSignifCurvRegion=TRUE, add=TRUE)
       else
-        plot(panel$fs, addKDE=FALSE, addSignifCurvRegion=TRUE, add=TRUE, curvRegionAlpha=panel$curvRegionAlpha)
+        plot(fs.env$fs, addKDE=FALSE, addSignifCurvRegion=TRUE, add=TRUE, curvRegionAlpha=curvRegionAlpha, addAxes=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
     return(panel)
   }
 
-  fsclearall1 <- function(panel)
+  fsclearall1.tcl <- function()
   {
-    xlim <- as.numeric(c(panel$xlim1, panel$xlim2))
-    if (d>=2) ylim <- as.numeric(c(panel$ylim1, panel$ylim2))
-    if (d>=3) zlim <- as.numeric(c(panel$zlim1, panel$zlim2))
-   
-    if (!is.null(panel$fs))
+    xlim <- as.numeric(c(tclvalue(xlim1.tcl), tclvalue(xlim2.tcl)))
+    if (d>=2) ylim <- as.numeric(c(tclvalue(ylim1.tcl), tclvalue(ylim2.tcl)))
+    if (d>=3) zlim <- as.numeric(c(tclvalue(zlim1.tcl), tclvalue(zlim2.tcl)))
+           
+    if (!is.null(fs.env$fs))
     {
-      if (d==1) plot(panel$fs, addKDE=TRUE, add=FALSE, xlim=xlim, xlab=panel$xlab)
-      if (d==2) plot(panel$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, xlab=panel$xlab, ylab=panel$ylab)
-      if (d==3) plot(panel$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim,xlab=panel$xlab, ylab=panel$ylab, zlab=panel$zlab)
+      if (d==1) plot(fs.env$fs, addKDE=TRUE, add=FALSE, xlim=xlim, xlab=tclvalue(xlab.tcl))
+      if (d==2) plot(fs.env$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl))
+      if (d==3) plot(fs.env$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl), zlab=tclvalue(zlab.tcl),  addAxes3d=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
     }
-    return(panel)
+    return()
   }
-  fsclearall2 <- function(panel)
+  fsclearall2.tcl <- function(panel)
   {
-    xlim <- as.numeric(c(panel$xlim1, panel$xlim2))
-    if (d>=2) ylim <- as.numeric(c(panel$ylim1, panel$ylim2))
-    if (d>=3) zlim <- as.numeric(c(panel$zlim1, panel$zlim2))
-
-    if (!is.null(panel$fs))
+    xlim <- as.numeric(c(tclvalue(xlim1.tcl), tclvalue(xlim2.tcl)))
+    if (d>=2) ylim <- as.numeric(c(tclvalue(ylim1.tcl), tclvalue(ylim2.tcl)))
+    if (d>=3) zlim <- as.numeric(c(tclvalue(zlim1.tcl), tclvalue(zlim2.tcl)))
+           
+    if (!is.null(fs.env$fs))
     {
-      if (d==1) plot(panel$fs, addKDE=FALSE, add=FALSE, xlim=xlim, xlab=panel$xlab)
-      if (d==2) plot(panel$fs, addKDE=FALSE, add=FALSE, xlim=xlim, ylim=ylim, xlab=panel$xlab, ylab=panel$ylab)
-      if (d==3) plot(panel$fs, addKDE=FALSE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=panel$xlab, ylab=panel$ylab, zlab=panel$zlab)
+      if (d==1) plot(fs.env$fs, addKDE=FALSE, add=FALSE, xlim=xlim, xlab=tclvalue(xlab.tcl))
+      if (d==2) plot(fs.env$fs, addKDE=FALSE, add=FALSE, xlim=xlim, ylim=ylim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl))
+      if (d==3) plot(fs.env$fs, addKDE=FALSE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl), zlab=tclvalue(zlab.tcl),  addAxes3d=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
     }
-    return(panel)
+    return()
   }
+  
+  ######################################################################################################
+  ## GUI
+  #####################################################################################################
 
-  ## Create GUI panel 
-  require(rpanel)
-  options(guiStyle = "Rcmdr")
+  fs.env <- new.env()
+    
+  button.col <- "lightblue"
+  bg.col <- "white"
+  fg.col <- "black"
+  heading.col <- "blue"
+  heading.font <- tkfont.create(family="helvetica", weight="bold")
+  space.font <- tkfont.create(size=10)
+  textwidth <- 10
+  #space.label <- paste(rep(" ", scalebar.width), collapse="")
+  tcl("tk_setPalette", "background", bg.col, "selectColor", "grey75") 
 
-  ## Set some defaults
-
+  ## set defaults
+  
   if (is.vector(x))
-  { d <- 1; n <- length(x); names.x <- deparse(substitute(x))}
+  { d <- 1; n <- length(x); names.x <- deparse(substitute(x));  if (scaleData)  x <- (x-min(x))/(max(x) - min(x))}
   else
   { d <- ncol(x); n <- nrow(x); names.x <- colnames(x)
     if (is.null(names.x))
@@ -131,10 +150,13 @@ featureSignifGUI <- function(x, scaleData=FALSE)
        names.xx <- strsplit(names.xx, "\\[")[[1]][1]
        names.x <- paste(names.xx, "[,", 1:d, "]", sep="")
     }
+    if (scaleData)
+      for (i in 1:d)
+        x[,i] <- (x[,i]-min(x[,i]))/(max(x[,i]) - min(x[,i]))
   }
   if (d>4)
     stop("Feature significance only available for 1- to 4-d data")
-
+  
   tau <- 5
 
   if (d==1) gridsize <- 401
@@ -165,7 +187,6 @@ featureSignifGUI <- function(x, scaleData=FALSE)
       zlim <- c(min(x[,3])-h[3],max(x[,3])+h[3])
   }
 
-
   ## panel dimensions
   if (d <3)
   {  
@@ -181,75 +202,224 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     fspanel.button.height <- 50
     fspanel.button.width <- (fspanel.width-50)/4
   }
-  fspanel <- rp.control(panelname="fsgui", title="featureSignif GUI: feature significance for multivariate kernel density estimation", size=c(fspanel.width, fspanel.height))
+  
+  tt <- tktoplevel(width=fspanel.width, height=fspanel.height)
+  tt.name <- "featureSignif" 
+  tktitle(tt) <- paste("featureSignif GUI")
+  tkgrid(tklabel(tt,text="featureSignif GUI: feature significance for multivariate kernel density estimation", font=heading.font, foreground=heading.col), row=1, columnspan=7+2*(d>=3))
+  tkgrid(tklabel(tt,text="", font=space.font), row=3, column=1)
+  tkgrid(tklabel(tt,text="", font=space.font), row=3, column=3)
+  tkgrid(tklabel(tt,text="", font=space.font), row=3, column=5)
+  tkgrid(tklabel(tt,text="", font=space.font), row=3, column=7)
+  if (d==3)
+  {
+    tkgrid(tklabel(tt,text="", font=space.font), row=3, column=7)
+    tkgrid(tklabel(tt,text="", font=space.font), row=3, column=9)
+    tkgrid(tklabel(tt,text=""), row=2, columnspan=11)
+    tkgrid(tklabel(tt,text=""), row=4, columnspan=11)
+    tkgrid(tklabel(tt,text=""), row=6, columnspan=11)  
+  }
+  else
+  {
+    tkgrid(tklabel(tt,text=""), row=2, columnspan=9)
+    tkgrid(tklabel(tt,text=""), row=4, columnspan=9)
+    tkgrid(tklabel(tt,text=""), row=6, columnspan=9)
+  }
 
+  ## Bandwidths
+  
+  col1.frame <- tkframe(tt)
+  col1b.frame <- tkframe(col1.frame)
+  bw1.tcl <- tclVar(h[1])
+  bw2.tcl <- tclVar(h[2])
+  bw3.tcl <- tclVar(h[3])
 
-  ## bandwidth sliders and axes limits/labels
   if (d>=1)
   {
-    rp.slider(fspanel, bw1, h.low[1], h.upp[1], showvalue=TRUE, title=paste("Bandwidth for", names.x[1]), initval=h[1], pos=c(10,10,fspanel.button.width, 2*fspanel.button.height))
-    rp.textentry(fspanel, xlim1, title="Axis lower limit", init=xlim[1],4, pos=c(1*fspanel.button.width+20,10,fspanel.button.width, fspanel.button.height/2))
-    rp.textentry(fspanel, xlim2, title="Axis upper limit", init=xlim[2],4, pos=c(1*fspanel.button.width+20, 0.5*fspanel.button.height+10,fspanel.button.width, fspanel.button.height/2))
-    rp.textentry(fspanel, xlab, title="Axis label", init=names.x[1], pos=c(1*fspanel.button.width+20, 1*fspanel.button.height+10,fspanel.button.width, 0.5*fspanel.button.height))
+    bw1.s <- tkscale(col1.frame, from=h.low[1], to=h.upp[1], showvalue=TRUE, resolution=(h.upp[1]-h.low[1])/100, length=fspanel.button.width, variable=bw1.tcl, orient="horizontal", label=paste("Bandwidth for", names.x[1]))
+    tkconfigure(bw1.s, variable=bw1.tcl) 
+    tkgrid(bw1.s, sticky="we")
   }
-  
   if (d>=2)
   {
-    rp.slider(fspanel, bw2, h.low[2], h.upp[2], showvalue=TRUE, title=paste("Bandwidth for", names.x[2]), initval=h[2], pos=c(10,2*fspanel.button.height+10,fspanel.button.width, 2*fspanel.button.height))
-    rp.textentry(fspanel, ylim1, title="Axis lower limit", init=ylim[1],4, pos=c(1*fspanel.button.width+20,2*fspanel.button.height+10,fspanel.button.width, 0.5*fspanel.button.height))
-    rp.textentry(fspanel, ylim2, title="Axis upper limit", init=ylim[2],4, pos=c(1*fspanel.button.width+20, 2.5*fspanel.button.height+10,fspanel.button.width, 0.5*fspanel.button.height))
-    rp.textentry(fspanel, ylab, title="Axis label", init=names.x[2], pos=c(1*fspanel.button.width+20, 3*fspanel.button.height+10,fspanel.button.width, 0.5*fspanel.button.height))
+    bw2.s <- tkscale(col1.frame, from=h.low[2], to=h.upp[2], showvalue=TRUE,  resolution=(h.upp[2]-h.low[2])/100, length=fspanel.button.width, variable=bw2.tcl, orient="horizontal", label=paste("Bandwidth for", names.x[2]))
+    tkconfigure(bw2.s, variable=bw2.tcl) 
+    tkgrid(bw2.s, sticky="we")
   }
   if (d>=3)
   {
-    rp.slider(fspanel, bw3, h.low[3], h.upp[3], showvalue=TRUE, title=paste("Bandwidth for", names.x[3]), initval=h[3], pos=c(10,4*fspanel.button.height+10,fspanel.button.width, 2*fspanel.button.height))
- 
-    rp.textentry(fspanel, zlim1, title="Axis lower limit", init=zlim[1],4, pos=c(1*fspanel.button.width+20,4*fspanel.button.height+10,fspanel.button.width, 0.5*fspanel.button.height))
-    rp.textentry(fspanel, zlim2, title="Axis upper limit", init=zlim[2],4, pos=c(1*fspanel.button.width+20, 4.5*fspanel.button.height+10,fspanel.button.width, 0.5*fspanel.button.height))
-    rp.textentry(fspanel, zlab, title="Axis label", init=names.x[3], pos=c(1*fspanel.button.width+20, 5*fspanel.button.height+10,fspanel.button.width, 0.5*fspanel.button.height))
+    bw3.s <- tkscale(col1.frame, from=h.low[3], to=h.upp[3], showvalue=TRUE,  resolution=(h.upp[3]-h.low[3])/100, length=fspanel.button.width, variable=bw3.tcl, orient="horizontal", label=paste("Bandwidth for", names.x[3]))
+    tkconfigure(bw3.s, variable=bw3.tcl) 
+    tkgrid(bw3.s, sticky="we")
   }
-
-  ## Gridsize and data number text fields
-
-  rp.textentry(fspanel, gridsize, title=paste("Grid size"), initval=gridsize, pos=c(10,6*fspanel.button.height,fspanel.button.width, fspanel.button.height-10))
-
-  rp.textentry(fspanel, addDataNum, title="No. of display data points", init=1000, pos=c(1*fspanel.button.width+20,6*fspanel.button.height,fspanel.button.width, fspanel.button.height-10))
+  tkgrid(col1b.frame, sticky="w")
+  tkgrid(tklabel(col1.frame, text=" "), sticky="w")
   
-  
-  ## Computation buttons
-  
-  rp.button(fspanel, title="Compute significant features", action=fscreate, pos=c(10,7*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
+  ## Grid size
 
-  rp.button(fspanel, clearAll, title="Reset plot (except KDE)", action=fsclearall1, pos=c(1*fspanel.button.width+20,7*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
-  
-  if (d==1)  rp.button(fspanel, fsSiZer, title="Compute SiZer map", action=fssizer, pos=c(2*fspanel.button.width+30,7*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
-  else
-    rp.button(fspanel, clearAll, title="Reset plot", action=fsclearall2, pos=c(2*fspanel.button.width+30,7*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
+  col1b.frame <- tkframe(col1.frame)
+  gridsize.tcl <- tclVar(gridsize)
+  grid.e <- tkentry(col1b.frame, textvariable=gridsize.tcl, width=textwidth)
+  tkgrid(tklabel(col1b.frame, text="Grid size "), grid.e)
+  tkgrid(col1b.frame, sticky="w")
+  tkgrid(col1.frame, row=3, column=2, sticky="nw")
 
-  ## Buttons for feature signif. plots options
+
+  ## Axis limits
+  col2.frame <- tkframe(tt)
+
+  if (d>=1)
+  {  
+    col2b.frame <- tkframe(col2.frame)
+    xlim1.tcl <- tclVar(xlim[1])
+    xlim1.e <- tkentry(col2b.frame, textvariable=xlim1.tcl, width=textwidth)
+    tkgrid(tklabel(col2b.frame, text="Axis lower limit "), xlim1.e)
+    tkgrid(col2b.frame, sticky="w")
+    
+    col2b.frame <- tkframe(col2.frame)
+    xlim2.tcl <- tclVar(xlim[2])
+    xlim2.e <- tkentry(col2b.frame, textvariable=xlim2.tcl, width=textwidth)
+    tkgrid(tklabel(col2b.frame, text="Axis upper limit "), xlim2.e)
+    tkgrid(col2b.frame, sticky="w")
+    
+    col2b.frame <- tkframe(col2.frame)
+    xlab.tcl <- tclVar(names.x[1])
+    xlab.e <- tkentry(col2b.frame, textvariable=xlab.tcl)
+    tkgrid(tklabel(col2b.frame, text="Axis label "), xlab.e)
+    tkgrid(col2b.frame, sticky="w")
+    tkgrid(tklabel(col2.frame, text=" "), sticky="w")
+    tkgrid(col2.frame, row=3, column=4, sticky="ne")
+    
+  }
+  if (d>=2)
+  {  
+    col2b.frame <- tkframe(col2.frame)
+    ylim1.tcl <- tclVar(ylim[1])
+    ylim1.e <- tkentry(col2b.frame, textvariable=ylim1.tcl, width=textwidth)
+    tkgrid(tklabel(col2b.frame, text="Axis lower limit "), ylim1.e)
+    tkgrid(col2b.frame, sticky="w")
+    
+    col2b.frame <- tkframe(col2.frame)
+    ylim2.tcl <- tclVar(ylim[2])
+    ylim2.e <- tkentry(col2b.frame, textvariable=ylim2.tcl, width=textwidth)
+    tkgrid(tklabel(col2b.frame, text="Axis upper limit "), ylim2.e)
+    tkgrid(col2b.frame, sticky="w")
+    
+    col2b.frame <- tkframe(col2.frame)
+    ylab.tcl <- tclVar(names.x[2])
+    ylab.e <- tkentry(col2b.frame, textvariable=ylab.tcl)
+    tkgrid(tklabel(col2b.frame, text="Axis label "), ylab.e)
+    tkgrid(col2b.frame, sticky="w")
+    tkgrid(tklabel(col2.frame, text=" "), sticky="w")
+  }
+  if (d>=3)
+  {  
+    col2b.frame <- tkframe(col2.frame)
+    zlim1.tcl <- tclVar(zlim[1])
+    zlim1.e <- tkentry(col2b.frame, textvariable=zlim1.tcl, width=textwidth)
+    tkgrid(tklabel(col2b.frame, text="Axis lower limit "), zlim1.e)
+    tkgrid(col2b.frame, sticky="w")
+    
+    col2b.frame <- tkframe(col2.frame)
+    zlim2.tcl <- tclVar(zlim[2])
+    zlim2.e <- tkentry(col2b.frame, textvariable=zlim2.tcl, width=textwidth)
+    tkgrid(tklabel(col2b.frame, text="Axis upper limit "), zlim2.e)
+    tkgrid(col2b.frame, sticky="w")
+    
+    col2b.frame <- tkframe(col2.frame)
+    zlab.tcl <- tclVar(names.x[3])
+    zlab.e <- tkentry(col2b.frame, textvariable=zlab.tcl)
+    tkgrid(tklabel(col2b.frame, text="Axis label "), zlab.e)
+    tkgrid(col2b.frame, sticky="w")
+    tkgrid(tklabel(col2.frame, text=" "), sticky="w")
+  }
   
-  rp.button(fspanel, addData, title="Add data points", action=fsdata, pos=c(2*fspanel.button.width+30,10,fspanel.button.width, fspanel.button.height-10))
-  rp.button(fspanel, addSignifGradRegion, title="Add significant gradient regions", action=fsgradregion, pos=c(2*fspanel.button.width+30,1*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
-  rp.button(fspanel, addSignifGradData, title="Add significant gradient data", action=fsgraddata, pos=c(2*fspanel.button.width+30,2*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
-  rp.button(fspanel, addSignifCurvRegion, title="Add significant curvature regions", action=fscurvregion, pos=c(2*fspanel.button.width+30,3*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
-  rp.button(fspanel, addSignifCurvData, title="Add significant curvature data", action=fscurvdata, pos=c(2*fspanel.button.width+30,4*fspanel.button.height+10,fspanel.button.width, fspanel.button.height-10))
+  col2b.frame <- tkframe(col2.frame)
+  addDataNum.tcl <- tclVar(1000)
+  addDataNum.e <- tkentry(col2b.frame, textvariable=addDataNum.tcl, width=textwidth)
+  tkgrid(tklabel(col2b.frame, text="No. of display data points "), addDataNum.e)
+  tkgrid(col2b.frame, sticky="w")
+  tkgrid(col2.frame, row=3, column=4, sticky="nw")
+
+  ## Plot options
+  
+  col3.frame <- tkframe(tt)
+  fsdata.b <- tkbutton(col3.frame, text="Add data\npoints", command=fsdata.tcl, background=button.col)
+  fsgradregion.b <- tkbutton(col3.frame, text="Add significant\ngradient region", command=fsgradregion.tcl, background=button.col)
+  fsgraddata.b <- tkbutton(col3.frame, text="Add significant\ngradient data", command=fsgraddata.tcl, background=button.col)
+  fscurvregion.b <- tkbutton(col3.frame, text="Add significant\ncurvature region", command=fscurvregion.tcl, background=button.col)
+  fscurvdata.b <- tkbutton(col3.frame, text="Add significant\ncurvature data", command=fscurvdata.tcl, background=button.col)
+  tkgrid(fsdata.b)
+  tkgrid(fsgradregion.b)
+  tkgrid(fsgraddata.b)
+  tkgrid(fscurvregion.b)
+  tkgrid(fscurvdata.b)
+  if (d==3) tkgrid(col3.frame, row=3, column=8, sticky="nw")
+  else tkgrid(col3.frame, row=3, column=6, sticky="nw")
+
+  ## Transparency options
+
   if (d==3)
   {
-    rp.slider(fspanel, dataAlpha, 0, 1, title="Transparency of data points", initval=0.1, pos=c(3*fspanel.button.width+40,10,fspanel.button.width, fspanel.button.height))
-    rp.slider(fspanel, gradRegionAlpha, 0, 1, title="Transparency of signif. grad regions", initval=0.2, pos=c(3*fspanel.button.width+40,fspanel.button.height+10,fspanel.button.width, fspanel.button.height))
-    rp.slider(fspanel, gradDataAlpha, 0, 1, title="Transparency of signif. grad data", initval=0.3, pos=c(3*fspanel.button.width+40,2*fspanel.button.height+10,fspanel.button.width, fspanel.button.height))
-    rp.slider(fspanel, curvRegionAlpha, 0, 1, title="Transparency of signif. curv regions", initval=0.3, pos=c(3*fspanel.button.width+40,3*fspanel.button.height+10,fspanel.button.width, fspanel.button.height))
-    rp.slider(fspanel, curvDataAlpha, 0, 1, title="Transparency of signif. curv data", initval=0.3, pos=c(3*fspanel.button.width+40,4*fspanel.button.height+10,fspanel.button.width, fspanel.button.height))
+    col4.frame <- tkframe(tt)
+
+    dataAlpha.tcl <- tclVar(0.1)
+    dataAlpha.s <- tkscale(col4.frame, from=0, to=1, showvalue=TRUE,  resolution=0.1, length=fspanel.button.width, variable=dataAlpha.tcl, orient="horizontal", label="Transparency of data points")
+    tkconfigure(dataAlpha.s, variable=dataAlpha.tcl) 
+    tkgrid(dataAlpha.s, sticky="we")
+
+    gradRegionAlpha.tcl <- tclVar(0.2)
+    gradRegionAlpha.s <- tkscale(col4.frame, from=0, to=1, showvalue=TRUE,  resolution=0.1, length=fspanel.button.width, variable=dataAlpha.tcl, orient="horizontal", label="Transparency of signif. grad. regions")
+    tkconfigure(gradRegionAlpha.s, variable=gradRegionAlpha.tcl) 
+    tkgrid(gradRegionAlpha.s, sticky="we")
+
+    gradDataAlpha.tcl <- tclVar(0.2)
+    gradDataAlpha.s <- tkscale(col4.frame, from=0, to=1, showvalue=TRUE,  resolution=0.1,length=fspanel.button.width, variable=dataAlpha.tcl, orient="horizontal", label="Transparency of signif. grad. data")
+    tkconfigure(gradDataAlpha.s, variable=gradDataAlpha.tcl) 
+    tkgrid(gradDataAlpha.s, sticky="we")
+
+    curvRegionAlpha.tcl <- tclVar(0.3)
+    curvRegionAlpha.s <- tkscale(col4.frame, from=0, to=1, showvalue=TRUE,  resolution=0.1, length=fspanel.button.width, variable=dataAlpha.tcl, orient="horizontal", label="Transparency of signif. curv. regions")
+    tkconfigure(curvRegionAlpha.s, variable=curvRegionAlpha.tcl) 
+    tkgrid(curvRegionAlpha.s, sticky="we")
+
+    curvDataAlpha.tcl <- tclVar(0.3)
+    curvDataAlpha.s <- tkscale(col4.frame, from=0, to=1, showvalue=TRUE,  resolution=0.1, length=fspanel.button.width, variable=dataAlpha.tcl, orient="horizontal", label="Transparency of signif. curv. data")
+    tkconfigure(curvDataAlpha.s, variable=curvDataAlpha.tcl) 
+    tkgrid(curvDataAlpha.s, sticky="we")
+
+    col4b.frame <- tkframe(col4.frame)
+    addAxes3d.tcl <- tclVar(TRUE)
+    addAxes3d.cb <- tkcheckbutton(col4b.frame, variable=addAxes3d.tcl)
+    tkgrid(addAxes3d.cb, tklabel(col4b.frame, text="Add 3D axes "))
+    tkgrid(col4b.frame, sticky="nw")
+    tkgrid(col4.frame, row=3, column=6, sticky="nw")
   }
-  ## to prevent 'no visible binding for global variable' errors in R CMD check 
-  bw1 <- NULL; bw2 <- NULL; bw3 <- NULL;
-  xlim1 <- NULL; xlim2 <- NULL; xlim3 <- NULL; xlab <- NULL;
-  ylim1 <- NULL; ylim2 <- NULL; ylim3 <- NULL; ylab <- NULL;
-  zlim1 <- NULL; zlim2 <- NULL; zlim3 <- NULL; zlab <- NULL;
-  clearAll <- NULL; fsSiZer <- NULL;
-  addSignifGradRegion <- NULL; addSignifGradData <- NULL;
-  addSignifCurvRegion <- NULL; addSignifCurvData <- NULL;
-  gradRegionAlpha <- NULL; gradDataAlpha  <- NULL;
-  curvRegionAlpha <- NULL; curvDataAlpha  <- NULL;
-  addData <- NULL; addDataNum <- NULL; dataAlpha <- NULL
+
+  ## Computation buttons
+  
+  col1.frame <- tkframe(tt)
+  fscreate.b <- tkbutton(col1.frame, text="Compute significant\nfeatures", command=fscreate.tcl, background=button.col)
+  tkgrid(fscreate.b)
+  tkgrid(col1.frame, row=5, column=2, sticky="n")
+
+  col2.frame <- tkframe(tt)
+  fsclearall1.b <- tkbutton(col2.frame, text="Reset plot\n(except KDE)", command=fsclearall1.tcl, background=button.col)
+  tkgrid(fsclearall1.b)
+  tkgrid(col2.frame, row=5, column=4, sticky="n")
+
+  col3.frame <- tkframe(tt)
+  if (d==1)
+  {
+    fssizer.b <- tkbutton(col3.frame, text="Compute SiZer\nmap", command=fssizer.tcl, background=button.col)
+    tkgrid(fssizer.b)
+  }
+  else
+  {
+    fsclearall2.b <- tkbutton(col3.frame, text="Reset plot\n", command=fsclearall2.tcl, background=button.col)
+    tkgrid(fsclearall2.b)
+  }
+  tkgrid(col3.frame, row=5, column=6, sticky="n")
 }
+
+

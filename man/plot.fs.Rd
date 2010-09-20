@@ -6,8 +6,6 @@
   Feature signficance plot for 1- to 3-dimensional data.
 }
 
-%%\synopsis{\method{plot}{fs}(x, ...)}
-
 \usage{
 \method{plot}{fs}(x, ..., xlab, ylab, zlab, xlim, ylim, zlim,
    add=FALSE, addData=FALSE, scaleData=FALSE, addDataNum=1000,
@@ -34,24 +32,18 @@
   \item{addKDE}{flag for display of kernel density estimates}
   \item{jitterRug}{flag for jittering of rug-plot for univariate 
     data display}
-  \item{addSignifGradRegion}{flag for display of significant gradient regions}
-  \item{addSignifGradData}{flag for display of significant gradient
-    data points}
-  \item{addSignifCurvRegion}{flag for display of significant curvature regions}
-  \item{addSignifCurvData}{flag for display of significant curvature
-    data points}
+  \item{addSignifGradRegion,addSignifGradData}{flag for display of significant gradient regions/data points}
+  \item{addSignifCurvRegion,addSignifCurvData}{flag for display of significant curvature regions/data points}
   \item{addAxes3d}{flag for displaying axes in 3-d displays}
   \item{densCol}{colour of density estimate curve}
   \item{dataCol}{colour of data points}
-  \item{gradCol}{colour of significant gradient regions points}
-  \item{curvCol}{colour of significant curvature regions points}
+  \item{gradCol}{colour of significant gradient regions/data points}
+  \item{curvCol}{colour of significant curvature regions/data points}
   \item{axisCol}{colour of axes}
   \item{bgCol}{colour of background}
   \item{dataAlpha}{transparency of data points}
-  \item{gradDataAlpha}{transparency of significant gradient data points}
-  \item{gradRegionAlpha}{transparency of significant gradient regions}
-  \item{curvDataAlpha}{transparency of significant curvature data points}
-  \item{curvRegionAlpha}{transparency of significant curvature regions}
+  \item{gradRegionAlpha,gradDataAlpha}{transparency of significant gradient regions/data points}
+  \item{curvRegionAlpha,curvDataAlpha}{transparency of significant curvature regions/data points}
   \item{...}{other graphics parameters}
 }
   
