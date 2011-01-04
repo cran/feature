@@ -30,11 +30,21 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     xlim <- as.numeric(c(tclvalue(xlim1.tcl), tclvalue(xlim2.tcl)))
     xlab <- tclvalue(xlab.tcl)
     gs <- rep(as.numeric(tclvalue(gridsize.tcl)), d)
-    fs.env$fs.SiZer <- SiZer(x, bw=bw.range[[1]], gridsize=gs, xlim=xlim, xlab=xlab, plotSiZer=TRUE)
+    fs.env$fs.SiZer <- SiZer(as.vector(x), bw=bw.range[[1]], gridsize=gs, xlim=xlim, xlab=xlab, plotSiZer=TRUE)
     tkmessageBox(title="featureSignifGUI", message="SiZer map computed.", type="ok")
     return()
   }
 
+  fssicon.tcl <- function()
+  {
+    xlim <- as.numeric(c(tclvalue(xlim1.tcl), tclvalue(xlim2.tcl)))
+    xlab <- tclvalue(xlab.tcl)
+    gs <- rep(as.numeric(tclvalue(gridsize.tcl)), d)
+    fs.env$fs.SiCon <- SiCon(as.vector(x), bw=bw.range[[1]], gridsize=gs, xlim=xlim, xlab=xlab, plotSiCon=TRUE)
+    tkmessageBox(title="featureSignifGUI", message="SiCon map computed.", type="ok")
+    return()
+  }
+  
   fsdata.tcl <- function()
   {
     addDataNum <- as.numeric(tclvalue(addDataNum.tcl))
@@ -130,7 +140,7 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     
   button.col <- "lightblue"
   bg.col <- "white"
-  fg.col <- "black"
+  ##fg.col <- "black"
   heading.col <- "blue"
   heading.font <- tkfont.create(family="helvetica", weight="bold")
   space.font <- tkfont.create(size=10)
@@ -141,9 +151,9 @@ featureSignifGUI <- function(x, scaleData=FALSE)
   ## set defaults
   
   if (is.vector(x))
-  { d <- 1; n <- length(x); names.x <- deparse(substitute(x));  if (scaleData)  x <- (x-min(x))/(max(x) - min(x))}
+  { d <- 1;  names.x <- deparse(substitute(x)); x <- as.matrix(x); if (scaleData)  x <- (x-min(x))/(max(x) - min(x))}
   else
-  { d <- ncol(x); n <- nrow(x); names.x <- colnames(x)
+  { d <- ncol(x); names.x <- colnames(x)
     if (is.null(names.x))
     {
        names.xx <- deparse(substitute(x))
@@ -192,19 +202,18 @@ featureSignifGUI <- function(x, scaleData=FALSE)
   {  
     fspanel.width <- 740
     fspanel.height <- 410
-    fspanel.button.height <- 50
+    ##fspanel.button.height <- 50
     fspanel.button.width <- (fspanel.width-40)/3
   }
   else
   {
     fspanel.width <- 950
     fspanel.height <- 410
-    fspanel.button.height <- 50
+    ##fspanel.button.height <- 50
     fspanel.button.width <- (fspanel.width-50)/4
   }
   
   tt <- tktoplevel(width=fspanel.width, height=fspanel.height)
-  tt.name <- "featureSignif" 
   tktitle(tt) <- paste("featureSignif GUI")
   tkgrid(tklabel(tt,text="featureSignif GUI: feature significance for multivariate kernel density estimation", font=heading.font, foreground=heading.col), row=1, columnspan=7+2*(d>=3))
   tkgrid(tklabel(tt,text="", font=space.font), row=3, column=1)
@@ -411,8 +420,10 @@ featureSignifGUI <- function(x, scaleData=FALSE)
   col3.frame <- tkframe(tt)
   if (d==1)
   {
-    fssizer.b <- tkbutton(col3.frame, text="Compute SiZer\nmap", command=fssizer.tcl, background=button.col)
+    fssizer.b <- tkbutton(col3.frame, text="Compute SiZer map", command=fssizer.tcl, background=button.col)
+    fssicon.b <- tkbutton(col3.frame, text="Compute SiCon map", command=fssicon.tcl, background=button.col)
     tkgrid(fssizer.b)
+    tkgrid(fssicon.b)
   }
   else
   {

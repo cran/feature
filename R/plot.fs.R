@@ -100,9 +100,6 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
             bty="l",col=densCol,lwd=2)
     }
 
-    ##if (!add & !addKDE)
-    ##  plot(dest$x.grid[[1]], xlim=xlim, ylim=ylim, xlab=xlab,ylab="kernel density estimate",type="n")
-    
     if (addData)
     {
       if (jitterRug) x.rug <- jitter(x.rand)
@@ -129,16 +126,11 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   }
   else if (d==3)
   {
-    require(rgl); require(misc3d)
-   
-    num.levs <- length(densCol)
-    x.gd.1 <- dest$x.grid[[1]] ; x.gd.2 <- dest$x.grid[[2]]
-    x.gd.3 <- dest$x.grid[[3]]
-
+    ##require(rgl); require(misc3d)
+    ##num.levs <- length(densCol)
     if (!add)
     {
       clear3d()
-      ##rgl.viewpoint(theta=0, phi=-90)
       rgl.bg(col=bgCol)
       pop3d(type="lights")
       light3d(theta=0, phi=30)
@@ -147,20 +139,15 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
       material3d(back="fill")
 
       plot3d(mean(xlim), mean(ylim), mean(zlim), type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d)
-      ##if (addAxes3d) axes3d(c('x','y','z'))
     }
 
     if (addKDE)
     {
-      kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx=TRUE)
-      alph <- seq(0.1,0.5,length=num.levs)
-      ##lev.vals <- contourLevels(kde.temp, cont=seq(90, 10, length=num.levs))
+      kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx.cont=TRUE)
       plot(kde.temp, box=FALSE, axes=FALSE, add=TRUE)
-      ##for (il in 1:length(kde.temp$cont))
-      ##  contour3d(kde.temp$estimate,level=kde.temp$cont[il], x=kde.temp$eval.points[[1]],y=kde.temp$eval.points[[2]],z=kde.temp$eval.points[[2]], color=densCol[il], alpha=alph[il], add=TRUE)   
     }
     if (addData)
-      points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,col=dataCol, alpha=dataAlpha)
+      points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,color=dataCol, alpha=dataAlpha)
   }
 
   SignifGradRegion.mat <- fs$grad

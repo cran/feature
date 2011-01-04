@@ -6,8 +6,7 @@
 
 # Last changed: 18 JAN 2006
 
-SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
-   signifLevel, range.x, grad=TRUE, curv=TRUE)
+SignifFeatureRegion <- function(n, d, gcounts, gridsize, dest, bandwidth, signifLevel, range.x, grad=TRUE, curv=TRUE, neg.curv.only=TRUE)
 {
   h <- bandwidth
   
@@ -55,9 +54,8 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
   if (d==1)
   {
     if (grad)
-    {    
-      obj1 <- drvkde(gcounts,drv=1,bandwidth=h, binned=TRUE, range.x=range.x,
-                     se=FALSE)
+    {
+      obj1 <- drvkde(gcounts, drv=1, bandwidth=h, binned=TRUE, range.x=range.x, se=FALSE)
       fhat1 <- obj1$est
 
       Sig.inv12 <- 1/sqrt(Sig.scalar * h^(-2))
@@ -66,8 +64,7 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
 
     if (curv)
     {
-      obj2 <- drvkde(gcounts,drv=2,bandwidth=h,binned=TRUE,range.x=range.x,
-                     se=FALSE)
+      obj2 <- drvkde(gcounts,drv=2,bandwidth=h,binned=TRUE,range.x=range.x, se=FALSE)
       fhat2 <- obj2$est
       
       Sig2.inv12 <- 1/sqrt(Sig2.scalar * 3*h^(-4))
@@ -384,7 +381,7 @@ SignifFeatureRegion <- function(n,d,gcounts,gridsize,dest,bandwidth,
     for (i in reject.nonzero.ind)
       SignifCurv[which(pval.Curv==pval.Curv.ord[i], arr.ind=TRUE)] <- TRUE 
 
-    SignifCurv <- SignifCurv & local.mode
+    if (neg.curv.only) SignifCurv <- SignifCurv & local.mode
   }
   
   if (grad & !curv)

@@ -2,7 +2,7 @@
 
 export(featureSignif)
 export(featureSignifGUI)
-export(SiZer)
+export(SiZer,SiCon)
 
 S3method(plot, fs)
 importFrom(utils, installed.packages)

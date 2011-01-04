@@ -6,7 +6,7 @@
 # Last changed: 22 JUL 2005
 
 dfltBWrange <- function(x,tau) {
-  d <- NCOL(x)
+  d <- ncol(x)
   if (d==1) x <- as.matrix(x)
 
   r <- 2
@@ -19,7 +19,7 @@ dfltBWrange <- function(x,tau) {
   st.devs <- apply(x,2,sd)
   IQR.vals <- apply(x, 2, IQR)/(qnorm(3/4) - qnorm(1/4))
   sig.hats <- apply(cbind(st.devs,IQR.vals),1,min)
-  range.vals <- apply(x,2,max) - apply(x,2,min)
+  ##range.vals <- apply(x,2,max) - apply(x,2,min)
 
   range.h <- list()
   for (id in 1:d)

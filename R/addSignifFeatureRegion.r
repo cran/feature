@@ -17,8 +17,7 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
     num.jumps <- length(jump.inds)
     
     if (num.jumps==0)
-         lines(dest$x.grid[[1]][SignifFeature.inds],
-               dest$est[SignifFeature.inds],col=featureCol,lwd=3)
+         lines(dest$x.grid[[1]][SignifFeature.inds], dest$est[SignifFeature.inds],col=featureCol,lwd=3)
     
     if (num.jumps>0)
     {
@@ -29,15 +28,12 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
       { 
         for (j in 2:length(jump.inds))
         {
-          curr.inds <- SignifFeature.inds[(jump.inds[j-1]+1)
-                                       :jump.inds[j]]
-          lines(dest$x.grid[[1]][curr.inds],dest$est[curr.inds],
-                col=featureCol,lwd=3)
+          curr.inds <- SignifFeature.inds[(jump.inds[j-1]+1):jump.inds[j]]
+          lines(dest$x.grid[[1]][curr.inds],dest$est[curr.inds], col=featureCol,lwd=3)
         }
       }
       curr.inds <- SignifFeature.inds[(max(jump.inds)+1):SGlen]
-      lines(dest$x.grid[[1]][curr.inds],dest$est[curr.inds],
-            col=featureCol,lwd=3)
+      lines(dest$x.grid[[1]][curr.inds],dest$est[curr.inds], col=featureCol,lwd=3)
     }
   }
 
@@ -55,7 +51,7 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
       points(x.mesh[inds.on,1],x.mesh[inds.on,2],pch=".",col=featureCol, cex=2)
 
     contour(x.grid.1[plot.inds[[1]]],x.grid.2[plot.inds[[2]]],
-           SignifFeature[plot.inds[[1]],plot.inds[[2]]],add=TRUE,
+            SignifFeature[plot.inds[[1]],plot.inds[[2]]],add=TRUE,
             col=featureCol,levels=0.5,lwd=3,drawlabels=FALSE)  
   }
 
@@ -72,7 +68,7 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
   if (d==4)
   {
     x.gd.1 <- dest$x.grid[[1]] ; x.gd.2 <- dest$x.grid[[2]]
-    x.gd.3 <- dest$x.grid[[3]] ; x.gd.4 <- dest$x.grid[[4]]
+    x.gd.3 <- dest$x.grid[[3]] 
 
     if (!all(SignifFeature==FALSE))
     {  

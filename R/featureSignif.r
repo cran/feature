@@ -1,9 +1,8 @@
 
-featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE,  addSignifCurv=TRUE, signifLevel=0.05)                  
+featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, addSignifCurv=TRUE, signifLevel=0.05)                  
 { 
   ## tau is effective kernel support
   tau <- 5
-  x.orig <- x 
   if (is.vector(x))
   {
     d <- 1
@@ -53,8 +52,8 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
     h.upp <- bw[2,]
     hmix.prop <- 1/4
     h.init <- h.low^(hmix.prop)*h.upp^(1-hmix.prop) ##sqrt(h.low*h.upp)
-    logh.low <- logb(h.low,10)
-    logh.upp <- logb(h.upp,10)
+    ##logh.low <- logb(h.low,10)
+    ##logh.upp <- logb(h.upp,10)
     h <- h.init
   }
   else
@@ -73,12 +72,12 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
   SignifFeatureRegion.mat <- SignifFeatureRegion(n,d,gcounts,gridsize,dest, h, signifLevel, range.x, grad=addSignifGrad, curv=addSignifCurv)
   ESS <- n*dest$est*prod(h)*(sqrt(2*pi)^d)
   SigESS <- ESS >= 5
-  SignifGradRegion.mat <- SignifFeatureRegion.mat$grad
 
+  SignifGradRegion.mat <- SignifFeatureRegion.mat$grad & SigESS
   SignifGradData.mat <- SignifFeatureData(x, d, dest,SignifGradRegion.mat)
   SignifGradDataPoints <- x[SignifGradData.mat,]
   
-  SignifCurvRegion.mat <- SignifFeatureRegion.mat$curv
+  SignifCurvRegion.mat <- SignifFeatureRegion.mat$curv & SigESS
   SignifCurvData.mat <- SignifFeatureData(x, d,  dest,SignifCurvRegion.mat) 
   SignifCurvDataPoints <- x[SignifCurvData.mat,] 
     

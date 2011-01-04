@@ -1,15 +1,20 @@
-\name{SiZer}
+\name{SiZer,siCon}
 \alias{SiZer}
+\alias{SiCon}
 
-\title{SiZer  plot for 1-dimensional data}
+\title{SiZer and SiCon plots for 1-dimensional data}
 \description{
-  SiZer (\bold{Si}gnificant \bold{Zer}o crossings) plot for 1-dimensional data.
+  SiZer (\bold{Si}gnificant \bold{Zer}o crossings) and (\bold{Si}gnificant \bold{Con}vexity) plots for 1-dimensional data.
 }
 
 \usage{
 SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,
       plotSiZer=TRUE, logbw=TRUE, xlim, xlab, 
-      addLegend=TRUE, posLegend="topright") 
+      addLegend=TRUE, posLegend="bottomright") 
+
+SiCon(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,  
+      plotSiCon=TRUE, logbw=TRUE,  xlim, xlab, 
+      addLegend=TRUE, posLegend="bottomright")
 }
 
 \arguments{
@@ -19,7 +24,7 @@ SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,
   \item{scaleData}{flag for scaling the data i.e. transforming to unit
     variance for each dimension.}
   \item{signifLevel}{significance level}
-  \item{plotSiZer}{flag for displaying SiZer map}
+  \item{plotSiZer,plotSiCon}{flag for displaying SiZer/SiCon map}
   \item{logbw}{flag for displaying log bandwidths on y-axis}
   \item{xlim}{x-axis limits}
   \item{xlab}{x-axis label}
@@ -33,16 +38,13 @@ SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,
 }
 
 \details{
-  The gradient SiZer map of Chaudhuri & Marron (1999) is
+  The gradient SiZer and curvature SiCon maps of Chaudhuri & Marron (1999) are
   implemented. The horizontal axis is the data axis, the
-  vertical axis are the bandwidths.
-  %It returns a list with the following fields \cr
-  %\code{x.grid} - vector of grid points \cr
-  %\code{bw} - vector of bandwidths at grid points\cr
-  %\code{SiZer} - matrix (rows = grid points, columns = bandwidths) for
-  %SiZer map:  3 = decreasing gradient (red), 
-  %2 = increasing gradient (blue), 1 = zero gradient (purple), 0 =
-  %sparse region (grey).     
+  vertical axis are the bandwidths. The colour scheme for the SiZer map is 
+  red: negative gradient, blue: positive gradient, purple: zero gradient
+  and grey: sparse regions. For the SiCon map, 
+  orange: negative curvature (concave), blue: positive curvature (convex), 
+  green: zero curvature and grey: sparse regions.
 }
  
 
@@ -58,8 +60,8 @@ SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,
 \examples{
 data(earthquake)
 eq3 <- -log10(-earthquake[,3])
-SiZer(eq3, xlab="-log(-depth)")
-SiZer(eq3, xlab="-log(-depth)", bw=c(0.05, 1.3), gridsize=401)
+SiZer(eq3)
+SiCon(eq3)
 }
 
 \keyword{hplot}
