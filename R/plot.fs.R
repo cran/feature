@@ -131,7 +131,7 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
     if (!add)
     {
       clear3d()
-      rgl.bg(col=bgCol)
+      bg3d(bgCol)
       pop3d(type="lights")
       light3d(theta=0, phi=30)
       
