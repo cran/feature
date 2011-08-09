@@ -16,8 +16,7 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
     jump.inds <- (1:length(diff.vec))[diff.vec!=1]
     num.jumps <- length(jump.inds)
     
-    if (num.jumps==0)
-         lines(dest$x.grid[[1]][SignifFeature.inds], dest$est[SignifFeature.inds],col=featureCol,lwd=3)
+    if (num.jumps==0) lines(dest$x.grid[[1]][SignifFeature.inds], dest$est[SignifFeature.inds],col=featureCol,lwd=3)
     
     if (num.jumps>0)
     {
