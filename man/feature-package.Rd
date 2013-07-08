@@ -1,4 +1,4 @@
-\name{feature}
+\name{feature-package}
 \alias{feature}
 \docType{package}
 \title{
