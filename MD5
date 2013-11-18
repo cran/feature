@@ -1,4 +1,4 @@
-81def545d4d049400a119855e586f903 *DESCRIPTION
+405659204215aaaa0671b81ddba76b1a *DESCRIPTION
 ff310054d6a675f54276dd079ff62222 *NAMESPACE
 976b4f7f84377b0bf37f27c2a3ad50bf *R/SiZer.R
 4d8155ae1502735af3fe9411f8e14d06 *R/SignifFeatureData.R
@@ -13,7 +13,7 @@ dd4ef933b5a579759b0c785327523b76 *R/addSignifFeatureData.R
 e37410365dd6f61831e4ba2a2839f473 *data/earthquake.RData
 f50dc0689b6b66536bd36b26bdeb2cb5 *inst/doc/feature.R
 256a7c32816506c485369ca7ce335b4e *inst/doc/feature.Rnw
-dad2cc8c5bdcfe5c61a729c11c11d185 *inst/doc/feature.pdf
+4a863b7c284d2c8f23269794d34b867e *inst/doc/feature.pdf
 9ce02793b16919b0c3148b9ac74354f7 *man/SiZer.Rd
 616b6f6d5c67c5920babe0d41e3fae28 *man/earthquake.Rd
 c679fa1af3bf430fef9e1454b507e5f3 *man/feature-package.Rd
