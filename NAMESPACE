@@ -3,8 +3,12 @@ export(featureSignifGUI)
 export(SiZer,SiCon)
 
 S3method(plot, fs)
+import(ks)
+import(misc3d)
+import(rgl)
+import(tcltk)
 importFrom(utils, installed.packages)
-importFrom(ks, drvkde, dfltCounts)
+##importFrom(ks, drvkde, dfltCounts)
 
 
 

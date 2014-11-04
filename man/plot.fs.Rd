@@ -7,22 +7,20 @@
 }
 
 \usage{
-\method{plot}{fs}(x, ..., xlab, ylab, zlab, xlim, ylim, zlim,
-   add=FALSE, addData=FALSE, scaleData=FALSE, addDataNum=1000,
-   addKDE=TRUE, jitterRug=TRUE,  
+\method{plot}{fs}(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE, addData=FALSE,
+   scaleData=FALSE, addDataNum=1000, addKDE=TRUE,jitterRug=TRUE,
    addSignifGradRegion=FALSE, addSignifGradData=FALSE,
-   addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
-   addAxes3d=TRUE, densCol, dataCol="black", gradCol="green4",
-   curvCol="blue", axisCol="black", bgCol="white",
-   dataAlpha=0.1, gradDataAlpha=0.3, gradRegionAlpha=0.2,
-   curvDataAlpha=0.3, curvRegionAlpha=0.3)
+   addSignifCurvRegion=FALSE, addSignifCurvData=FALSE, addAxes3d=TRUE,
+   densCol, dataCol="black", gradCol="green4", curvCol="blue",
+   axisCol="black", bgCol="white", dataAlpha=0.1, gradDataAlpha=0.3,
+   gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3)
 }
 
 \arguments{
-  \item{x}{an object of class \code{fs} (output from
+  \item{x}{object of class \code{fs} (output from
     \code{\link{featureSignif}} function)}
-  \item{xlim, ylim, zlim}{x-, y-, z-axis limits}
-  \item{xlab, ylab, zlab}{x-, y-, z-axis labels}
+  \item{xlim,ylim,zlim}{x-, y-, z-axis limits}
+  \item{xlab,ylab,zlab}{x-, y-, z-axis labels}
   \item{scaleData}{flag for scaling the data i.e. transforming to unit
     variance for each dimension}
   \item{add}{flag for adding to an existing plot}
@@ -57,14 +55,12 @@
 \seealso{\code{\link{featureSignif}}}
 
 \examples{
-library(MASS)
-data(geyser)
-fs <- featureSignif(geyser, bw=c(4.5, 0.37))
-plot(fs, addKDE=FALSE, addData=TRUE)  ## data only
-plot(fs, addKDE=TRUE)                 ## KDE plot only
-plot(fs, addSignifGradRegion=TRUE)    
+## See ? featureSignif for uni- and bivariate examples
+## Trivariate example
+data(earthquake)
+earthquake[,3] <- -log10(-earthquake[,3])
+fs <- featureSignif(earthquake, scaleData=TRUE, bw=c(0.06, 0.06, 0.05))
 plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE)
-plot(fs, addSignifCurvData=TRUE, curvCol="cyan")
 }
 
 \keyword{ hplot}

@@ -1,20 +1,18 @@
-\name{SiZer,siCon}
+\name{SiZer,SiCon}
 \alias{SiZer}
 \alias{SiCon}
 
 \title{SiZer and SiCon plots for 1-dimensional data}
 \description{
-  SiZer (\bold{Si}gnificant \bold{Zer}o crossings) and (\bold{Si}gnificant \bold{Con}vexity) plots for 1-dimensional data.
+  SiZer (\bold{Si}gnificant \bold{Zer}o crossings) and SiCon (\bold{Si}gnificant \bold{Con}vexity) plots for 1-dimensional data.
 }
 
 \usage{
-SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,
-      plotSiZer=TRUE, logbw=TRUE, xlim, xlab, 
-      addLegend=TRUE, posLegend="bottomright") 
+SiZer(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05, plotSiZer=TRUE,
+   logbw=TRUE, xlim, xlab, addLegend=TRUE, posLegend="bottomright") 
 
-SiCon(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,  
-      plotSiCon=TRUE, logbw=TRUE,  xlim, xlab, 
-      addLegend=TRUE, posLegend="bottomright")
+SiCon(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05, plotSiCon=TRUE,
+   logbw=TRUE, xlim, xlab, addLegend=TRUE, posLegend="bottomright")
 }
 
 \arguments{

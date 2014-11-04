@@ -110,14 +110,11 @@ plot(fs, addSignifGradRegion=TRUE)
 library(MASS)
 data(geyser)
 fs <- featureSignif(geyser)
-plot(fs, addSignifCurvRegion=TRUE)
-
-## Trivariate example
-data(earthquake)
-earthquake[,3] <- -log10(-earthquake[,3])
-fs <- featureSignif(earthquake, scaleData=TRUE, bw=c(0.06, 0.06, 0.05))
-plot(fs, addKDE=TRUE)
+plot(fs, addKDE=FALSE, addData=TRUE)  ## data only
+plot(fs, addKDE=TRUE)                 ## KDE plot only
+plot(fs, addSignifGradRegion=TRUE)    
 plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE)
+plot(fs, addSignifCurvData=TRUE, curvCol="cyan")
 }
 
 \seealso{\code{\link{featureSignifGUI}}, \code{\link{plot.fs}}}
