@@ -32,7 +32,7 @@ SiCon(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05, plotSiCon=TRUE,
   
 
 \value{
-  SiZer plot sent to graphics window.
+  SiZer/SiCon plot sent to graphics window.
 }
 
 \details{
