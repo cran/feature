@@ -28,7 +28,7 @@ feature
 
 
 \author{
-Tarn Duong <tarn.duong@gmail.com> & Matt Wand <wand@uow.edu.au>
+Tarn Duong <tarn.duong@gmail.com> & Matt Wand <Matt.Wand@uts.edu.au>
 }
 
 \keyword{ package }

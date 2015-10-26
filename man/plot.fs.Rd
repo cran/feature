@@ -57,10 +57,11 @@
 \examples{
 ## See ? featureSignif for uni- and bivariate examples
 ## Trivariate example
+\donttest{
 data(earthquake)
 earthquake[,3] <- -log10(-earthquake[,3])
 fs <- featureSignif(earthquake, scaleData=TRUE, bw=c(0.06, 0.06, 0.05))
-plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE)
+plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE)}
 }
 
 \keyword{ hplot}

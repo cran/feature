@@ -56,12 +56,12 @@ featureSignifGUI(x, scaleData=FALSE)
   
 
 \examples{
-\dontrun{
+\donttest{
 library(MASS)
 data(geyser)
 duration <- geyser$duration 
 featureSignifGUI(duration)  ## univariate example
-featureSignifGUI(geyser)    ## bivariate example 
+featureSignifGUI(geyser)    ## bivariate example
 
 data(earthquake)            ## trivariate example
 earthquake$depth <- -log10(-earthquake$depth)

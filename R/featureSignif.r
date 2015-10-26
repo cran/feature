@@ -42,18 +42,14 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
 
   if (missing(bw))           ## b/w not specified -> interactive 
   {
-    ##bw.range <- dfltBWrange(x,gridsize,tau, scale.fac=1.5)
     bw.range <- dfltBWrange(as.matrix(x),tau)
-    
     bw <- matrix(unlist(bw.range), nrow=2, byrow=FALSE)
-    dfltCounts.out <- dfltCounts(x,gridsize, apply(bw, 2, max))
-  
+    dfltCounts.out <- dfltCounts(x, gridsize, apply(bw, 2, max))
+   
     h.low <- bw[1,]
     h.upp <- bw[2,]
     hmix.prop <- 1/4
-    h.init <- h.low^(hmix.prop)*h.upp^(1-hmix.prop) ##sqrt(h.low*h.upp)
-    ##logh.low <- logb(h.low,10)
-    ##logh.upp <- logb(h.upp,10)
+    h.init <- h.low^(hmix.prop)*h.upp^(1-hmix.prop)
     h <- h.init
   }
   else
@@ -62,8 +58,9 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
     h <- bw
   }
   gcounts <- dfltCounts.out$counts
+  ##range.x <- lapply(dfltCounts.out$eval.points, range)
   range.x <- dfltCounts.out$range.x
-  
+
   dest <- drvkde(gcounts, drv=rep(0,d), bandwidth=h, binned=TRUE, range.x=range.x, se=FALSE, gridsize=gridsize)
   dest$est[dest$est<0] <- 0 
  

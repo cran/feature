@@ -17,10 +17,8 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   h <- fs$bw
   names.x <- fs$names
   
-  if (d >1)
-    gridsize <- dim(fs$fhat$est) 
-  else
-    gridsize <- length(fs$fhat$est) 
+  if (d >1) gridsize <- dim(fs$fhat$est) 
+  else gridsize <- length(fs$fhat$est) 
   
   ## Determine default axis labels.
 
@@ -39,7 +37,7 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   
   if (nsamp < n)
   {
-    rand.inds <- 1:nsamp ###sort(sample(1:n, nsamp, replace=FALSE))
+    rand.inds <- 1:nsamp 
     x.rand <- as.matrix(x[rand.inds,])
   }
   else
@@ -69,7 +67,6 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   if (d==4)
     lims <- list(xlim, ylim, zlim, c(min(x[,4])-h[4],max(x[,4])+h[4]))
 
-  
   plot.inds <- list()
   for (id in 1:d)
   {
@@ -85,7 +82,6 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
       densCol <- rev(heat.colors(1000))
     else if (d==3)
       densCol <- rev(heat.colors(3))
-
  
   if (d==1)
   {
@@ -126,34 +122,33 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   }
   else if (d==3)
   {
-    ##require(rgl); require(misc3d)
-    ##num.levs <- length(densCol)
     if (!add)
     {
-      clear3d()
-      bg3d(bgCol)
-      pop3d(type="lights")
-      light3d(theta=0, phi=30)
+      ##clear3d()
+      ##bg3d(bgCol)
+      ##pop3d(type="lights")
+      ##light3d(theta=0, phi=30)
       
-      material3d(alpha=1)
-      material3d(back="fill")
+      ##material3d(alpha=1)
+      ##material3d(back="fill")
 
-      plot3d(mean(xlim), mean(ylim), mean(zlim), type="n", xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d)
+      plot3d(mean(xlim), mean(ylim), mean(zlim), xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d, colors="transparent", alpha=0)
+     
     }
 
     if (addKDE)
     {
-      kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx.cont=TRUE)
-      plot(kde.temp, box=FALSE, axes=FALSE, add=TRUE)
+        kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx.cont=TRUE)
+        plot(kde.temp, box=FALSE, axes=FALSE, add=TRUE)
     }
     if (addData)
       points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,color=dataCol, alpha=dataAlpha)
+     bg3d(bgCol)
   }
 
   SignifGradRegion.mat <- fs$grad
   SignifCurvRegion.mat <- fs$curv
 
- 
   if (!is.null(SignifGradRegion.mat))
   {
     SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
@@ -169,7 +164,8 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
       addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol, dest,lims, trans.alpha=curvRegionAlpha)
     if (addSignifCurvData)
       addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
-  } 
+  }
+ 
   invisible()
 }
   
