@@ -28,7 +28,7 @@ addSignifFeatureData <- function(x,SignifFeatureData,featureCol,dest,
       if (is.vector(x.sig))
         x.sig <- matrix(x.sig, nrow=1)
       
-      points3d(x.sig[,1],x.sig[,2], x.sig[,3], size=3,color=featureCol, alpha=trans.alpha)           
+      rgl::points3d(x.sig[,1],x.sig[,2], x.sig[,3], size=3,color=featureCol, alpha=trans.alpha)           
     }
   }
   
@@ -40,7 +40,7 @@ addSignifFeatureData <- function(x,SignifFeatureData,featureCol,dest,
       if (is.vector(x.sig))
         x.sig <- matrix(x.sig, nrow=1)
       
-      points3d(x.sig[,1],x.sig[,2], x.sig[,3], size=3,color=featureCol, alpha=trans.alpha)  
+      rgl::points3d(x.sig[,1],x.sig[,2], x.sig[,3], size=3,color=featureCol, alpha=trans.alpha)  
     }
   }
 }

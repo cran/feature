@@ -122,6 +122,9 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   }
   else if (d==3)
   {
+    if (!requireNamespace("rgl", quietly=TRUE)) stop("Install the rgl package as it is required.", call.=FALSE)
+    if (!requireNamespace("misc3d", quietly=TRUE)) stop("Install the misc3d package as it is required.", call.=FALSE)
+    
     if (!add)
     {
       ##clear3d()
@@ -132,7 +135,7 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
       ##material3d(alpha=1)
       ##material3d(back="fill")
 
-      plot3d(mean(xlim), mean(ylim), mean(zlim), xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d, colors="transparent", alpha=0)
+      rgl::plot3d(mean(xlim), mean(ylim), mean(zlim), xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d, colors="transparent", alpha=0)
      
     }
 
@@ -142,8 +145,8 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
         plot(kde.temp, box=FALSE, axes=FALSE, add=TRUE)
     }
     if (addData)
-      points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,color=dataCol, alpha=dataAlpha)
-     bg3d(bgCol)
+      rgl::points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,color=dataCol, alpha=dataAlpha)
+     rgl::bg3d(bgCol)
   }
 
   SignifGradRegion.mat <- fs$grad

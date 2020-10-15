@@ -165,6 +165,14 @@ featureSignifGUI <- function(x, scaleData=FALSE)
       for (i in 1:d)
         x[,i] <- (x[,i]-min(x[,i]))/(max(x[,i]) - min(x[,i]))
   }
+
+  if (d>=3)
+  {
+    if (!requireNamespace("rgl", quietly=TRUE)) stop("Install the rgl package as it is required.", call.=FALSE)
+    if (!requireNamespace("misc3d", quietly=TRUE)) stop("Install the misc3d package as it is required.", call.=FALSE)
+    
+  }
+      
   if (d>4)
     stop("Feature significance only available for 1- to 4-d data")
   

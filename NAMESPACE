@@ -1,8 +1,6 @@
 import(grDevices)
 import(graphics)
 import(ks)
-import(misc3d)
-import(rgl)
 import(stats)
 import(tcltk)
 
