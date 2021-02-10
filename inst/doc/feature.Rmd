@@ -17,7 +17,7 @@ options(tibble.print_min=4L, tibble.print_max=4L)
 
 
 ## Introduction 
-Feature significance is an extension of kernel density estimation which is used to establish the statistical significance of features (e.g. local modes). See Chaudhuri and Marronn (1999) for 1-dimensional data, Godtliebsen et al. (2002) for 2-dimensional data and Duong et al. (2007) for 3- and 4-dimensional data. The `feature` package contains a range of options to display and compute kernel density estimates, significant gradient and significant curvature regions. Significant gradient and/or curvature regions often correspond to significant features. In this vignette we focus on 1- and 2-dimensional data.
+Feature significance is an extension of kernel density estimation which is used to establish the statistical significance of features (e.g. local modes). See Chaudhuri and Marronn (1999) for 1-dimensional data, Godtliebsen et al. (2002) for 2-dimensional data and Duong et al. (2007) for 3- and 4-dimensional data. The `feature` package contains a range of options to display and compute kernel density estimates, significant gradient and significant curvature regions. Significant gradient and/or curvature regions often correspond to significant features. In this vignette we focus on 1-, 2- and 3-dimensional data.
 
 
 ## Univariate data example
@@ -58,10 +58,21 @@ fall inside these regions: significant curvature data points are in blue.
 plot(geyser.fs, addSignifCurvData=TRUE)
 ```
 
+## Trivariate data example 
+
+For trivariate data, we return to the earthquake data set. Below are the significant curvature regions in blue with bandwidth (0.06, 0.06, 0.05).
+
+```{r}
+data(earthquake)
+earthquake[,3] <- -log10(-earthquake[,3])
+earthquake.fs <- featureSignif(earthquake, scaleData=TRUE, bw=c(0.06, 0.06, 0.05))
+plot(earthquake.fs, addKDE=FALSE, addSignifCurvRegion=TRUE)
+```
+
 The result of `featureSignif` is an object of class `fs`
 which is a list with fields
 ```{r}
-names(geyser.fs)
+names(earthquake.fs)
 ```
 where
 
@@ -78,7 +89,7 @@ where
 
 ## Functionality not documented in this vignette 
 
-The function `featureSignif` also provides feature significance for 3-dimensional data via an `rgl` engine. Since the latter is not integrated with `rmarkdown`, this has been excluded from this vignette for the time being. See the example code in `?plot.fs`. Likewise, `featureSignifGUI` provides interactive feature significance for 1-, 2- and 3-dimensional data via `tcltk` windows but the latter are also not integrated with `rmarkdown`. See `?featureSignifGUI`.   
+The function `featureSignifGUI` provides interactive feature significance via `tcltk` windows but the latter are not integrated with `rmarkdown`. See `?featureSignifGUI`.
  
 ## References
 

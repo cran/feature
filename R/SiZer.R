@@ -75,6 +75,7 @@ SiZer <- function(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,  plotSiZer
   ## 3 = red    = -ve grad
 
   col <- c("grey", "purple", "blue", "red")
+  col <- c("#9E9E9E", "#CD0BBC", "#2297E6", "#DF536B")
   if (logbw)
     image(x.SiZer, bw, SiZer.map, breaks=c(-1,0,1,2,3), col=col, ylab="log(bandwidth)", xlab=xlab, xlim=xlim)
   else
@@ -161,7 +162,9 @@ SiCon <- function(x, bw, gridsize, scaleData=FALSE, signifLevel=0.05,  plotSiCon
   ## 2 = orange   = +ve grad
   ## 3 = cyan    = -ve grad
 
-  col <- c("grey", "green", "orange", "cyan")
+  ##col <- c("grey", "green", "orange", "cyan")
+  col <- c("#9E9E9E", "#61D04F", "#F5C710", "#28E2E5")
+  
   if (logbw)
     image(x.SiCon, bw, SiCon.map, breaks=c(-1,0,1,2,3), col=col, ylab="log(bandwidth)", xlab=xlab, xlim=xlim)
   else

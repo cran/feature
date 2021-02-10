@@ -58,7 +58,6 @@ featureSignif <- function(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE, 
     h <- bw
   }
   gcounts <- dfltCounts.out$counts
-  ##range.x <- lapply(dfltCounts.out$eval.points, range)
   range.x <- dfltCounts.out$range.x
 
   dest <- drvkde(gcounts, drv=rep(0,d), bandwidth=h, binned=TRUE, range.x=range.x, se=FALSE, gridsize=gridsize)

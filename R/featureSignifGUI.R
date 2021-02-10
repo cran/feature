@@ -76,7 +76,7 @@ featureSignifGUI <- function(x, scaleData=FALSE)
       if (d<3)
         plot(fs.env$fs, addKDE=FALSE, addSignifGradRegion=TRUE, add=TRUE)
       else
-        plot(fs.env$fs, addKDE=FALSE, addSignifGradRegion=TRUE, add=TRUE, gradRegionAlpha=gradRegionAlpha, addAxes=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
+        plot(fs.env$fs, addKDE=FALSE, addSignifGradRegion=TRUE, add=TRUE, gradRegionAlpha=gradRegionAlpha)
     return()
   }
 
@@ -99,7 +99,7 @@ featureSignifGUI <- function(x, scaleData=FALSE)
       if (d <3)
          plot(fs.env$fs, addKDE=FALSE, addSignifCurvRegion=TRUE, add=TRUE)
       else
-        plot(fs.env$fs, addKDE=FALSE, addSignifCurvRegion=TRUE, add=TRUE, curvRegionAlpha=curvRegionAlpha, addAxes=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
+        plot(fs.env$fs, addKDE=FALSE, addSignifCurvRegion=TRUE, add=TRUE, curvRegionAlpha=curvRegionAlpha)
     return(panel)
   }
 
@@ -113,10 +113,11 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     {
       if (d==1) plot(fs.env$fs, addKDE=TRUE, add=FALSE, xlim=xlim, xlab=tclvalue(xlab.tcl))
       if (d==2) plot(fs.env$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl))
-      if (d==3) plot(fs.env$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl), zlab=tclvalue(zlab.tcl),  addAxes3d=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
+      if (d==3) plot(fs.env$fs, addKDE=TRUE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl), zlab=tclvalue(zlab.tcl))
     }
     return()
   }
+  
   fsclearall2.tcl <- function(panel)
   {
     xlim <- as.numeric(c(tclvalue(xlim1.tcl), tclvalue(xlim2.tcl)))
@@ -127,7 +128,7 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     {
       if (d==1) plot(fs.env$fs, addKDE=FALSE, add=FALSE, xlim=xlim, xlab=tclvalue(xlab.tcl))
       if (d==2) plot(fs.env$fs, addKDE=FALSE, add=FALSE, xlim=xlim, ylim=ylim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl))
-      if (d==3) plot(fs.env$fs, addKDE=FALSE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl), zlab=tclvalue(zlab.tcl),  addAxes3d=as.logical(as.numeric(tclvalue(addAxes3d.tcl))))
+      if (d==3) plot(fs.env$fs, addKDE=FALSE, add=FALSE, xlim=xlim, ylim=ylim, zlim=zlim, xlab=tclvalue(xlab.tcl), ylab=tclvalue(ylab.tcl), zlab=tclvalue(zlab.tcl))
     }
     return()
   }
@@ -140,13 +141,11 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     
   button.col <- "lightblue"
   bg.col <- "white"
-  ##fg.col <- "black"
   heading.col <- "blue"
   heading.font <- tkfont.create(family="helvetica", weight="bold")
   space.font <- tkfont.create(size=10)
   textwidth <- 10
   sf <- 4
-  #space.label <- paste(rep(" ", scalebar.width), collapse="")
   tcl("tk_setPalette", "background", bg.col, "selectColor", "grey75") 
 
   ## set defaults
@@ -164,13 +163,6 @@ featureSignifGUI <- function(x, scaleData=FALSE)
     if (scaleData)
       for (i in 1:d)
         x[,i] <- (x[,i]-min(x[,i]))/(max(x[,i]) - min(x[,i]))
-  }
-
-  if (d>=3)
-  {
-    if (!requireNamespace("rgl", quietly=TRUE)) stop("Install the rgl package as it is required.", call.=FALSE)
-    if (!requireNamespace("misc3d", quietly=TRUE)) stop("Install the misc3d package as it is required.", call.=FALSE)
-    
   }
       
   if (d>4)

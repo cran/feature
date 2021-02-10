@@ -24,5 +24,11 @@ plot(geyser.fs, addSignifCurvRegion=TRUE)
 plot(geyser.fs, addSignifCurvData=TRUE)
 
 ## -----------------------------------------------------------------------------
-names(geyser.fs)
+data(earthquake)
+earthquake[,3] <- -log10(-earthquake[,3])
+earthquake.fs <- featureSignif(earthquake, scaleData=TRUE, bw=c(0.06, 0.06, 0.05))
+plot(earthquake.fs, addKDE=FALSE, addSignifCurvRegion=TRUE)
+
+## -----------------------------------------------------------------------------
+names(earthquake.fs)
 

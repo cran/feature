@@ -7,13 +7,13 @@
 }
 
 \usage{
-\method{plot}{fs}(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE, addData=FALSE,
+\method{plot}{fs}(x, xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE, addData=FALSE,
    scaleData=FALSE, addDataNum=1000, addKDE=TRUE,jitterRug=TRUE,
    addSignifGradRegion=FALSE, addSignifGradData=FALSE,
    addSignifCurvRegion=FALSE, addSignifCurvData=FALSE, addAxes3d=TRUE,
-   densCol, dataCol="black", gradCol="green4", curvCol="blue",
+   densCol, dataCol="black", gradCol="#33A02C", curvCol="#1F78B4",
    axisCol="black", bgCol="white", dataAlpha=0.1, gradDataAlpha=0.3,
-   gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3)
+   gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3, rgl=FALSE, ...)
 }
 
 \arguments{
@@ -42,13 +42,14 @@
   \item{dataAlpha}{transparency of data points}
   \item{gradRegionAlpha,gradDataAlpha}{transparency of significant gradient regions/data points}
   \item{curvRegionAlpha,curvDataAlpha}{transparency of significant curvature regions/data points}
+  \item{rgl}{flag to send 3D graphics to RGL window. Default is FALSE (usual graphics window).}
   \item{...}{other graphics parameters}
 }
   
 
 \value{
   Plot of 1-d and 2-d kernel density estimates are sent to graphics
-  window. Plot for 3-d is sent to RGL window. 
+  window. Plot for 3-d is sent to RGL/graphics window. 
 }
  
 
@@ -57,11 +58,12 @@
 \examples{
 ## See ? featureSignif for uni- and bivariate examples
 ## Trivariate example
-\donttest{
 data(earthquake)
 earthquake[,3] <- -log10(-earthquake[,3])
 fs <- featureSignif(earthquake, scaleData=TRUE, bw=c(0.06, 0.06, 0.05))
-plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE)}
+plot(fs, addKDE=TRUE, addSignifCurvData=TRUE)
+plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE)
+if (interactive()) plot(fs, addKDE=FALSE, addSignifCurvRegion=TRUE, rgl=TRUE)
 }
 
 \keyword{ hplot}

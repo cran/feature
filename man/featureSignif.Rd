@@ -26,18 +26,16 @@ featureSignif(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE,
 
 \value{
   Returns an object of class \code{fs} which is a list with the following fields
-  \describe{
-  \item{\code{x}}{data matrix}
-  \item{\code{names}}{name labels used for plotting}
-  \item{\code{bw}}{vector of bandwidths}
-  \item{\code{fhat}}{kernel density estimate on a grid}
-  \item{\code{grad}}{logical grid for significant gradient}
-  \item{\code{curv}}{logical grid for significant curvature}
-  \item{\code{gradData}}{logical vector for significant gradient data points}
-  \item{\code{gradDataPoints}}{significant gradient data points}
-  \item{\code{curvData}}{logical vector for significant curvature data points}
-  \item{\code{curvDataPoints}}{significant curvature data points}
-  } 
+  \item{x}{data matrix}
+  \item{names}{name labels used for plotting}
+  \item{bw}{vector of bandwidths}
+  \item{fhat}{kernel density estimate on a grid}
+  \item{grad}{logical grid for significant gradient}
+  \item{curv}{logical grid for significant curvature}
+  \item{gradData}{logical vector for significant gradient data points}
+  \item{gradDataPoints}{significant gradient data points}
+  \item{curvData}{logical vector for significant curvature data points}
+  \item{curvDataPoints}{significant curvature data points}
 }
 
 \details{
@@ -58,7 +56,7 @@ featureSignif(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE,
   approximately chi-squared distributed with \eqn{d} degrees of freedom
   where \eqn{d} is the dimension of the data.
 
-  The analogous test statistic for curvature is  
+  The analogous test statistic for the curvature is  
   \deqn{W^{(2)}(\mathbf{x}) = \Vert \mathrm{vech}
     \widehat{\nabla^{(2)}f} (\mathbf{x}; \mathbf{H})\Vert ^2}{%
     W2(x) = ||vech hat{curv f}(x; H)||^2}
@@ -69,9 +67,8 @@ featureSignif(x, bw, gridsize, scaleData=FALSE, addSignifGrad=TRUE,
   approximately chi-squared distributed with \eqn{d(d+1)/2}{d(d+1)/2} degrees of freedom.
 
   Since this is a situation with many dependent hypothesis tests, we
-  use a multiple comparison or simultaneous test to control the
-  overall level of significance. We use a Hochberg-type procedure. See
-  Hochberg (1988) and Duong, Cowling, Koch & Wand (2007).
+  use the Hochberg multiple comparison testing procedure to control the
+  overall level of significance. See Hochberg (1988) and Duong, Cowling, Koch & Wand (2007).
 }
 
 

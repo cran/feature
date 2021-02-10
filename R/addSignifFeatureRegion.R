@@ -5,7 +5,7 @@
 ## Last changed: 04 NOV 2005
 
 addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
-    featureCol,dest,range.x.plot,add.bars=TRUE, trans.alpha)
+    featureCol,dest,range.x.plot,add.bars=TRUE, trans.alpha, rgl=FALSE)
 {
   if (d==1)
   {
@@ -60,7 +60,12 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
     x.gd.3 <- dest$x.grid[[3]]
 
     if (!all(SignifFeature==FALSE))
-      misc3d::contour3d(SignifFeature,level=0.5,x=x.gd.1,color=featureCol,y=x.gd.2,z=x.gd.3,alpha=trans.alpha,add=TRUE)
+    {
+      	if (!rgl)
+      		 plot3D::isosurf3D(x=x.gd.1, y=x.gd.2,z=x.gd.3, colvar=SignifFeature, level=0.5, col=featureCol, alpha=trans.alpha, theta=-30, phi=40, d=4, add=TRUE)
+      	else
+      		misc3d::contour3d(SignifFeature,level=0.5,x=x.gd.1,color=featureCol,y=x.gd.2,z=x.gd.3,alpha=trans.alpha,add=TRUE)
+      }
   }
 
   ## for d==4, only significant curvature is calculated and plotted
@@ -77,7 +82,7 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
       
       if (length(sig.levs)>0)
       {  
-        ## somewhat arbitrary way of choosing which indices to plot...
+        ## somewhat arbitrary way of choosing which indices to plot
         ##sig.levs <- as.integer(pretty(sig.levs, n=5)[-c(1,2)])
         if (length(sig.levs)>4)
           sig.levs <- sig.levs[-c(1,length(sig.levs))]
@@ -91,7 +96,10 @@ addSignifFeatureRegion <- function(d,gridsize,SignifFeature,plot.inds,
         j <- 1
         for (i in sig.levs)
         {
-          misc3d::contour3d(SignifFeature[,,,i],level=0.5,x=x.gd.1,color=featureCol,
+        	if (!rgl)
+      		 	plot3D::isosurf3D(x=x.gd.1, y=x.gd.2,z=x.gd.3, colvar=SignifFeature[,,,i], level=0.5, add=TRUE, col=featureCol, alpha=trans.alpha, theta=-30, phi=40, d=4, add=TRUE)
+      		else
+          		misc3d::contour3d(SignifFeature[,,,i],level=0.5,x=x.gd.1,color=featureCol,
                       y=x.gd.2,z=x.gd.3, alpha=alph.vec[j],add=TRUE)
           j <- j + 1
         }

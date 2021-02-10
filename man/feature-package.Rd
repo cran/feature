@@ -22,7 +22,7 @@ feature
   data analysis. \code{\link{featureSignif}} is the non-interactive function.
   This is useful when the user has a more
   definite idea of suitable values for the bandwidths.     
-  For a more detailed example for 1-d and 2-d data, see
+  For a more detailed example for 1-, 2- and 3-d data, see
   \code{vignette("feature")}. 
 }
 

@@ -1,13 +1,13 @@
-plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
+plot.fs <-  function(x, xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
            addData=FALSE, scaleData=FALSE, addDataNum=1000,
            addKDE=TRUE, jitterRug=TRUE,  
            addSignifGradRegion=FALSE, addSignifGradData=FALSE,
            addSignifCurvRegion=FALSE, addSignifCurvData=FALSE,
            addAxes3d=TRUE,
-           densCol, dataCol="black", gradCol="green4", curvCol="blue",
+           densCol, dataCol="black", gradCol="#33A02C", curvCol="#1F78B4",
            axisCol="black", bgCol="white",
            dataAlpha=0.1, gradDataAlpha=0.3,
-           gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3) 
+           gradRegionAlpha=0.2, curvDataAlpha=0.3, curvRegionAlpha=0.3, rgl=FALSE, ...) 
 {
   fs <- x
 
@@ -77,7 +77,7 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   
   if (missing(densCol))
     if (d==1)
-      densCol <- "DarkOrange"
+      densCol <- "#FF7F00" ##"DarkOrange" 
     else if (d==2)
       densCol <- rev(heat.colors(1000))
     else if (d==3)
@@ -122,31 +122,38 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   }
   else if (d==3)
   {
-    if (!requireNamespace("rgl", quietly=TRUE)) stop("Install the rgl package as it is required.", call.=FALSE)
-    if (!requireNamespace("misc3d", quietly=TRUE)) stop("Install the misc3d package as it is required.", call.=FALSE)
+    if (!rgl)
+    {
+    	if (!add)
+      		plot3D::points3D(mean(xlim), mean(ylim), mean(zlim), xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, col="transparent", alpha=0, theta=-30, phi=40, d=4, ticktype="detailed", bty="f")
+         
+    	if (addKDE)
+    	{
+        	kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx.cont=TRUE)
+        	plot(kde.temp, add=TRUE, display="plot3D")
+    	}
+    	
+    	if (addData)
+    		plot3D::points3D(x.rand[,1], x.rand[,2], x.rand[,3], pch=16, col=dataCol, alpha=dataAlpha, add=TRUE)	
+    }
+    else
+    {
+    	if (!requireNamespace("rgl", quietly=TRUE)) stop("Install the rgl package as it is required.", call.=FALSE)
+    	if (!requireNamespace("misc3d", quietly=TRUE)) stop("Install the misc3d package as it is required.", call.=FALSE)
     
-    if (!add)
-    {
-      ##clear3d()
-      ##bg3d(bgCol)
-      ##pop3d(type="lights")
-      ##light3d(theta=0, phi=30)
-      
-      ##material3d(alpha=1)
-      ##material3d(back="fill")
-
-      rgl::plot3d(mean(xlim), mean(ylim), mean(zlim), xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d, colors="transparent", alpha=0)
-     
-    }
-
-    if (addKDE)
-    {
-        kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx.cont=TRUE)
-        plot(kde.temp, box=FALSE, axes=FALSE, add=TRUE)
-    }
-    if (addData)
-      rgl::points3d(x.rand[,1],x.rand[,2],x.rand[,3],size=3,color=dataCol, alpha=dataAlpha)
-     rgl::bg3d(bgCol)
+   	 	if (!add)
+      		rgl::plot3d(mean(xlim), mean(ylim), mean(zlim), xlab=xlab, ylab=ylab, zlab=zlab, xlim=xlim, ylim=ylim, zlim=zlim, axes=addAxes3d, box=addAxes3d, colors="transparent", alpha=0)
+          	
+    	if (addKDE)
+    	{
+        	kde.temp <- kde(x, H=diag(h^2), binned=TRUE, gridsize=rep(31,3), compute.cont=TRUE, approx.cont=TRUE)
+        	plot(kde.temp, box=FALSE, axes=FALSE, add=TRUE, display="rgl")
+     	}
+     	
+     	if (addData)
+    	    rgl::points3d(x.rand[,1],x.rand[,2], x.rand[,3], size=3, color=dataCol, alpha=dataAlpha)
+    	rgl::bg3d(bgCol) 			
+    }	
   }
 
   SignifGradRegion.mat <- fs$grad
@@ -156,17 +163,17 @@ plot.fs <-  function(x, ..., xlab, ylab, zlab, xlim, ylim, zlim, add=FALSE,
   {
     SignifGradData.mat <- SignifFeatureData(x.rand, d, dest,SignifGradRegion.mat)
     if (addSignifGradRegion)
-      addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol, dest,lims, trans.alpha=gradRegionAlpha)
+      addSignifFeatureRegion(d,gridsize,SignifGradRegion.mat,plot.inds,gradCol, dest,lims, trans.alpha=gradRegionAlpha, rgl=rgl)
     if (addSignifGradData)
-      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha)
+      addSignifFeatureData(x.rand,SignifGradData.mat,gradCol, trans.alpha=gradDataAlpha, rgl=rgl)
   }
   if (!is.null(SignifCurvRegion.mat))
   {
-    SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
+  	SignifCurvData.mat <- SignifFeatureData(x.rand, d, dest,SignifCurvRegion.mat)
     if (addSignifCurvRegion)
-      addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol, dest,lims, trans.alpha=curvRegionAlpha)
+      addSignifFeatureRegion(d,gridsize,SignifCurvRegion.mat,plot.inds,curvCol, dest,lims, trans.alpha=curvRegionAlpha, rgl=rgl)
     if (addSignifCurvData)
-      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha)
+      addSignifFeatureData(x.rand,SignifCurvData.mat,curvCol, trans.alpha=curvDataAlpha, rgl=rgl)
   }
  
   invisible()
